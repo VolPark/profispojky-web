@@ -28,6 +28,7 @@ const SITE_SECTIONS = new Set([
   'aktuality',
   'kontakt',
   'nastavit-heslo',
+  'soubory',
   'health',
   'next',
   'admin',

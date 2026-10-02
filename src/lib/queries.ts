@@ -159,7 +159,9 @@ export const getProductTypes = cache(async () => {
 
 /* ---------- dokumenty ---------- */
 
-export const documentUrl = (d: Pick<Document, 'externalUrl' | 'url'>) => d.externalUrl || d.url || '#'
+/** Odkaz na dokument: nahraný soubor přes stabilní adresu /soubory/… (nezávislou na úložišti), jinak externí odkaz (videa). */
+export const documentUrl = (d: Pick<Document, 'externalUrl' | 'url' | 'filename'>) =>
+  d.filename ? `/soubory/${encodeURIComponent(d.filename)}` : d.externalUrl || d.url || '#'
 
 export const getLibrary = cache(async () => {
   const payload = await getPayloadClient()
