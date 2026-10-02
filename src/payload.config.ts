@@ -23,6 +23,7 @@ import { Products } from './collections/Products'
 import { Series } from './collections/Series'
 import { Users } from './collections/Users'
 import { Homepage } from './globals/Homepage'
+import { serverUrl } from './lib/preview'
 import { mcp } from './mcp/plugin'
 import { SiteSettings } from './globals/SiteSettings'
 
@@ -30,7 +31,7 @@ const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
-  serverURL: process.env.NEXT_PUBLIC_SERVER_URL || '',
+  serverURL: serverUrl(),
   admin: {
     user: Users.slug,
     importMap: { baseDir: path.resolve(dirname) },
