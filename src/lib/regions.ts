@@ -1,0 +1,26 @@
+export const REGIONS = [
+  { id: "praha", name: "Praha", country: "CZ" },
+  { id: "stredocesky-kraj", name: "Středočeský kraj", country: "CZ" },
+  { id: "jihocesky-kraj", name: "Jihočeský kraj", country: "CZ" },
+  { id: "plzensky-kraj", name: "Plzeňský kraj", country: "CZ" },
+  { id: "karlovarsky-kraj", name: "Karlovarský kraj", country: "CZ" },
+  { id: "ustecky-kraj", name: "Ústecký kraj", country: "CZ" },
+  { id: "liberecky-kraj", name: "Liberecký kraj", country: "CZ" },
+  { id: "kralovehradecky-kraj", name: "Královéhradecký kraj", country: "CZ" },
+  { id: "pardubicky-kraj", name: "Pardubický kraj", country: "CZ" },
+  { id: "vysocina", name: "Vysočina", country: "CZ" },
+  { id: "moravskoslezsky-kraj", name: "Moravskoslezský kraj", country: "CZ" },
+  { id: "olomoucky-kraj", name: "Olomoucký kraj", country: "CZ" },
+  { id: "zlinsky-kraj", name: "Zlínský kraj", country: "CZ" },
+  { id: "jihomoravsky-kraj", name: "Jihomoravský kraj", country: "CZ" },
+  { id: "bratislavsky-kraj", name: "Bratislavský kraj", country: "SK" },
+  { id: "trnavsky-kraj", name: "Trnavský kraj", country: "SK" },
+  { id: "trenciansky-kraj", name: "Trenčianský kraj", country: "SK" },
+  { id: "nitransky-kraj", name: "Nitranský kraj", country: "SK" },
+  { id: "banskobystricky-kraj", name: "Banskobystrický kraj", country: "SK" },
+  { id: "zilinsky-kraj", name: "Žilinský kraj", country: "SK" },
+  { id: "presovsky-kraj", name: "Prešovský kraj", country: "SK" },
+  { id: "kosicky-kraj", name: "Košický kraj", country: "SK" },
+] as const
+
+export type RegionId = (typeof REGIONS)[number]["id"]
