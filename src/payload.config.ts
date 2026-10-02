@@ -62,8 +62,9 @@ export default buildConfig({
   db: postgresAdapter({
     pool: { connectionString: process.env.DATABASE_URL || '' },
     migrationDir: path.resolve(dirname, 'migrations'),
-    // Lokálně se schéma synchronizuje automaticky, v produkci přes migrace (pnpm payload migrate).
-    push: process.env.NODE_ENV !== 'production',
+    // Lokálně se schéma synchronizuje automaticky, jinde jen přes migrace (pnpm payload migrate).
+    // Na Vercelu nikdy – build tam neběží s NODE_ENV=production a push by obešel migrace.
+    push: !process.env.VERCEL && process.env.NODE_ENV !== 'production',
   }),
   sharp,
   plugins: [

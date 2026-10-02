@@ -5,5 +5,5 @@
     "fra1"
   ],
   "installCommand": "pnpm install --frozen-lockfile",
-  "buildCommand": "if [ -n \"$DATABASE_URL\" ]; then pnpm payload migrate; else echo 'DATABASE_URL není nastaveno – migrace přeskočeny'; fi && pnpm build"
+  "buildCommand": "if [ -n \"$DATABASE_URL\" ]; then timeout 300 pnpm payload migrate < /dev/null; else echo 'DATABASE_URL není nastaveno – migrace přeskočeny'; fi && pnpm build"
 }
