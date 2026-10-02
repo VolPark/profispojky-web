@@ -1,0 +1,2222 @@
+{
+ "divisions": [
+  {
+   "name": "Litina",
+   "slug": "litina",
+   "perex": "Pozinkované svěrné spojky a třmeny, drážkové spojky a závitové tvarovky.",
+   "image": "litina.png",
+   "order": 1
+  },
+  {
+   "name": "Mosaz",
+   "slug": "mosaz",
+   "perex": "Svěrné spojky, kulové kohouty, ventily a tvarovky na vodu a plyn.",
+   "image": "mosaz.png",
+   "order": 2
+  },
+  {
+   "name": "Plast",
+   "slug": "plast",
+   "perex": "Svěrné spojky, navrtávky, kulové kohouty a závitové tvarovky pro PE trubky.",
+   "image": "plast.png",
+   "order": 3
+  },
+  {
+   "name": "Další sortiment",
+   "slug": "dalsi-sortiment",
+   "perex": "Nerezové opravné pasy, přechody, upínače, chráničky a hydrantové systémy.",
+   "image": "dalsi.png",
+   "order": 4
+  }
+ ],
+ "brands": [
+  {
+   "name": "AGAflex",
+   "slug": "agaflex",
+   "description": "Litinové pozinkované spojky a třmeny pro ocelové a PE trubky.",
+   "divisions": [
+    "litina"
+   ]
+  },
+  {
+   "name": "ATUSA",
+   "slug": "atusa",
+   "description": "Litinové drážkové spojky, tvarovky a sprinklery.",
+   "divisions": [
+    "litina"
+   ]
+  },
+  {
+   "name": "TSP",
+   "slug": "tsp",
+   "description": "Litinové závitové tvarovky – pozinkované a černé.",
+   "divisions": [
+    "litina"
+   ]
+  },
+  {
+   "name": "Bugatti",
+   "slug": "bugatti",
+   "description": "Mosazné kované svěrné spojky a kulové kohouty na vodu a plyn. Výrobce Valvosanitaria Bugatti S.p.A.",
+   "divisions": [
+    "mosaz"
+   ]
+  },
+  {
+   "name": "Greiner",
+   "slug": "greiner",
+   "description": "Mosazné svěrné spojky na vodu a plyn, kulové kohouty na plyn a držáky vodoměrů.",
+   "divisions": [
+    "mosaz"
+   ]
+  },
+  {
+   "name": "General Fittings",
+   "slug": "general-fittings",
+   "description": "Mosazné svěrné spojky a tvarovky na vodu a plyn.",
+   "divisions": [
+    "mosaz"
+   ]
+  },
+  {
+   "name": "Schlösser",
+   "slug": "schlosser",
+   "description": "Mosazné přímé a šikmé ventily, topenářské armatury a nezámrzné výtokové ventily.",
+   "divisions": [
+    "mosaz"
+   ]
+  },
+  {
+   "name": "Plas-Fit",
+   "slug": "plas-fit",
+   "description": "Plastové svěrné spojky, navrtávky a mrazuodolné zahradní kulové kohouty.",
+   "divisions": [
+    "plast"
+   ]
+  },
+  {
+   "name": "SAB Blueseal",
+   "slug": "sab",
+   "description": "Plastové svěrné spojky a příslušenství na vodu pro PE trubky 16–110 mm.",
+   "divisions": [
+    "plast"
+   ]
+  },
+  {
+   "name": "Plast Project",
+   "slug": "plast-project",
+   "description": "Plastové závitové tvarovky.",
+   "divisions": [
+    "plast"
+   ]
+  },
+  {
+   "name": "GIRPI",
+   "slug": "girpi",
+   "description": "HTA® – PVC-C tvarovky a trubky pro rozvody teplé a studené vody.",
+   "divisions": [
+    "plast"
+   ]
+  },
+  {
+   "name": "IVE",
+   "slug": "ive",
+   "description": "Nerezové opravné pasy a objímky.",
+   "divisions": [
+    "dalsi-sortiment"
+   ]
+  },
+  {
+   "name": "SABfuse a RECANATI",
+   "slug": "prechody",
+   "description": "Přechody mezi materiály potrubí.",
+   "divisions": [
+    "dalsi-sortiment"
+   ]
+  },
+  {
+   "name": "ROBOMONT",
+   "slug": "robomont",
+   "description": "Upínače, chráničky a trasovací sloupky.",
+   "divisions": [
+    "dalsi-sortiment"
+   ]
+  },
+  {
+   "name": "GRAS",
+   "slug": "gras",
+   "description": "Hydrantový systém a příslušenství.",
+   "divisions": [
+    "dalsi-sortiment"
+   ]
+  }
+ ],
+ "series": [
+  {
+   "name": "Svěrné spojky AGA",
+   "summary": "Pro ocelové a PE trubky 3/8\"–4\"",
+   "brand": "agaflex",
+   "division": "litina",
+   "order": 1
+  },
+  {
+   "name": "Třmeny AGA",
+   "summary": "Pro ocelové trubky 3/8\"–4\"",
+   "brand": "agaflex",
+   "division": "litina",
+   "order": 2
+  },
+  {
+   "name": "Opravný třmen GSK",
+   "summary": "Těžká protikorozní ochrana, vhodný do země",
+   "brand": "agaflex",
+   "division": "litina",
+   "order": 3
+  },
+  {
+   "name": "UltraGrip",
+   "summary": "Spojky s jištěním proti posuvu, do země",
+   "brand": "agaflex",
+   "division": "litina",
+   "order": 4
+  },
+  {
+   "name": "Prodlužovací trubky",
+   "summary": "Závitové ocelové prodlužovací trubky",
+   "brand": "agaflex",
+   "division": "litina",
+   "order": 5
+  },
+  {
+   "name": "Drážkové spojky a tvarovky",
+   "summary": "Litinové drážkové systémy",
+   "brand": "atusa",
+   "division": "litina",
+   "order": 1
+  },
+  {
+   "name": "Sprinklery",
+   "summary": "Sprinklerové hlavice",
+   "brand": "atusa",
+   "division": "litina",
+   "order": 2
+  },
+  {
+   "name": "Závitové tvarovky pozinkované",
+   "summary": "Pozinkované provedení",
+   "brand": "tsp",
+   "division": "litina",
+   "order": 1
+  },
+  {
+   "name": "Závitové tvarovky černé",
+   "summary": "Černé provedení",
+   "brand": "tsp",
+   "division": "litina",
+   "order": 2
+  },
+  {
+   "name": "Valvopat",
+   "summary": "Svěrné spojky pro PE trubky 20–110 mm · voda, plyn",
+   "brand": "bugatti",
+   "division": "mosaz",
+   "order": 1
+  },
+  {
+   "name": "Valvofit",
+   "summary": "Svěrné spojky pro PE trubky 20–63 mm · voda, plyn",
+   "brand": "bugatti",
+   "division": "mosaz",
+   "order": 2
+  },
+  {
+   "name": "Valvofer",
+   "summary": "Svěrné spojky pro ocelové trubky 3/8\"–2\" · voda, plyn",
+   "brand": "bugatti",
+   "division": "mosaz",
+   "order": 3
+  },
+  {
+   "name": "Oregon",
+   "summary": "Kované kulové kohouty na vodu 1/4\"–2\" · do 185 °C",
+   "brand": "bugatti",
+   "division": "mosaz",
+   "order": 4
+  },
+  {
+   "name": "New Jersey",
+   "summary": "Kované kulové kohouty na vodu 1/2\"–4\" · do 120 °C",
+   "brand": "bugatti",
+   "division": "mosaz",
+   "order": 5
+  },
+  {
+   "name": "Colorado",
+   "summary": "Kované kulové kohouty na plyn 1/4\"–4\"",
+   "brand": "bugatti",
+   "division": "mosaz",
+   "order": 6
+  },
+  {
+   "name": "California",
+   "summary": "Kované kulové kohouty na vodu",
+   "brand": "bugatti",
+   "division": "mosaz",
+   "order": 7
+  },
+  {
+   "name": "Alaska",
+   "summary": "Mrazuodolné zahradní kulové kohouty",
+   "brand": "bugatti",
+   "division": "mosaz",
+   "order": 8
+  },
+  {
+   "name": "Minnesota",
+   "summary": "Podumyvadlové a vypouštěcí kulové kohouty",
+   "brand": "bugatti",
+   "division": "mosaz",
+   "order": 9
+  },
+  {
+   "name": "Nebraska",
+   "summary": "Zpětné klapky a filtr",
+   "brand": "bugatti",
+   "division": "mosaz",
+   "order": 10
+  },
+  {
+   "name": "St. Louis",
+   "summary": "Šroubení a průchodka",
+   "brand": "bugatti",
+   "division": "mosaz",
+   "order": 11
+  },
+  {
+   "name": "Svěrné kulové kohouty na plyn",
+   "summary": "Pro PE trubky",
+   "brand": "greiner",
+   "division": "mosaz",
+   "order": 1
+  },
+  {
+   "name": "Závitové kulové kohouty na plyn",
+   "summary": "Závitové provedení",
+   "brand": "greiner",
+   "division": "mosaz",
+   "order": 2
+  },
+  {
+   "name": "Spojky pro PE trubky",
+   "summary": "Svěrné spojky · voda, plyn",
+   "brand": "greiner",
+   "division": "mosaz",
+   "order": 3
+  },
+  {
+   "name": "Spojky pro ocelové trubky",
+   "summary": "Svěrné spojky · voda, plyn",
+   "brand": "greiner",
+   "division": "mosaz",
+   "order": 4
+  },
+  {
+   "name": "Držáky vodoměrů",
+   "summary": "Mosazné držáky",
+   "brand": "greiner",
+   "division": "mosaz",
+   "order": 5
+  },
+  {
+   "name": "Vodoměrné sestavy",
+   "summary": "Držák Greiner + ventily Schlösser",
+   "brand": "greiner",
+   "division": "mosaz",
+   "order": 6
+  },
+  {
+   "name": "1N00",
+   "summary": "Svěrné spojky pro Cu, ocelové a nerezové trubky 6–54 mm",
+   "brand": "general-fittings",
+   "division": "mosaz",
+   "order": 1
+  },
+  {
+   "name": "2600",
+   "summary": "Mosazné tvarovky",
+   "brand": "general-fittings",
+   "division": "mosaz",
+   "order": 2
+  },
+  {
+   "name": "Přímé a šikmé ventily",
+   "summary": "Na vodu 3/8\"–3\"",
+   "brand": "schlosser",
+   "division": "mosaz",
+   "order": 1
+  },
+  {
+   "name": "Topenářské armatury",
+   "summary": "Armatury pro otopné soustavy",
+   "brand": "schlosser",
+   "division": "mosaz",
+   "order": 2
+  },
+  {
+   "name": "FROST-TEC",
+   "summary": "Nezámrzný výtokový ventil pro šířku zdiva",
+   "brand": "schlosser",
+   "division": "mosaz",
+   "order": 3
+  },
+  {
+   "name": "Svěrné spojky a navrtávky",
+   "summary": "Na vodu pro PE trubky 16–110 mm",
+   "brand": "plas-fit",
+   "division": "plast",
+   "order": 1
+  },
+  {
+   "name": "Zahradní kulové kohouty",
+   "summary": "Mrazuodolné, 1/2\"–3/4\"",
+   "brand": "plas-fit",
+   "division": "plast",
+   "order": 2
+  },
+  {
+   "name": "Telekomunikace",
+   "summary": "Spojky pro telekomunikační chráničky",
+   "brand": "plas-fit",
+   "division": "plast",
+   "order": 3
+  },
+  {
+   "name": "TAVLIT",
+   "summary": "Závitové tvarovky s těsněním i bez",
+   "brand": "plas-fit",
+   "division": "plast",
+   "order": 4
+  },
+  {
+   "name": "Svěrné spojky Blueseal",
+   "summary": "Pro PE trubky 16–110 mm",
+   "brand": "sab",
+   "division": "plast",
+   "order": 1
+  },
+  {
+   "name": "Kulové kohouty",
+   "summary": "20–63 mm, 1/2\"–4\"",
+   "brand": "sab",
+   "division": "plast",
+   "order": 2
+  },
+  {
+   "name": "Závitové tvarovky",
+   "summary": "1/2\"–4\"",
+   "brand": "plast-project",
+   "division": "plast",
+   "order": 1
+  },
+  {
+   "name": "HTA® PVC-C",
+   "summary": "Tvarovky a trubky 16–160 mm",
+   "brand": "girpi",
+   "division": "plast",
+   "order": 1
+  },
+  {
+   "name": "Nerezové opravné pasy",
+   "summary": "Opravy potrubí bez svařování",
+   "brand": "ive",
+   "division": "dalsi-sortiment",
+   "order": 1
+  },
+  {
+   "name": "SABfuse přechody",
+   "summary": "Přechodové kusy",
+   "brand": "prechody",
+   "division": "dalsi-sortiment",
+   "order": 1
+  },
+  {
+   "name": "RECANATI přechody",
+   "summary": "Přechodové kusy",
+   "brand": "prechody",
+   "division": "dalsi-sortiment",
+   "order": 2
+  },
+  {
+   "name": "Upínače",
+   "summary": "Upínací prvky",
+   "brand": "robomont",
+   "division": "dalsi-sortiment",
+   "order": 1
+  },
+  {
+   "name": "Chráničky",
+   "summary": "Bralenové a pozinkované",
+   "brand": "robomont",
+   "division": "dalsi-sortiment",
+   "order": 2
+  },
+  {
+   "name": "Orientační sloupky",
+   "summary": "Značení tras",
+   "brand": "robomont",
+   "division": "dalsi-sortiment",
+   "order": 3
+  },
+  {
+   "name": "Hydrantový systém",
+   "summary": "Hydrantové skříně a příslušenství",
+   "brand": "gras",
+   "division": "dalsi-sortiment",
+   "order": 1
+  },
+  {
+   "name": "IBC příslušenství",
+   "summary": "Příslušenství k IBC nádržím",
+   "brand": "gras",
+   "division": "dalsi-sortiment",
+   "order": 2
+  }
+ ],
+ "products": [
+  {
+   "code": "30070002",
+   "label": "BIM 20 × 3/4\"",
+   "desc": "Spojka s vnitřním závitem v převlečné matici",
+   "tvar": "IM",
+   "pe": 20,
+   "thr": "3/4\"",
+   "img": "assets/p/171.jpg"
+  },
+  {
+   "code": "30000007",
+   "label": "BA 20 × 1/2\"",
+   "desc": "Spojka s vnějším závitem",
+   "tvar": "A",
+   "pe": 20,
+   "thr": "1/2\"",
+   "img": "assets/p/167.jpg"
+  },
+  {
+   "code": "30000011",
+   "label": "BA 25 × 1/2\"",
+   "desc": "Spojka s vnějším závitem",
+   "tvar": "A",
+   "pe": 25,
+   "thr": "1/2\"",
+   "img": "assets/p/167.jpg"
+  },
+  {
+   "code": "30000018",
+   "label": "BA 32 × 1\"",
+   "desc": "Spojka s vnějším závitem",
+   "tvar": "A",
+   "pe": 32,
+   "thr": "1\"",
+   "img": "assets/p/167.jpg"
+  },
+  {
+   "code": "30000021",
+   "label": "BA 40 × 1\"",
+   "desc": "Spojka s vnějším závitem",
+   "tvar": "A",
+   "pe": 40,
+   "thr": "1\"",
+   "img": "assets/p/167.jpg"
+  },
+  {
+   "code": "30000032",
+   "label": "BA 63 × 2\"",
+   "desc": "Spojka s vnějším závitem",
+   "tvar": "A",
+   "pe": 63,
+   "thr": "2\"",
+   "img": "assets/p/167.jpg"
+  },
+  {
+   "code": "30000035",
+   "label": "BA 63 × 2 1/2\"",
+   "desc": "Spojka s vnějším závitem",
+   "tvar": "A",
+   "pe": 63,
+   "thr": "2 1/2\"",
+   "img": "assets/p/167.jpg"
+  },
+  {
+   "code": "30000042",
+   "label": "BA 90 × 3\"",
+   "desc": "Spojka s vnějším závitem",
+   "tvar": "A",
+   "pe": 90,
+   "thr": "3\"",
+   "img": "assets/p/1116.jpg"
+  },
+  {
+   "code": "30150018",
+   "label": "BO 63 × 63",
+   "desc": "Spojka svěrná",
+   "tvar": "O",
+   "pe": 63,
+   "thr": "",
+   "img": "assets/p/172.jpg"
+  },
+  {
+   "code": "30150020",
+   "label": "BO 75 × 75",
+   "desc": "Spojka svěrná",
+   "tvar": "O",
+   "pe": 75,
+   "thr": "",
+   "img": "assets/p/173.jpg"
+  },
+  {
+   "code": "30150022",
+   "label": "BO 90 × 90",
+   "desc": "Spojka svěrná",
+   "tvar": "O",
+   "pe": 90,
+   "thr": "",
+   "img": "assets/p/173.jpg"
+  },
+  {
+   "code": "30390015",
+   "label": "BWO 90 × 90",
+   "desc": "Koleno svěrné",
+   "tvar": "WO",
+   "pe": 90,
+   "thr": "",
+   "img": "assets/p/180.jpg"
+  },
+  {
+   "code": "30250010",
+   "label": "BTI 32 × 1\"",
+   "desc": "T kus odbočný s vnitřním závitem",
+   "tvar": "TI",
+   "pe": 32,
+   "thr": "1\"",
+   "img": "assets/p/186.jpg"
+  },
+  {
+   "code": "30400003",
+   "label": "BOL 32 × 32",
+   "desc": "Spojka svěrná prodloužená",
+   "tvar": "OL",
+   "pe": 32,
+   "thr": "",
+   "img": "assets/p/174.jpg"
+  },
+  {
+   "code": "30800004",
+   "label": "B nástěnka 32 × 3/4\"",
+   "desc": "Nástěnka",
+   "tvar": "nástěnka",
+   "pe": 32,
+   "thr": "3/4\"",
+   "img": "assets/p/182.jpg"
+  },
+  {
+   "code": "30800005",
+   "label": "B nástěnka 32 × 1\"",
+   "desc": "Nástěnka",
+   "tvar": "nástěnka",
+   "pe": 32,
+   "thr": "1\"",
+   "img": "assets/p/182.jpg"
+  }
+ ],
+ "docs": [
+  {
+   "t": "katalog",
+   "title": "Kompletní katalog PROFI SPOJKY 2026/03",
+   "div": "Všechny divize",
+   "brand": "",
+   "fmt": "PDF · 15,9 MB",
+   "url": "https://www.profispojky.cz/download.php?fid=1503"
+  },
+  {
+   "t": "katalog",
+   "title": "PROFI SPOJKY – rychlý přehled",
+   "div": "Všechny divize",
+   "brand": "",
+   "fmt": "PDF · 16,6 MB",
+   "url": "https://www.profispojky.cz/download.php?fid=1363"
+  },
+  {
+   "t": "katalog",
+   "title": "Přehled použití sortimentu",
+   "div": "Všechny divize",
+   "brand": "",
+   "fmt": "PDF · 263 kB",
+   "url": "https://www.profispojky.cz/download.php?fid=1098"
+  },
+  {
+   "t": "katalog",
+   "title": "Katalog Bugatti Valvopat",
+   "div": "Mosaz",
+   "brand": "Bugatti",
+   "fmt": "PDF · 947 kB",
+   "url": "https://www.profispojky.cz/download.php?fid=1464"
+  },
+  {
+   "t": "letak",
+   "title": "GIRPI HTA® – novinka v sortimentu",
+   "div": "Plast",
+   "brand": "GIRPI",
+   "fmt": "PDF · 338 kB",
+   "url": "https://www.profispojky.cz/download.php?fid=1453"
+  },
+  {
+   "t": "tl",
+   "title": "Technická dokumentace Bugatti Valvopat – BA",
+   "div": "Mosaz",
+   "brand": "Bugatti",
+   "fmt": "PDF · 1,7 MB",
+   "url": "https://www.profispojky.cz/download.php?fid=1013"
+  },
+  {
+   "t": "cert",
+   "title": "Certifikáty výrobků",
+   "div": "Všechny divize",
+   "brand": "",
+   "fmt": "PDF · 658 kB",
+   "url": "https://www.profispojky.cz/download.php?fid=1150"
+  },
+  {
+   "t": "shoda",
+   "title": "Prohlášení o shodě AGA spojky",
+   "div": "Litina",
+   "brand": "AGAflex",
+   "fmt": "PDF",
+   "url": "https://www.profispojky.cz/prohlaseni-o-shode-aga-spojky-687"
+  },
+  {
+   "t": "shoda",
+   "title": "Prohlášení o shodě AGA třmeny",
+   "div": "Litina",
+   "brand": "AGAflex",
+   "fmt": "PDF",
+   "url": "https://www.profispojky.cz/prohlaseni-o-shode-aga-trmeny-688"
+  },
+  {
+   "t": "shoda",
+   "title": "Prohlášení o shodě Viking Johnson UltraGrip",
+   "div": "Litina",
+   "brand": "AGAflex",
+   "fmt": "PDF",
+   "url": "https://www.profispojky.cz/prohlaseni-o-shode-viking-johnson-ultragrip-690"
+  },
+  {
+   "t": "shoda",
+   "title": "Prohlášení o shodě Bugatti Valvopat",
+   "div": "Mosaz",
+   "brand": "Bugatti",
+   "fmt": "PDF · 81 kB",
+   "url": "https://www.profispojky.cz/download.php?fid=1414"
+  },
+  {
+   "t": "shoda",
+   "title": "Prohlášení o shodě Bugatti Oregon",
+   "div": "Mosaz",
+   "brand": "Bugatti",
+   "fmt": "PDF",
+   "url": "https://www.profispojky.cz/prohlaseni-o-shode-bugatti-oregon-694"
+  },
+  {
+   "t": "navod",
+   "title": "Montážní návod AGA spojky",
+   "div": "Litina",
+   "brand": "AGAflex",
+   "fmt": "PDF",
+   "url": "https://www.profispojky.cz/montazni-navod-aga-spojky"
+  },
+  {
+   "t": "navod",
+   "title": "Montážní návod Bugatti Valvopat a Valvofit",
+   "div": "Mosaz",
+   "brand": "Bugatti",
+   "fmt": "PDF · 221 kB",
+   "url": "https://www.profispojky.cz/download.php?fid=107"
+  },
+  {
+   "t": "navod",
+   "title": "Montážní návod Schlösser Frost-Tec",
+   "div": "Mosaz",
+   "brand": "Schlösser",
+   "fmt": "PDF",
+   "url": "https://www.profispojky.cz/montazni-navod-schloesser-frost-tec-674"
+  },
+  {
+   "t": "navod",
+   "title": "Montážní návod Plas-Fit 150 a 350",
+   "div": "Plast",
+   "brand": "Plas-Fit",
+   "fmt": "PDF",
+   "url": "https://www.profispojky.cz/montazni-navod-plas-fit-350"
+  },
+  {
+   "t": "navod",
+   "title": "Montážní návod SAB",
+   "div": "Plast",
+   "brand": "SAB",
+   "fmt": "PDF",
+   "url": "https://www.profispojky.cz/montazni-navod-sab"
+  },
+  {
+   "t": "navod",
+   "title": "Montážní návod nerezové opravné pasy",
+   "div": "Další sortiment",
+   "brand": "IVE",
+   "fmt": "PDF",
+   "url": "https://www.profispojky.cz/montazni-navod-nerezove-opravne-pasy-680"
+  },
+  {
+   "t": "navod",
+   "title": "Montážní návod GRAS hydranty",
+   "div": "Další sortiment",
+   "brand": "GRAS",
+   "fmt": "PDF",
+   "url": "https://www.profispojky.cz/montazni-navod-gras-hydranty-681"
+  },
+  {
+   "t": "video",
+   "title": "Plas-Fit navrtávky Tavor",
+   "div": "Plast",
+   "brand": "Plas-Fit",
+   "fmt": "Video",
+   "url": "https://www.profispojky.cz/video-navrtavky-tavor"
+  },
+  {
+   "t": "video",
+   "title": "Plas-Fit EASY SYSTÉM – řada 350",
+   "div": "Plast",
+   "brand": "Plas-Fit",
+   "fmt": "Video",
+   "url": "https://www.profispojky.cz/plas-fit-100"
+  },
+  {
+   "t": "video",
+   "title": "SAB Blueseal",
+   "div": "Plast",
+   "brand": "SAB",
+   "fmt": "Video",
+   "url": "https://www.profispojky.cz/sab-blueseal-445"
+  },
+  {
+   "t": "video",
+   "title": "Schlösser ventily",
+   "div": "Mosaz",
+   "brand": "Schlösser",
+   "fmt": "Video",
+   "url": "https://www.profispojky.cz/schloesser-ventily-447"
+  }
+ ],
+ "partners": [
+  {
+   "id": "praha",
+   "name": "Praha",
+   "c": "CZ",
+   "p": [
+    [
+     "BAUHAUS k.s.",
+     "Budějovická 1a, 140 00 Praha 4"
+    ],
+    [
+     "Climate CZ s.r.o.",
+     "Dobronická 1258, 148 00 Praha 4"
+    ],
+    [
+     "OBI Česká republika s.r.o.",
+     "Lhotecká 446, 143 00 Praha 4 - Modřany"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Štúrova 1701/55, 142 00 Praha 4"
+    ],
+    [
+     "OBI Česká republika s.r.o.",
+     "Tomíčkova 9, 148 00 Praha 4 - Roztyly"
+    ],
+    [
+     "Richter + Frenzel s.r.o.",
+     "Elišky Přemyslovny 1342, 143 00 Praha 5"
+    ],
+    [
+     "ŠABATA s.r.o.",
+     "Jeremiášova 947, 150 00 Praha 5"
+    ],
+    [
+     "HORNBACH BAUMARKT CS spol. s r.o.",
+     "Strakonická 62, 159 00 Praha 5 - Velká Chuchle"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Za Mototechnou 1382/2, 155 00 Praha 5"
+    ],
+    [
+     "HORNBACH BAUMARKT CS spol. s r.o.",
+     "Slánská 2, 163 00 Praha - Řepy"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Stochovská 1057/80, 161 00 Praha 6"
+    ],
+    [
+     "OBI Česká republika s.r.o.",
+     "Výtvarná 3/1033, 161 00 Praha 6 - Ruzyně"
+    ],
+    [
+     "Richter + Frenzel s.r.o.",
+     "Výtvarná 6, 160 00 Praha 6"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Přívozní 2/1054, 170 00 Praha 7"
+    ],
+    [
+     "BAUHAUS k.s.",
+     "Ústecká 822, 184 00 Praha 8"
+    ],
+    [
+     "HORNBACH BAUMARKT CS spol. s r.o.",
+     "Chlumecká 2398, 193 00 Praha - Černý Most"
+    ],
+    [
+     "MARO s.r.o., obchod a projekce",
+     "Poděbradská 540/26, 190 00 Praha 9"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Poděbradská 1016/32, 190 00 Praha 9"
+    ],
+    [
+     "OBI Česká republika s.r.o.",
+     "Prosecká 78, 190 00 Praha 9"
+    ],
+    [
+     "Richter + Frenzel s.r.o.",
+     "U Technoplynu 1572, 198 00 Praha 9"
+    ],
+    [
+     "Vodoměry Praha, s.r.o.",
+     "Národních hrdinů 3, 190 12 Praha 9"
+    ],
+    [
+     "K.T.O. International spol. s r.o.",
+     "Nad Vršovskou Horou 88/4, 101 00 Praha 10"
+    ],
+    [
+     "OBI Česká republika s.r.o.",
+     "Nákupní 390/4, 102 00 Praha 10 - Štěrboholy"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "U Plynárny 99/1290, 101 00 Praha 10"
+    ],
+    [
+     "IES spol. s r. o.",
+     "U Trati 970/38, 100 00 Praha 10"
+    ],
+    [
+     "ŠABATA s.r.o.",
+     "Hlavatého 664, 149 00 Praha 11 - Háje"
+    ]
+   ]
+  },
+  {
+   "id": "stredocesky-kraj",
+   "name": "Středočeský kraj",
+   "c": "CZ",
+   "p": [
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Křižíkova 2343, 256 01 Benešov"
+    ],
+    [
+     "Richter + Frenzel s.r.o.",
+     "Křižíkova 2107, 256 01 Benešov"
+    ],
+    [
+     "THORN METAL s.r.o.",
+     "Plzeňská 349/121, 266 01 Beroun"
+    ],
+    [
+     "Besta Zápy s.r.o.",
+     "Zápská 1872, 250 01 Brandýs nad Labem"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Český Brod 1352, 282 01 Český Brod"
+    ],
+    [
+     "V+T mat s.r.o.",
+     "V+T mat s.r.o., Jana Kouly 445, 282 01 Český Brod"
+    ],
+    [
+     "HORNBACH BAUMARKT CS spol. s r.o.",
+     "Lipová 281, 251 01 Čestlice"
+    ],
+    [
+     "BAUHAUS k.s.",
+     "U Makra 130, 251 01 Čestlice"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Okružní 275, 252 25 Jinočany"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Brandýská 609, 250 90 Jirny"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Dr. Steinera 2741, 272 03 Kladno"
+    ],
+    [
+     "Richter + Frenzel s.r.o.",
+     "Wolkerova 2766, 272 01 Kladno"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Havlíčkova 835, 280 02 Kolín"
+    ],
+    [
+     "MARO s.r.o., obchod a projekce",
+     "Třídvorská 710, 280 02 Kolín"
+    ],
+    [
+     "OBI Česká republika s.r.o.",
+     "V kasárnách 1022, 280 02 Kolín"
+    ],
+    [
+     "Miloš Majer - průmyslové zboží",
+     "nám. Smiřických 31, 281 63 Kostelec nad Černými Lesy"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "V Pískovně 2054, 278 01 Kralupy nad Vltavou"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Fučíkova 332, 267 01 Králův Dvůr u Berouna"
+    ],
+    [
+     "OBI Česká republika s.r.o.",
+     "Plzeňská 475, 267 01 Králův Dvůr"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Čáslavská 222, 284 01 Kutná Hora"
+    ],
+    [
+     "Richter + Frenzel s.r.o.",
+     "Blatecká 4224, 276 01 Mělník"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Řípská 4158, 276 01 Mělník"
+    ],
+    [
+     "OBI Česká republika s.r.o.",
+     "Na Radouči, 293 01 Mladá Boleslav"
+    ],
+    [
+     "MARO s.r.o., obchod a projekce",
+     "Nádražní 308, 293 01  Mladá Boleslav"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Řepov 257, 293 01 Mladá Boleslav"
+    ],
+    [
+     "V+T mat s.r.o. - Kaudl Miloslav",
+     "Plazy – Valy 8, 293 01 Mladá Boleslav"
+    ],
+    [
+     "V+T mat s.r.o.",
+     "U Mototechny 88, 251 62 Mukařov"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Pražská 2261, 288 02 Nymburk 2"
+    ],
+    [
+     "Instalatérské potřeby Šátek CZ s.r.o.",
+     "Velké Zboží 169, 290 01 Poděbrady"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Dělostřelecká 333, 261 01 Příbram"
+    ],
+    [
+     "ŠABATA s.r.o.",
+     "Husova 366, 261 01 Příbram 1"
+    ],
+    [
+     "OBI Česká republika s.r.o.",
+     "Žežická 596, 261 01 Příbram"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Plzeňská 2873, 269 01 Rakovník 1"
+    ],
+    [
+     "Richter + Frenzel s.r.o.",
+     "Rynholec 196, 270 62 Rynholec"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Obchodní 101, 251 01 Říčany u Prahy"
+    ],
+    [
+     "Instalatérské potřeby Šátek CZ s.r.o.",
+     "Kostelní Lhota 44, 289 12 Sadská"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Kňovická 341, 264 01 Sedlčany"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Stehlíkova 1223, 274 01 Slaný"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Lidická 1010, 273 51 Unhošť"
+    ],
+    [
+     "AQUA 4U profistore s.r.o.",
+     "Kpt. Jaroše 3225, 276 01 Mělník"
+    ]
+   ]
+  },
+  {
+   "id": "jihocesky-kraj",
+   "name": "Jihočeský kraj",
+   "c": "CZ",
+   "p": [
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Instalatércentrum, České Vrbné 2392-2394, 370 01  České Budějovice"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Hlinská 2, 370 01 České Budějovice"
+    ],
+    [
+     "BAUHAUS k.s.",
+     "Husova 887, 370 11 České Budějovice"
+    ],
+    [
+     "P + P Želeč, spol. s r.o.",
+     "Novohradská 24, 370 01 České Budějovice"
+    ],
+    [
+     "Richter + Frenzel s.r.o.",
+     "Vrbenská 511/25a, 370 00 České Budějovice"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Nádražní 3, 381 01 Český Krumlov"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Krajířova 23, 380 01 Dačice"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Jarošovská 1267, 377 01 Jindřichův Hradec"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "U Nádraží 2614, 397 01 Písek 1"
+    ],
+    [
+     "OBI Česká republika s.r.o.",
+     "U Nádraží 2607, 397 01 Písek"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Nebahovská 1200 – IC, 383 01 Prachatice"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Katovická 1268, 386 01 Strakonice"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Soběslavská 3191, 390 01 Tábor"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "1. máje 185, 385 01 Vimperk"
+    ]
+   ]
+  },
+  {
+   "id": "plzensky-kraj",
+   "name": "Plzeňský kraj",
+   "c": "CZ",
+   "p": [
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Masarykova 501, 344 01 Domažlice"
+    ],
+    [
+     "ŠABATA s.r.o.",
+     "Prokopa Velikého 570, 344 01 Domažlice"
+    ],
+    [
+     "ŠABATA s.r.o.",
+     "Zemská – U sjezdu z dálnice 1/213, 337 01 Ejpovice"
+    ],
+    [
+     "OBI Česká republika s.r.o.",
+     "Domažlická 15, 339 01 Klatovy"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Dragounská 757/IV, 339 01 Klatovy"
+    ],
+    [
+     "Velkoobchod, maloobchod",
+     "K Cihelnám 699/35a, 326 00 Plzeň – Černice"
+    ],
+    [
+     "ŠABATA s.r.o.",
+     "Doudlevecká 360/48, 301 00 Plzeň"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Hřbitovní 17/954, 301 00 Plzeň"
+    ],
+    [
+     "LIKOST, spol. s r.o.",
+     "Pálenická 2, 323 00 Plzeň"
+    ],
+    [
+     "Richter + Frenzel s.r.o.",
+     "Slovanská alej 24, 317 05 Plzeň"
+    ],
+    [
+     "Interiérové studio",
+     "Slovanská tř. 172, 326 00 Plzeň"
+    ],
+    [
+     "BAUHAUS k.s.",
+     "Stavební 2957/1, 301 00 Plzeň"
+    ],
+    [
+     "OBI Česká republika s.r.o.",
+     "Sukova 886/21, 301 00 Plzeň - Jižní předměstí"
+    ],
+    [
+     "HORNBACH BAUMARKT CS spol. s r.o.",
+     "U Prazdroje 2750/24, 301 00 Plzeň"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Nebahovská 1200, 383 01 Prachatice"
+    ],
+    [
+     "Interiérové studio, Velkoobchod",
+     "Tř. 1. máje 295, 334 01 Přeštice"
+    ],
+    [
+     "ŠABATA s.r.o.",
+     "J. Knihy, 337 01 Rokycany 1"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "V Kasárnách 1245, 337 01 Rokycany"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Nádražní 1268, 342 01 Sušice 1"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Oldřichovská 1511, 347 01 Tachov 1"
+    ],
+    [
+     "ŠABATA s.r.o.",
+     "Sokolovská 2001, 347 01 Tachov"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Tyršova 686, 330 27 Vejprnice"
+    ]
+   ]
+  },
+  {
+   "id": "karlovarsky-kraj",
+   "name": "Karlovarský kraj",
+   "c": "CZ",
+   "p": [
+    [
+     "OBI Česká republika s.r.o.",
+     "Dragounská 2563/4, 350 02 Cheb"
+    ],
+    [
+     "ŠABATA s.r.o.",
+     "Dyleňská 355/6, 350 02 Cheb"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Podnikatelská 166/3 – IC, 350 02 Cheb 2"
+    ],
+    [
+     "OBI Česká republika s.r.o.",
+     "Chebská 380/81b, 361 20 Karlovy Vary"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Plynárenská 2, 360 01 Karlovy Vary"
+    ],
+    [
+     "LIKOST, spol. s r.o.",
+     "Počernická 120, 360 05 Karlovy Vary"
+    ],
+    [
+     "Richter + Frenzel s.r.o.",
+     "Stará Kysibelská 583, 360 09 Karlovy Vary"
+    ],
+    [
+     "THORN METAL s.r.o.",
+     "Husova 16, 353 01 Mariánské Lázně"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Tepelská 137/3, 353 01 Mariánské Lázně 1"
+    ],
+    [
+     "ŠABATA s.r.o.",
+     "Chebská 53, 356 01 Sokolov"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Stará Březovská 2261, 356 01 Sokolov"
+    ],
+    [
+     "LIKOST, spol. s r.o.",
+     "Stará Ovčárna 2174, 356 01 Sokolov"
+    ]
+   ]
+  },
+  {
+   "id": "ustecky-kraj",
+   "name": "Ústecký kraj",
+   "c": "CZ",
+   "p": [
+    [
+     "SAG – CZ spol. s r.o.",
+     "Voborského 412, 411 81 Brozany nad Ohří"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Benešovská 1458/35, 405 02 Děčín"
+    ],
+    [
+     "ARMEX Instalatér Centrum s.r.o.",
+     "Nám. 5. května 46/1, 405 02 Děčín"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Dolní 3868, 430 01 Chomutov"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Litoměřická kotlina 383, 411 55 Litoměřice"
+    ],
+    [
+     "OBI Česká republika s.r.o.",
+     "Želetická 2227, 412 01 Litoměřice"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Průmyslová 2729, 440 01 Louny"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Bělehradská 3344/1, 434 01 Most"
+    ],
+    [
+     "Richter + Frenzel s.r.o.",
+     "Dělnická 16, 434 01 Most"
+    ],
+    [
+     "OBI Česká republika s.r.o.",
+     "Chomutovská 1316, 434 01 Most"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Gagarinova 467, 415 01 Teplice 1"
+    ],
+    [
+     "Richter + Frenzel s.r.o.",
+     "Potoční 1865, 415 01  Teplice Trnovany"
+    ],
+    [
+     "MARO s.r.o., obchod a projekce",
+     "Pražská 411, 417 61 Teplice - Bystřany"
+    ],
+    [
+     "OBI Česká republika s.r.o.",
+     "Seifertova 1965, 415 01 Teplice"
+    ],
+    [
+     "BAUHAUS k.s.",
+     "Tyršova, 400 04 Trmice"
+    ],
+    [
+     "OBI Česká republika s.r.o.",
+     "Tyršova 885, 400 04 Trmice"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Hostovická 19A, 400 01 Ústí nad Labem"
+    ],
+    [
+     "ŠABATA s.r.o.",
+     "Janáčkova 888/9a, 400 07 Ústí nad Labem"
+    ],
+    [
+     "SAG - CZ spol. s r.o.",
+     "Textilní 3459/1A, 400 01 Ústí nad Labem"
+    ],
+    [
+     "Richter + Frenzel s.r.o.",
+     "ul. Legií 2165, 407 47 Varnsdorf"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Bílý vrch 925, 438 01 Žatec"
+    ],
+    [
+     "ŠABATA s.r.o.",
+     "Jana Herbena 1653, 438 01 Žatec 1"
+    ]
+   ]
+  },
+  {
+   "id": "liberecky-kraj",
+   "name": "Liberecký kraj",
+   "c": "CZ",
+   "p": [
+    [
+     "OBI Česká republika s.r.o.",
+     "Borská 3218, 470 01 Česká Lípa"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "U Kartounky 670/38, 470 01 Česká Lípa"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Ladova 4345/26A, 466 05 Jablonec nad Nisou"
+    ],
+    [
+     "OBI Česká republika s.r.o.",
+     "Želivského 5231/2a, 465 05 Jablonec nad Nisou"
+    ],
+    [
+     "K.T.O. International spol. s r.o.",
+     "České Mládeže 519, 463 12 Liberec 25"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Doubská 820, 460 01 Liberec"
+    ],
+    [
+     "MARO s.r.o., obchod a projekce",
+     "Doubská 1002, 460 06 Liberec 6"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Generála Svobody 603/75, 460 01 Liberec"
+    ],
+    [
+     "Richter + Frenzel s.r.o.",
+     "Hlávkova 1088/17, 460 14 Liberec – Ruprechtice"
+    ],
+    [
+     "BAUHAUS k.s.",
+     "K Bauhausu 610, 460 01 Liberec"
+    ],
+    [
+     "K.T.O. International spol. s r.o.",
+     "Slaná 74, 512 01 Slaná u Semil"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Valteřická 1305, 543 01 Vrchlabí"
+    ]
+   ]
+  },
+  {
+   "id": "kralovehradecky-kraj",
+   "name": "Královéhradecký kraj",
+   "c": "CZ",
+   "p": [
+    [
+     "OBI Česká republika s.r.o.",
+     "Akademika Bedrny 532/10b, 500 02 Hradec Králové"
+    ],
+    [
+     "K.T.O. International spol. s r.o.",
+     "Vážní 1003, 500 03 Hradec Králové"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Bieblova 38, 500 03 Hradec Králové"
+    ],
+    [
+     "TRIKER - Instalatérské potřeby",
+     "Hořická 1/1640, 500 02 Hradec Králové"
+    ],
+    [
+     "TRIKER - Instalatérské potřeby",
+     "Pražská třída 45/174, 500 04 Hradec Králové – Kukleny"
+    ],
+    [
+     "HORNBACH BAUMARKT CS spol. s r.o.",
+     "Rovná 1697, 500 02 Hradec Králové"
+    ],
+    [
+     "MARO s.r.o., obchod a projekce",
+     "Stavební 999, 503 41 Hradec Králové 7"
+    ],
+    [
+     "Richter + Frenzel s.r.o.",
+     "Stavební 1066, 500 03 Hradec Králové"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Za Škodovkou 2a, 503 11 Hradec Králové"
+    ],
+    [
+     "MARO s.r.o., obchod a projekce",
+     "Hradecká 983, 506 01 Jičín 1"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Šturmova 1269, 506 01 Jičín – Valdické Předměstí"
+    ],
+    [
+     "Richter + Frenzel s.r.o.",
+     "Lánov 295, 543 41 Lánov"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Běloveská 1448, 547 01 Náchod"
+    ],
+    [
+     "MARO s.r.o., obchod a projekce",
+     "Kladská 207, 547 01 Náchod"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Instalatércentrum Nový Bydžov, Jana Žižky 623, 504 01  Nový Bydžov"
+    ],
+    [
+     "TRIKER - Instalatérské potřeby",
+     "Havlíčkova 1361, 516 01 Rychnov nad Kněžnou"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Na Sádkách 1932, 516 01 Rychnov nad Kněžnou"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Horská 74, 541 02 Trutnov 4 – Horní Staré Město"
+    ],
+    [
+     "MARO s.r.o., obchod a projekce",
+     "Komenského 821, 541 01 Trutnov 1"
+    ],
+    [
+     "OBI Česká republika s.r.o.",
+     "Obchodní 134, 541 01 Trutnov"
+    ],
+    [
+     "K.T.O. International spol. s r.o.",
+     "Orlická 245, 503 46 Třebechovice pod Orebem"
+    ]
+   ]
+  },
+  {
+   "id": "pardubicky-kraj",
+   "name": "Pardubický kraj",
+   "c": "CZ",
+   "p": [
+    [
+     "MARO s.r.o., obchod a projekce",
+     "Ústecká 108, 560 02 Česká Třebová 2"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Poličská 342 – IC, 539 01 Hlinsko v Čechách"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Pardubická 178, 537 01 Chrudim"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Krátká 439, 563 01 Lanškroun"
+    ],
+    [
+     "MARO s.r.o., obchod a projekce",
+     "Chrudimská 2811, 530 02 Pardubice 2"
+    ],
+    [
+     "Richter + Frenzel s.r.o.",
+     "Fáblovka 408, 533 52 Staré Hradiště u Pardubic"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Staré Hradiště 176, 533 52 Staré Hradiště u Pardubic"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Průmyslová 10, 568 11 Svitavy"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Na Ostrově 1165, 562 24 Ústí nad Orlicí"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Riegrova 110, 566 01 Vysoké Mýto"
+    ]
+   ]
+  },
+  {
+   "id": "vysocina",
+   "name": "Vysočina",
+   "c": "CZ",
+   "p": [
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Čechova ul. 4340, 580 01 Havlíčkův Brod"
+    ],
+    [
+     "MARO s.r.o., obchod a projekce",
+     "Pražská 2752, 580 01 Havlíčkův Brod"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Nádražní 1582, 396 01, Humpolec"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Rantířovská 284, 586 01 Jihlava"
+    ],
+    [
+     "OBI Česká republika s.r.o.",
+     "Romana Havelky 4854/5, 586 01 Jihlava"
+    ],
+    [
+     "HTP Moravia s.r.o.",
+     "Znojemská 84, 586 01 Jihlava"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Hodějovická 1414, 393 01 Pelhřimov"
+    ],
+    [
+     "Richter + Frenzel s.r.o.",
+     "Pražská 981, 393 01 Pelhřimov"
+    ],
+    [
+     "Richter + Frenzel s.r.o.",
+     "Partyzánská 354, 592 02 Svratka"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Cyrilometodějská (areál VESAS) 20/43, 674 01 Třebíč"
+    ],
+    [
+     "HTP Moravia s.r.o.",
+     "Vltavínská 1, 674 01 Třebíč"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "K novému nádraží 2260 - IC, 594 01 Velké Meziříčí"
+    ],
+    [
+     "MARO s.r.o., obchod a projekce",
+     "Třebíčská 443, 594 01 Velké Meziříčí"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Brněnská 758/26, 591 01 Žďár nad Sázavou 1"
+    ],
+    [
+     "MARO s.r.o., obchod a projekce",
+     "Brněnská 1146, 591 01 Žďár nad Sázavou 1"
+    ]
+   ]
+  },
+  {
+   "id": "moravskoslezsky-kraj",
+   "name": "Moravskoslezský kraj",
+   "c": "CZ",
+   "p": [
+    [
+     "Richter + Frenzel s.r.o.",
+     "Staroměstská 781, 792 01 Bruntál"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Pionýrů 839 (areál SELIKO), 738 01 Frýdek – Místek"
+    ],
+    [
+     "OBI Česká republika s.r.o.",
+     "Příborská 2410, 738 01 Frýdek Místek"
+    ],
+    [
+     "OBI Česká republika s.r.o.",
+     "Před tratí 4/1433, 735 64 Havířov"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Lešetínská 958/47, 733 01 Karviná"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "K Nemocnici 2205/63, 741 01 Nový Jičín"
+    ],
+    [
+     "OBI Česká republika s.r.o.",
+     "Hlučínská 51, 747 05 Oprava"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Jiráskova – areál Moravel 4, 747 06 Opava"
+    ],
+    [
+     "HORNBACH BAUMARKT CS spol. s r.o.",
+     "Bílovecká 3, 721 00 Ostrava Svinov"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Nad Porubkou 31 A/2278, 708 00 Ostrava – Poruba"
+    ],
+    [
+     "Richter + Frenzel s.r.o.",
+     "Novinářská 1254 / 7, 709 00 Ostrava"
+    ],
+    [
+     "HORNBACH BAUMARKT CS spol. s r.o.",
+     "Rudná 2978/11, 703 00 Ostrava-Vitkovice"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Střádalů 26, 718 00 Ostrava"
+    ],
+    [
+     "K.T.O. International spol. s r.o.",
+     "Stř.02 Ostr.Vratimovská 624/11, 718 00 Ostrava – Kunčičky"
+    ],
+    [
+     "OBI Česká republika s.r.o.",
+     "Výškovická 46/3123, 700 30 Ostrava - Zábřeh"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Oldřichovice 867, 739 58 Třinec"
+    ]
+   ]
+  },
+  {
+   "id": "olomoucky-kraj",
+   "name": "Olomoucký kraj",
+   "c": "CZ",
+   "p": [
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Janáčkova 1356/6, 790 01 Jeseník 1"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Třebovská 53, 789 85, Mohelnice"
+    ],
+    [
+     "Richter + Frenzel s.r.o.",
+     "Babíčkova 6, 772 00 Olomouc"
+    ],
+    [
+     "OBI Česká republika s.r.o.",
+     "Horní Lán 2, 779 00 Olomouc"
+    ],
+    [
+     "K.T.O. International spol. s r.o.",
+     "Lazecká 70a, 772 00 Olomouc-Lazce"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Průmyslová 962/20, 783 71 Olomouc"
+    ],
+    [
+     "HORNBACH BAUMARKT CS spol. s r.o.",
+     "Rolsberská 664/10, 779 00 Olomouc - Hodolany"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Brněnská 4498/67, 796 01 Prostějov"
+    ],
+    [
+     "OBI Česká republika s.r.o.",
+     "Konečná 4564/10, 796 07 Prostějov"
+    ],
+    [
+     "Richter + Frenzel s.r.o.",
+     "9. května 2452, 750 02 Přerov"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "9. května 2853/111, 750 02 Přerov"
+    ],
+    [
+     "OBI Česká republika s.r.o.",
+     "Polní 2992/11, 750 02 Přerov"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Nádražní 2329/19, 785 01 Šternberk"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Jeremenkova 13 (vjezd z ulice 8. května), 787 01 Šumperk"
+    ],
+    [
+     "TRIKER - Instalatérské potřeby",
+     "Lidická 467/62, 787 01 Šumperk"
+    ],
+    [
+     "Richter + Frenzel s.r.o.",
+     "Zábřežská 596/40, 787 01 Šumperk"
+    ],
+    [
+     "Unitherm Běhůnek s.r.o.",
+     "Šternberská 503, 783 91 Uničov"
+    ]
+   ]
+  },
+  {
+   "id": "zlinsky-kraj",
+   "name": "Zlínský kraj",
+   "c": "CZ",
+   "p": [
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Jožky Silného 4413/3, 767 01 Kroměříž"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Obchodní  1836 - vedle Möbelixu, 686 04 Kunovice"
+    ],
+    [
+     "Richter + Frenzel s.r.o.",
+     "Svatoborská 864, 697 01 Kyjov 1"
+    ],
+    [
+     "Richter + Frenzel s.r.o.",
+     "Zámostí 1798, 765 02 Otrokovice 2"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Vlčnovská 2512, 688 01 Uherský Brod"
+    ],
+    [
+     "Richter + Frenzel s.r.o.",
+     "Kučerovo náměstí 488 , 688 01 Uherský Brod"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Veselská 724, 687 24 Uherský Ostroh"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "40. pluku 1379, 757 01 Valašské Meziříčí"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Rokytnice 258, 755 01 Vsetín 1 – Rokytnice"
+    ],
+    [
+     "Richter + Frenzel s.r.o.",
+     "Rokytnice 332, 755 01 Vsetín 1"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Březnice 605, 760 01 Zlín – Březnice"
+    ],
+    [
+     "IES spol. s r. o.",
+     "Tečovská 30, 763 02 Zlín – Malenovice"
+    ],
+    [
+     "OBI Česká republika s.r.o.",
+     "tř. 3. května 1170, 763 02 Zlín - Malenovice"
+    ]
+   ]
+  },
+  {
+   "id": "jihomoravsky-kraj",
+   "name": "Jihomoravský kraj",
+   "c": "CZ",
+   "p": [
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Poříčí 2469/21, 678 01 Blansko"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Průmyslová 2473/3, 680 01, Boskovice"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Drčkova 2876, 628 00 Brno – Líšeň"
+    ],
+    [
+     "HORNBACH BAUMARKT CS spol. s r.o.",
+     "Heršpická 3, 639 00 Brno"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Heršpická 800/6, 639 01 Brno"
+    ],
+    [
+     "Richter + Frenzel s.r.o.",
+     "Kaštanová 467/125, 620 00 Brno – Brněnské Ivanovice"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Královopolská 139, 612 00 Brno"
+    ],
+    [
+     "Richter + Frenzel s.r.o.",
+     "Křižíkova 2697/70, 612 00 Brno – Královo Pole"
+    ],
+    [
+     "Neuman velkoobchod Cash & Carry a.s.",
+     "Masná 7b, 602 00 Brno"
+    ],
+    [
+     "HTP Moravia s.r.o.",
+     "Mlýnská 446/45, 602 00 Brno"
+    ],
+    [
+     "K.T.O. International spol. s r.o.",
+     "Nové Sady 37, 602 00 Brno 2"
+    ],
+    [
+     "BAUHAUS k.s.",
+     "Řečkovická 3, 621 00 Brno"
+    ],
+    [
+     "Neuman velkoobchod Cash & Carry a.s.",
+     "Slovinská 52, 612 00 Brno"
+    ],
+    [
+     "OBI Česká republika s.r.o.",
+     "Sokolova 622/1, 619 00 Brno"
+    ],
+    [
+     "BAUHAUS k.s.",
+     "Strážní 7, 639 00 Brno"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Husova 3016, 690 02 Břeclav"
+    ],
+    [
+     "Richter + Frenzel s.r.o.",
+     "Národních hrdinů 3487/20 A, 690 02 Břeclav"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Brněnská 4515/38a, 695 01 Hodonín"
+    ],
+    [
+     "Richter + Frenzel s.r.o.",
+     "Holasice 75, 664 61 Holasice"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Ptáček-velkoobchod, a.s., Masarykovo nám. 36/11, 697 01 Kyjov 1"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Tyršova 647, 664 42 Modřice"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "U Lubě 288, 666 03 Tišnov"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Brněnská 39, 682 01 Vyškov"
+    ],
+    [
+     "Richter + Frenzel s.r.o.",
+     "Dobšická 17, 669 02 Znojmo"
+    ],
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Družstevní 22, 669 02 Znojmo"
+    ],
+    [
+     "HTP Moravia s.r.o.",
+     "K Suchopádu 312, 669 04 Znojmo"
+    ]
+   ]
+  },
+  {
+   "id": "bratislavsky-kraj",
+   "name": "Bratislavský kraj",
+   "c": "SK",
+   "p": [
+    [
+     "PTÁČEK - veľkoobchod, a.s.",
+     "Devínska Nová Ves 7386, 841 07 Bratislava - Bory"
+    ],
+    [
+     "PTÁČEK - veľkoobchod, a.s.",
+     "Lieskovská cesta 10676/1, 821 06 Bratislava - Podunajské Biskupice"
+    ],
+    [
+     "IES spol. s r. o.",
+     "Nová Rožňavská 136, 831 04 Bratislava"
+    ],
+    [
+     "BAUHAUS odborné centrum pre dielňu, dom a záhradu k.s.",
+     "Obchodná zóna PHAROS,č.p. II.18226, 821 01 Bratislava"
+    ],
+    [
+     "PTÁČEK - veľkoobchod, a.s.",
+     "Pestovateĺská 1, 821 04 Bratislava"
+    ]
+   ]
+  },
+  {
+   "id": "trnavsky-kraj",
+   "name": "Trnavský kraj",
+   "c": "SK",
+   "p": [
+    [
+     "PTÁČEK-velkoobchod, a.s.",
+     "Dopravná 5147/19, 921 01 Piešťany"
+    ],
+    [
+     "PTÁČEK - veľkoobchod, a.s.",
+     "Železničná 363/120, 905 01 Senica"
+    ],
+    [
+     "PTÁČEK - veľkoobchod, a.s.",
+     "Bratislavská 2155/41A, 931 01 Šamorín"
+    ],
+    [
+     "PTÁČEK - veľkoobchod, a.s.",
+     "Nová ulica 7a, 917 01 Trnava"
+    ]
+   ]
+  },
+  {
+   "id": "trenciansky-kraj",
+   "name": "Trenčianský kraj",
+   "c": "SK",
+   "p": [
+    [
+     "PTÁČEK - veľkoobchod, a.s.",
+     "Považské Podhradie 463, 017 04 Považská Bystrica"
+    ],
+    [
+     "PTÁČEK - veľkoobchod, a.s.",
+     "Podjazdová 12, 971 01 Prievidza"
+    ],
+    [
+     "PTÁČEK - veľkoobchod, a.s.",
+     "Zlatovská 2536/33R – areál ONE PARK, 911 01 Trenčín"
+    ]
+   ]
+  },
+  {
+   "id": "nitransky-kraj",
+   "name": "Nitranský kraj",
+   "c": "SK",
+   "p": [
+    [
+     "PTÁČEK - veľkoobchod, a.s.",
+     "Levická 1604, 949 01 Nitra"
+    ]
+   ]
+  },
+  {
+   "id": "banskobystricky-kraj",
+   "name": "Banskobystrický kraj",
+   "c": "SK",
+   "p": [
+    [
+     "IES spol. s r. o.",
+     "Medený Hámor 23, 974 00 Banská Bystrica"
+    ],
+    [
+     "PTÁČEK - veľkoobchod, a.s.",
+     "Zvolenská cesta 151, 974 00 Banská Bystrica"
+    ],
+    [
+     "PTÁČEK - veľkoobchod, a.s.",
+     "Priemyselná 507, 965 01 Ladomerská Vieska"
+    ],
+    [
+     "PTÁČEK - veľkoobchod, a.s.",
+     "Lučenecká cesta 8938, 960 01 Zvolen"
+    ]
+   ]
+  },
+  {
+   "id": "zilinsky-kraj",
+   "name": "Žilinský kraj",
+   "c": "SK",
+   "p": [
+    [
+     "PTÁČEK - veľkoobchod, a.s.",
+     "ul. 1. Mája 4313, 031 01 Liptovský Mikuláš"
+    ],
+    [
+     "PTÁČEK - veľkoobchod, a.s.",
+     "Sučianská 29, 036 01 Martin"
+    ],
+    [
+     "PTÁČEK - veľkoobchod, a.s.",
+     "Polom 1202, 029 01 Námestovo"
+    ],
+    [
+     "PTÁČEK - veľkoobchod, a.s.",
+     "Martina Rázusa 8346/108, 010 01 Žilina"
+    ],
+    [
+     "PTÁČEK - veľkoobchod, a.s.",
+     "Rosinská cesta 17C, 010 08 Žilina"
+    ],
+    [
+     "IES spol. s r. o.",
+     "Kragujevská 9, 010 01 Žilina"
+    ]
+   ]
+  },
+  {
+   "id": "presovsky-kraj",
+   "name": "Prešovský kraj",
+   "c": "SK",
+   "p": [
+    [
+     "PTÁČEK - veľkoobchod, a.s.",
+     "Štefánikova 4214, 085 01 Bardejov"
+    ],
+    [
+     "PTÁČEK - veľkoobchod, a.s.",
+     "Družstevná 4963/26, 066 01 Humenné"
+    ],
+    [
+     "PTÁČEK - veľkoobchod, a.s.",
+     "Vysielač 491, 082 53 Petrovany"
+    ],
+    [
+     "PTÁČEK - veľkoobchod, a.s.",
+     "Partizánska 1849, 058 01 Poprad"
+    ],
+    [
+     "IES spol. s r. o.",
+     "Jesenná 26, 080 01 Prešov"
+    ],
+    [
+     "PTÁČEK - veľkoobchod, a.s.",
+     "Ľubochnianska 18, 080 06 Prešov"
+    ]
+   ]
+  },
+  {
+   "id": "kosicky-kraj",
+   "name": "Košický kraj",
+   "c": "SK",
+   "p": [
+    [
+     "PTÁČEK - veľkoobchod, a.s.",
+     "Prešovská cesta 4, 040 01 Košice"
+    ]
+   ]
+  }
+ ],
+ "contacts": [
+  {
+   "name": "Jaroslav Čánek",
+   "role": "jednatel",
+   "phone": "+420603299150",
+   "email": "j.canek@profispojky.cz",
+   "order": 1
+  },
+  {
+   "name": "Bc. Renata Voldánová",
+   "role": "obchodní ředitelka",
+   "phone": "+420725767917",
+   "email": "r.voldanova@profispojky.cz",
+   "order": 2
+  },
+  {
+   "name": "Bc. Jana Mertová",
+   "role": "vedoucí skladu a obchodních analýz",
+   "phone": "+420734774846",
+   "email": "j.mertova@profispojky.cz",
+   "order": 3
+  },
+  {
+   "name": "Mgr. Radka Plačková",
+   "role": "obchodní a technické poradenství pro ČR",
+   "phone": "+420703338433",
+   "email": "r.plackova@profispojky.cz",
+   "order": 4
+  },
+  {
+   "name": "Oldřich Zedníček",
+   "role": "obchodní a technické poradenství pro ČR",
+   "phone": "+420739662732",
+   "email": "o.zednicek@profispojky.cz",
+   "order": 5
+  },
+  {
+   "name": "Helena Műllerová",
+   "role": "obchodní a technické poradenství",
+   "phone": "+420733256228",
+   "email": "h.mullerova@profispojky.cz",
+   "order": 6
+  },
+  {
+   "name": "Miroslav Špalek",
+   "role": "obchodní a technické poradenství pro SK",
+   "phone": "+420734570363",
+   "email": "m.spalek@profispojky.cz",
+   "order": 7
+  },
+  {
+   "name": "Michaela Adamová",
+   "role": "objednávky, fakturace, logistika",
+   "phone": "+420733523352",
+   "email": "m.adamova@profispojky.cz",
+   "order": 8
+  },
+  {
+   "name": "Martina Dobešová",
+   "role": "objednávky, fakturace, logistika",
+   "phone": "+420724400732",
+   "email": "m.dobesova@profispojky.cz",
+   "order": 9
+  }
+ ]
+}

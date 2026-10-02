@@ -1,3 +1,9 @@
 {
-  "headers": [{ "source": "/(.*)", "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }] }]
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "nextjs",
+  "regions": [
+    "fra1"
+  ],
+  "installCommand": "pnpm install --frozen-lockfile",
+  "buildCommand": "if [ -n \"$DATABASE_URL\" ]; then timeout 300 pnpm payload migrate < /dev/null; else echo 'DATABASE_URL není nastaveno – migrace přeskočeny'; fi && pnpm build"
 }
