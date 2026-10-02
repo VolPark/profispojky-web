@@ -3,6 +3,8 @@ import type { CollectionConfig } from 'payload'
 import { admins, anyone, staff } from '@/access/roles'
 import { sourceUrlField } from '@/fields/sourceUrl'
 
+const webp = { format: 'webp' as const, options: { quality: 80 } }
+
 export const Media: CollectionConfig = {
   slug: 'media',
   // Smazané jde do koše a dá se obnovit (admin → Koš, nebo přes MCP).
@@ -22,10 +24,11 @@ export const Media: CollectionConfig = {
   ],
   upload: {
     mimeTypes: ['image/*'],
+    // Zmenšeniny ve WebP – menší přenos dat; originál zůstává v původním formátu.
     imageSizes: [
-      { name: 'thumb', width: 160, height: 160, fit: 'contain', background: '#ffffff' },
-      { name: 'card', width: 720 },
-      { name: 'large', width: 1600 },
+      { name: 'thumb', width: 160, height: 160, fit: 'contain', background: '#ffffff', formatOptions: webp },
+      { name: 'card', width: 720, formatOptions: webp },
+      { name: 'large', width: 1600, formatOptions: webp },
     ],
     adminThumbnail: 'thumb',
   },
