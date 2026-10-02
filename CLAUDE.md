@@ -10,7 +10,8 @@ Web pro profispojky.cz (PROFI SPOJKY) – **katalogový web bez e-shopu**: produ
 - Hosting: Vercel, projekt `profispojky-web` (tým `sebit-solutions-projects`).
 - **ISR, revalidate 60 s** (`src/app/(frontend)/layout.tsx`): všechny stránky se předgenerují při buildu (`src/lib/static-params.ts`) a servírují z cache; změna z adminu je na webu do minuty (okamžitě v Náhledu). Při výpadku DB / chybě kódu Next.js dál servíruje **poslední funkční verzi** – ověřeno testem s vypnutou DB. Živě se renderuje jen hledání (`/katalog?q=`), `/health` a admin.
 - **Nepoužívat `revalidatePath`/`revalidateTag` bez `'max'`** – zahodí cache a při výpadku DB web spadne (ověřeno). Build proto potřebuje DB.
-- Přesměrování starých URL: `src/proxy.ts` (mapa z kolekce Přesměrování, cache 5 min, při chybě nic nepřesměruje).
+- Přesměrování starých URL: `src/proxy.ts` – pro každou adresu mimo sekce webu dohledá řádek v kolekci Přesměrování (~4 300 řádků: produkty, kategorie, `download.php?fid=…`, aktuality), výsledek cachuje 5 min, při chybě nic nepřesměruje.
+- **Obsah převzatý ze starého webu** (katalog ~4 050 položek, 157 souborů, videa, aktuality, stránky): záznamy mají `sourceUrl` (média, dokumenty). Převod: dočasný endpoint `POST /api/migration` (`src/endpoints/migration.ts`), zapnutý jen s env `MIGRATION_TOKEN` – po dokončení migrace env smazat a endpoint odstranit.
 
 ## Provoz a obnova (runbook)
 
@@ -119,7 +120,8 @@ Tento web nahradí současný profispojky.cz. Před přepnutím DNS:
 - [ ] Den před přepnutím DNS: Neon na **Launch** (PITR 7 dní, plánované snapshoty, bez limitu CU-h) + spending notification ~$25
 - [ ] Testovací stupně: 1) `profispojky.sebit.cz` (interní), 2) `beta.profispojky.cz` (UAT business) – obě na produkčním prostředí, indexace vypnutá
 - [ ] Migrace + import dat (obsah z preview nebo čistý seed + reálný import z BC)
-- [ ] **Mapa 301** ze všech URL starého webu (crawl/sitemap starého webu → kolekce Přesměrování) – bez ní se ztratí SEO a odkazy
+- [x] **Mapa 301** ze všech URL starého webu (sitemap + výpisy kategorií + soubory) → kolekce Přesměrování
+- [ ] Těsně před přepnutím DNS: znovu spustit převod ze starého webu (změny od posledního importu), pak `MIGRATION_TOKEN` smazat
 - [ ] Účty redaktorů (pozvánky), admin SEBIT
 - [ ] `NEXT_PUBLIC_SERVER_URL=https://www.profispojky.cz`, `ALLOW_INDEXING=true` (jen production)
 - [ ] Doména ve Vercelu (`www.profispojky.cz` + redirect z apex), TTL DNS snížit den předem

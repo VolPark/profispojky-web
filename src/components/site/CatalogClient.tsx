@@ -111,6 +111,8 @@ export const CatalogClient = ({ rows, shapes, dimensionLabel, dimensionUnit, thr
   if (q) active.push({ key: 'q', label: `Hledání: ${q}`, rm: () => setQ('') })
   const fcount = dims.size + threads.size + (shape !== 'all' ? 1 : 0)
   const hasThreads = threadList.length > 0
+  const hasDims = dimList.length > 0
+  const hasShapes = shapeList.length > 0
 
   return (
     <section className="cat-body" id="catalog">
@@ -229,8 +231,8 @@ export const CatalogClient = ({ rows, shapes, dimensionLabel, dimensionUnit, thr
                     </th>
                     <th style={{ width: 104 }}>Kód</th>
                     <th>Označení</th>
-                    <th style={{ width: 116 }}>Tvar</th>
-                    <th style={{ width: 76 }}>{dimensionLabel.replace(/^Rozměr\s+/i, '').split(' ')[0] || 'Rozměr'}</th>
+                    {hasShapes && <th style={{ width: 116 }}>Tvar</th>}
+                    {hasDims && <th style={{ width: 76 }}>{dimensionLabel.replace(/^Rozměr\s+/i, '').split(' ')[0] || 'Rozměr'}</th>}
                     {hasThreads && <th style={{ width: 76 }}>{threadLabel}</th>}
                     <th style={{ width: 92 }}>
                       <span className="sr">Akce</span>
@@ -259,11 +261,13 @@ export const CatalogClient = ({ rows, shapes, dimensionLabel, dimensionUnit, thr
                       <td className="c-meta">
                         {[r.dimension !== null ? `${r.dimension} ${dimensionUnit}` : '', r.thread, r.shape ? `tvar ${r.shape}` : ''].filter(Boolean).join(' · ')}
                       </td>
-                      <td className="c-tvar">
-                        <strong style={{ color: 'var(--navy)' }}>{r.shape || '–'}</strong>
-                        {shapeLabel(r.shape) && <div className="sub">{shapeLabel(r.shape)}</div>}
-                      </td>
-                      <td className="c-pe">{r.dimension !== null ? `${r.dimension} ${dimensionUnit}` : '–'}</td>
+                      {hasShapes && (
+                        <td className="c-tvar">
+                          <strong style={{ color: 'var(--navy)' }}>{r.shape || '–'}</strong>
+                          {shapeLabel(r.shape) && shapeLabel(r.shape) !== r.shape && <div className="sub">{shapeLabel(r.shape)}</div>}
+                        </td>
+                      )}
+                      {hasDims && <td className="c-pe">{r.dimension !== null ? `${r.dimension} ${dimensionUnit}` : '–'}</td>}
                       {hasThreads && <td className="c-thr">{r.thread || '–'}</td>}
                       <td className="c-det" style={{ textAlign: 'right' }}>
                         <Link className="det" href={`/produkt/${encodeURIComponent(r.code)}`}>

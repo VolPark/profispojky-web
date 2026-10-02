@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
 import { admins, anyone, staff } from '@/access/roles'
+import { sourceUrlField } from '@/fields/sourceUrl'
 
 export const Media: CollectionConfig = {
   slug: 'media',
@@ -17,6 +18,7 @@ export const Media: CollectionConfig = {
       required: true,
       admin: { description: 'Krátký popis pro nevidomé a vyhledávače, např. „Mosazná svěrná spojka BA 32“.' },
     },
+    sourceUrlField,
   ],
   upload: {
     mimeTypes: ['image/*'],

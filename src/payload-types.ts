@@ -292,6 +292,7 @@ export interface Media {
    * Krátký popis pro nevidomé a vyhledávače, např. „Mosazná svěrná spojka BA 32“.
    */
   alt: string;
+  sourceUrl?: string | null;
   prefix?: string | null;
   _objectKey?: string | null;
   updatedAt: string;
@@ -365,6 +366,7 @@ export interface Document {
   divisions?: (number | Division)[] | null;
   brands?: (number | Brand)[] | null;
   showInLibrary?: boolean | null;
+  sourceUrl?: string | null;
   featured?: boolean | null;
   prefix?: string | null;
   _objectKey?: string | null;
@@ -521,6 +523,10 @@ export interface Product {
    * např. „Spojka s vnějším závitem“
    */
   subtitle?: string | null;
+  /**
+   * Delší text na stránce položky. Odstavce oddělte prázdným řádkem.
+   */
+  description?: string | null;
   series?: (number | null) | Series;
   /**
    * První fotka je hlavní.
@@ -1367,6 +1373,7 @@ export interface ContactsSelect<T extends boolean = true> {
  */
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
+  sourceUrl?: T;
   prefix?: T;
   _objectKey?: T;
   updatedAt?: T;
@@ -1424,6 +1431,7 @@ export interface ProductsSelect<T extends boolean = true> {
   code?: T;
   name?: T;
   subtitle?: T;
+  description?: T;
   series?: T;
   images?: T;
   shape?: T;
@@ -1518,6 +1526,7 @@ export interface DocumentsSelect<T extends boolean = true> {
   divisions?: T;
   brands?: T;
   showInLibrary?: T;
+  sourceUrl?: T;
   featured?: T;
   prefix?: T;
   _objectKey?: T;

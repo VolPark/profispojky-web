@@ -1,6 +1,8 @@
-import type { CollectionConfig } from 'payload'
+import { ValidationError, type CollectionConfig } from 'payload'
 
 import { anyone, catalogStaff, hiddenUnlessCatalog } from '@/access/roles'
+import { sourceUrlField } from '@/fields/sourceUrl'
+import { isLegacySiteUrl } from '@/lib/video'
 import { adminOnlyPermanentDelete } from '@/hooks/adminOnlyPermanentDelete'
 import { EXPIRY_LABELS, expiryState } from '@/lib/doc-expiry'
 import { DOC_TYPES } from '@/lib/doc-types'
@@ -33,6 +35,17 @@ export const Documents: CollectionConfig = {
         const hasFile = Boolean(req.file || originalDoc?.filename || data?.filename)
         if (!hasFile && !data?.externalUrl) {
           throw new Error('Nahrajte soubor, nebo vyplňte odkaz (u videa).')
+        }
+        // Kontroluje se jen nově zadaný odkaz z administrace (seed a převod ze starého webu běží bez uživatele).
+        if (req.user && data?.externalUrl !== originalDoc?.externalUrl && isLegacySiteUrl(data?.externalUrl)) {
+          throw new ValidationError({
+            errors: [
+              {
+                path: 'externalUrl',
+                message: 'Odkaz vede na starý web profispojky.cz, který tento web nahradí – soubor místo toho nahrajte.',
+              },
+            ],
+          })
         }
         return data
       },
@@ -101,6 +114,7 @@ export const Documents: CollectionConfig = {
       defaultValue: true,
       admin: { position: 'sidebar' },
     },
+    sourceUrlField,
     {
       name: 'featured',
       label: 'Hlavní katalog (zvýraznit nahoře)',

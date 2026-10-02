@@ -61,6 +61,12 @@ export const Products: CollectionConfig = {
               type: 'text',
               admin: { description: 'např. „Spojka s vnějším závitem“' },
             },
+            {
+              name: 'description',
+              label: 'Popis produktu',
+              type: 'textarea',
+              admin: { description: 'Delší text na stránce položky. Odstavce oddělte prázdným řádkem.' },
+            },
             { name: 'series', label: 'Řada', type: 'relationship', relationTo: 'series', index: true },
             {
               name: 'images',

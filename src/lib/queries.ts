@@ -94,6 +94,21 @@ export const getSeriesProducts = cache(async (seriesId: number) => {
   return res.docs
 })
 
+/** Ostatní rozměry stejného tvaru pro tabulku na detailu – jen potřebné sloupce (řady mají až stovky položek). */
+export const getProductVariants = cache(async (seriesId: number, shape: string | null | undefined) => {
+  const payload = await getPayloadClient()
+  const res = await payload.find({
+    collection: 'products',
+    where: { and: [PUBLISHED, { series: { equals: seriesId } }, shape ? { shape: { equals: shape } } : { shape: { exists: false } }] },
+    select: { code: true, name: true, dimension: true, thread: true, shape: true },
+    sort: 'code',
+    depth: 0,
+    limit: 300,
+    overrideAccess: false,
+  })
+  return res.docs
+})
+
 export const getProduct = cache(async (code: string) => {
   const payload = await getPayloadClient()
   const res = await payload.find({

@@ -7,6 +7,7 @@ import { Breadcrumbs } from '@/components/site/Breadcrumbs'
 import { CatalogClient, type CatalogRow } from '@/components/site/CatalogClient'
 import { Icon } from '@/components/site/Icon'
 import { RichText } from '@/components/site/RichText'
+import { VideoEmbed } from '@/components/site/VideoEmbed'
 import { docTypeMeta } from '@/lib/doc-types'
 import { mediaUrl } from '@/lib/media'
 import { documentUrl, getDocumentsFor, getSeries, getSeriesProducts, rel } from '@/lib/queries'
@@ -47,6 +48,7 @@ export default async function SeriesPage({ params }: Props) {
     sale: p.bcStatus === 'sale',
   }))
   const headDocs = docs.filter((d) => ['tl', 'navod', 'katalog'].includes(d.type)).slice(0, 3)
+  const videos = docs.filter((d) => d.type === 'video')
 
   return (
     <>
@@ -107,6 +109,18 @@ export default async function SeriesPage({ params }: Props) {
                 Knihovna médií
                 <Icon name="arrow" />
               </a>
+            </div>
+          </div>
+        </section>
+      )}
+      {videos.length > 0 && (
+        <section className="section">
+          <div className="container">
+            <h2 style={{ fontSize: 28, marginBottom: 16 }}>Video</h2>
+            <div className="videos">
+              {videos.map((v) => (
+                <VideoEmbed key={v.id} title={v.title} url={v.externalUrl} />
+              ))}
             </div>
           </div>
         </section>

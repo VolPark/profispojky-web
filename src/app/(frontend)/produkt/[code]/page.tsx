@@ -7,10 +7,11 @@ import React from 'react'
 import { productParams } from '@/lib/static-params'
 import { Breadcrumbs } from '@/components/site/Breadcrumbs'
 import { Icon } from '@/components/site/Icon'
+import { VideoEmbed } from '@/components/site/VideoEmbed'
 import { docTypeMeta } from '@/lib/doc-types'
 import { formatBytes } from '@/lib/format'
 import { mediaAlt, mediaUrl } from '@/lib/media'
-import { documentUrl, getDocumentsFor, getProduct, getSeriesProducts, rel } from '@/lib/queries'
+import { documentUrl, getDocumentsFor, getProduct, getProductVariants, rel } from '@/lib/queries'
 import { urls } from '@/lib/urls'
 import type { Brand, Division, Series } from '@/payload-types'
 
@@ -40,11 +41,12 @@ export default async function ProductPage({ params }: Props) {
   const series = rel<Series>(product.series)
   const brand = rel<Brand>(series?.brand)
   const division = rel<Division>(series?.division)
-  const [docs, siblings] = await Promise.all([
+  const [allDocs, variants] = await Promise.all([
     getDocumentsFor({ productId: product.id, seriesId: series?.id }),
-    series ? getSeriesProducts(series.id) : Promise.resolve([]),
+    series ? getProductVariants(series.id, product.shape) : Promise.resolve([]),
   ])
-  const variants = siblings.filter((x) => x.shape === product.shape)
+  const videos = allDocs.filter((d) => d.type === 'video')
+  const docs = allDocs.filter((d) => d.type !== 'video')
 
   const unit = series?.dimensionUnit ?? 'mm'
   const dim = typeof product.dimension === 'number' ? `${product.dimension} ${unit}` : null
@@ -199,6 +201,28 @@ export default async function ProductPage({ params }: Props) {
           </section>
         )}
       </div>
+      {(product.description || videos.length > 0) && (
+        <div className="container two">
+          {product.description && (
+            <section>
+              <h2>Popis produktu</h2>
+              <div className="prose">
+                {product.description.split(/\n\s*\n/).map((para, i) => (
+                  <p key={i}>{para}</p>
+                ))}
+              </div>
+            </section>
+          )}
+          {videos.length > 0 && (
+            <section>
+              <h2>Video</h2>
+              {videos.map((v) => (
+                <VideoEmbed key={v.id} title={v.title} url={v.externalUrl} />
+              ))}
+            </section>
+          )}
+        </div>
+      )}
       {variants.length > 1 && series?.slug && (
         <section className="vars">
           <div className="container">

@@ -23,6 +23,7 @@ import { Partners } from './collections/Partners'
 import { Products } from './collections/Products'
 import { Series } from './collections/Series'
 import { Users } from './collections/Users'
+import { migrationEndpoint } from './endpoints/migration'
 import { Homepage } from './globals/Homepage'
 import { serverUrl } from './lib/preview'
 import { mcp } from './mcp/plugin'
@@ -30,6 +31,8 @@ import { SiteSettings } from './globals/SiteSettings'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
+// Jen na preview deploymentu (lokálně i v produkci prázdné – schéma DB zůstává stejné).
+const blobPrefix = process.env.VERCEL_ENV === 'preview' ? 'preview' : undefined
 
 export default buildConfig({
   serverURL: serverUrl(),
@@ -57,6 +60,7 @@ export default buildConfig({
   i18n: { supportedLanguages: { cs }, fallbackLanguage: 'cs' },
   collections: [News, Divisions, Brands, Pages, Partners, Contacts, Media, Products, Series, Documents, BcImports, Users],
   globals: [Homepage, SiteSettings],
+  endpoints: [migrationEndpoint],
   editor: lexicalEditor(),
   // E-maily administrace (pozvánky, reset hesla). Bez RESEND_API_KEY (lokálně) se jen vypíšou do konzole.
   // Po spuštění na profispojky.cz přepnout EMAIL_FROM_ADDRESS na adresu z ověřené domény profispojky.cz.
@@ -102,9 +106,11 @@ export default buildConfig({
       alwaysInsertFields: true,
       // Klientský upload obchází 4,5MB limit serverless funkcí (katalogy mají přes 15 MB).
       clientUploads: true,
+      // Preview a produkce sdílejí jeden Blob store – soubory z preview jdou do vlastní složky,
+      // aby smazání obrázku při testování nesmazalo soubor, který používá produkce.
       collections: {
-        media: { disablePayloadAccessControl: true },
-        documents: { disablePayloadAccessControl: true },
+        media: { disablePayloadAccessControl: true, prefix: blobPrefix },
+        documents: { disablePayloadAccessControl: true, prefix: blobPrefix },
       },
       token: process.env.BLOB_READ_WRITE_TOKEN,
     }),
