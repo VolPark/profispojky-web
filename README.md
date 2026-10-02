@@ -7,14 +7,21 @@ Katalogový web [profispojky.cz](https://www.profispojky.cz) s administrací –
 
 ## Lokální vývoj
 
+Potřebuješ Docker, Node 20+ a pnpm.
+
 ```bash
-cp .env.example .env          # vyplň DATABASE_URL a PAYLOAD_SECRET
+cp .env.example .env              # doplň PAYLOAD_SECRET (např. openssl rand -hex 32)
+docker compose up -d              # Postgres 17 na localhost:5432
 pnpm install
-pnpm dev                      # http://localhost:3000
-SEED_ADMIN_PASSWORD=… pnpm seed   # jednorázově naplní prázdnou DB obsahem z prototypu
+SEED_ADMIN_PASSWORD=… pnpm seed   # naplní prázdnou DB obsahem z prototypu, admin: admin@profispojky.local
+pnpm dev                          # http://localhost:3000, admin na /admin
 ```
 
-Potřebuješ Postgres 16+ (lokálně nebo Supabase).
+Reset DB do výchozího stavu: `docker compose down -v && docker compose up -d && pnpm seed`.
+
+Lokálně se schéma DB synchronizuje automaticky (Payload `push`). **Po každé změně kolekcí** vytvoř migraci `pnpm payload migrate:create <nazev>` a commitni ji – produkce běží jen na migracích.
+
+Kód je DB-agnostický: jen Postgres přes `@payloadcms/db-postgres`, soubory přes Payload storage adapter. Žádné `@supabase/*`, RLS ani nestandardní extensions – přechod na jinou DB = změna `DATABASE_URL` + `pnpm payload migrate` + `pg_dump`/`pg_restore`.
 
 ## Nasazení (Vercel)
 
@@ -22,7 +29,7 @@ Env proměnné projektu:
 
 | Proměnná | Popis |
 |---|---|
-| `DATABASE_URL` | Postgres (Supabase – connection pooler, port 6543) |
+| `DATABASE_URL` | Postgres (produkční platforma zatím nerozhodnuta – Supabase / Neon / Vercel Postgres) |
 | `PAYLOAD_SECRET` | náhodný řetězec ≥ 32 znaků |
 | `NEXT_PUBLIC_SERVER_URL` | veřejná URL webu |
 | `BLOB_READ_WRITE_TOKEN` | Vercel Blob – fotky a dokumenty |

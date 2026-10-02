@@ -5,7 +5,7 @@ Web pro profispojky.cz (PROFI SPOJKY) – **katalogový web bez e-shopu**: produ
 ## Stack
 
 - **Next.js 16 (App Router) + Payload CMS 3** v jedné aplikaci. Web = `src/app/(frontend)`, administrace = `/admin` (`src/app/(payload)`).
-- **Postgres** (`@payloadcms/db-postgres`) – produkčně Supabase (org SEBIT Solutions), lokálně Postgres 16.
+- **Postgres** (`@payloadcms/db-postgres`) – lokálně `docker-compose.yml` (Postgres 17). **Produkční DB zatím nerozhodnutá** (Supabase / Neon / Vercel Postgres) → kód musí zůstat **DB-agnostický**: žádné `@supabase/*`, Supabase Auth/Storage, RLS, Edge Functions, Realtime ani nestandardní extensions (nejdřív se zeptat Vojty). Schéma jen přes migrace.
 - **Soubory**: lokálně `/media`, na Vercelu **Vercel Blob** (`BLOB_READ_WRITE_TOKEN`, klientský upload kvůli 4,5MB limitu).
 - Hosting: Vercel, projekt `profispojky-web` (tým `sebit-solutions-projects`).
 - Všechny stránky webu jsou dynamické (`force-dynamic`) – změna v adminu je na webu hned, build nepotřebuje DB.
@@ -14,6 +14,7 @@ Web pro profispojky.cz (PROFI SPOJKY) – **katalogový web bez e-shopu**: produ
 
 | Příkaz | Co dělá |
 |---|---|
+| `docker compose up -d` / `down -v` | lokální Postgres / reset dat |
 | `pnpm dev` | dev server (schéma DB se synchronizuje automaticky – `push`) |
 | `pnpm seed` | naplní prázdnou DB obsahem z prototypu (`SEED_ADMIN_EMAIL`, `SEED_ADMIN_PASSWORD`) |
 | `pnpm test` | unit testy (vitest) – import z BC, stav produktu, expirace |
@@ -28,7 +29,7 @@ Web pro profispojky.cz (PROFI SPOJKY) – **katalogový web bez e-shopu**: produ
 |---|---|---|
 | Lidé z PROFI SPOJKY | `/admin` | role **Editor** (aktuality, divize, značky, stránky, prodejní síť, kontakty) a **Správce katalogu** (navíc produkty, řady, dokumenty, import z BC) |
 | SEBIT (dodavatel) | Claude Code / Cowork | MCP server webu `/api/mcp` (`@payloadcms/plugin-mcp`, `src/mcp/plugin.ts`) – klíč v adminu Nastavení → MCP klíče (jen role Admin), oprávnění per klíč, defaultně vše vypnuté |
-| Infrastruktura | Claude Code | Supabase MCP (DB, SQL, logy), Vercel MCP (deploye, env, logy) |
+| Infrastruktura | Claude Code | Vercel MCP (deploye, env, logy); DB dle zvolené platformy |
 
 ## Struktura
 
