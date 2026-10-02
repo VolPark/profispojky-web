@@ -1,4 +1,5 @@
 import { postgresAdapter } from '@payloadcms/db-postgres'
+import { resendAdapter } from '@payloadcms/email-resend'
 import { redirectsPlugin } from '@payloadcms/plugin-redirects'
 import { seoPlugin } from '@payloadcms/plugin-seo'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
@@ -56,6 +57,15 @@ export default buildConfig({
   collections: [News, Divisions, Brands, Pages, Partners, Contacts, Media, Products, Series, Documents, BcImports, Users],
   globals: [Homepage, SiteSettings],
   editor: lexicalEditor(),
+  // E-maily administrace (pozvánky, reset hesla). Bez RESEND_API_KEY (lokálně) se jen vypíšou do konzole.
+  // Po spuštění na profispojky.cz přepnout EMAIL_FROM_ADDRESS na adresu z ověřené domény profispojky.cz.
+  email: process.env.RESEND_API_KEY
+    ? resendAdapter({
+        apiKey: process.env.RESEND_API_KEY,
+        defaultFromAddress: process.env.EMAIL_FROM_ADDRESS || 'asistent@ai.sebit.cz',
+        defaultFromName: process.env.EMAIL_FROM_NAME || 'Správa webu PROFI SPOJKY',
+      })
+    : undefined,
   secret: process.env.PAYLOAD_SECRET || '',
   graphQL: { disable: true },
   typescript: { outputFile: path.resolve(dirname, 'payload-types.ts') },

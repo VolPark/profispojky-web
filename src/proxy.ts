@@ -52,6 +52,6 @@ export async function proxy(request: NextRequest) {
 export const config = {
   // Jen cesty, které nepatří novému webu (staré URL). Úvod, sekce webu, admin, API a soubory se přeskakují.
   matcher: [
-    '/((?!_next/|api/|admin|next/|health|produkty|divize/|katalog|produkt/|znacky|knihovna|prodejni-sit|aktuality|kontakt|sitemap\\.xml|robots\\.txt|.*\\.(?:svg|png|jpe?g|webp|gif|ico|css|js|woff2?|map)$).+)',
+    '/((?!_next/|api/|admin|next/|health|nastavit-heslo|produkty|divize/|katalog|produkt/|znacky|knihovna|prodejni-sit|aktuality|kontakt|sitemap\\.xml|robots\\.txt|.*\\.(?:svg|png|jpe?g|webp|gif|ico|css|js|woff2?|map)$).+)',
   ],
 }

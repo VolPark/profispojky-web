@@ -5,7 +5,7 @@ Web pro profispojky.cz (PROFI SPOJKY) – **katalogový web bez e-shopu**: produ
 ## Stack
 
 - **Next.js 16 (App Router) + Payload CMS 3** v jedné aplikaci. Web = `src/app/(frontend)`, administrace = `/admin` (`src/app/(payload)`).
-- **Postgres** (`@payloadcms/db-postgres`) – lokálně `docker-compose.yml` (Postgres 17). **Produkční DB zatím nerozhodnutá** (Supabase / Neon / Vercel Postgres) → kód musí zůstat **DB-agnostický**: žádné `@supabase/*`, Supabase Auth/Storage, RLS, Edge Functions, Realtime ani nestandardní extensions (nejdřív se zeptat Vojty). Schéma jen přes migrace.
+- **Postgres** (`@payloadcms/db-postgres`) – lokálně `docker-compose.yml` (Postgres 17). Produkce: **Neon** (projekt `profispojky-prod`, Free plan; před go-live přepnout na Launch) – kód přesto musí zůstat **DB-agnostický**: žádné `@supabase/*`, Supabase Auth/Storage, RLS, Edge Functions, Realtime ani nestandardní extensions (nejdřív se zeptat Vojty). Schéma jen přes migrace.
 - **Soubory**: lokálně `/media`, na Vercelu **Vercel Blob** (`BLOB_READ_WRITE_TOKEN`, klientský upload kvůli 4,5MB limitu).
 - Hosting: Vercel, projekt `profispojky-web` (tým `sebit-solutions-projects`).
 - **ISR, revalidate 60 s** (`src/app/(frontend)/layout.tsx`): všechny stránky se předgenerují při buildu (`src/lib/static-params.ts`) a servírují z cache; změna z adminu je na webu do minuty (okamžitě v Náhledu). Při výpadku DB / chybě kódu Next.js dál servíruje **poslední funkční verzi** – ověřeno testem s vypnutou DB. Živě se renderuje jen hledání (`/katalog?q=`), `/health` a admin.
@@ -25,11 +25,19 @@ Cíl: web běží bez podpory; když se něco rozbije, chodí e-mail s vysokou p
 
 **Když přijde alert / „web nefunguje“:**
 1. Logy: Vercel MCP `get_runtime_logs` (projekt `prj_Z9sXDO685Tu5ojiJHHLXxxAPsN2E`, tým `team_hPCDy5a5xpBmTsGRIGEnVCGP`), `level: error`.
-2. DB: Neon MCP – projekt `cold-smoke-61447884` (preview), `run_sql` / `list_slow_queries`. Produkční DB zatím nerozhodnutá.
+2. DB: Neon MCP – produkce `gentle-flower-63441150` (profispojky-prod, branch `production`, DB `profispojky`), preview `cold-smoke-61447884`; `run_sql` / `list_slow_queries`. Free plan: při vyčerpání 100 CU-h/měsíc Neon DB do konce měsíce vypne (web jede z cache, admin ne) → přepnout na Launch.
 3. Rozbitý deploy → Vercel instant rollback na předchozí deployment (`request_rollback` / dashboard), oprava v kódu přes PR.
 4. Smazaný/přepsaný obsah → admin: **Koš** (obnovit) nebo **Verze** (vrátit). Přes MCP: `PATCH deletedAt=null` s `?trash=true`.
 5. Poškozená data v DB → Neon point-in-time restore / snapshot (nejdřív na nové větvi, ověřit, pak přepnout).
 6. Neúspěšný import → nic se nezapsalo; zkontrolovat soubor (sloupce), nahrát znovu.
+
+**Uživatelé adminu** (`src/collections/Users.ts`, e-maily `src/email/auth-emails.ts`):
+- Účty zakládá jen Admin (Nastavení → Uživatelé): e-mail, jméno, role, libovolné dočasné heslo → uživateli přijde **pozvánka** s odkazem na nastavení vlastního hesla (platí 7 dní, jednorázový).
+- **Zapomenuté heslo**: odkaz na přihlašovací stránce `/admin` → e-mail s odkazem (platí 1 h).
+- Heslo min. 10 znaků; po 5 špatných pokusech zámek na 10 min (Admin může odemknout); přihlášení platí 8 h.
+- Admin nemůže smazat sám sebe ani si odebrat roli Admin (web nesmí zůstat bez správce).
+- E-maily jdou přes Resend (`RESEND_API_KEY`) z `EMAIL_FROM_ADDRESS` (teď `asistent@ai.sebit.cz` jako správce webu); lokálně bez klíče se jen logují.
+- Odkaz „Přihlášení do administrace“ je v patičce webu.
 
 **Ochrana proti redaktorům:** role (Editor nesahá na katalog), koš + verze všude, natrvalo maže jen Admin (`src/hooks/adminOnlyPermanentDelete.ts`), mazat strukturu (divize, značky, řady, obrázky, stránky) a měnit jejich URL smí jen Admin, BC pole jsou read-only.
 
@@ -102,3 +110,18 @@ This version has breaking changes — APIs, conventions, and file structure may 
 This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
 
 <!-- END:nextjs-agent-rules -->
+
+## Spuštění na profispojky.cz (go-live checklist)
+
+Tento web nahradí současný profispojky.cz. Před přepnutím DNS:
+
+- [x] Produkční DB: Neon `profispojky-prod` (Free) → `DATABASE_URL`, `PAYLOAD_SECRET`, `NEXT_PUBLIC_SERVER_URL` pro **production**
+- [ ] Den před přepnutím DNS: Neon na **Launch** (PITR 7 dní, plánované snapshoty, bez limitu CU-h) + spending notification ~$25
+- [ ] Testovací stupně: 1) `profispojky.sebit.cz` (interní), 2) `beta.profispojky.cz` (UAT business) – obě na produkčním prostředí, indexace vypnutá
+- [ ] Migrace + import dat (obsah z preview nebo čistý seed + reálný import z BC)
+- [ ] **Mapa 301** ze všech URL starého webu (crawl/sitemap starého webu → kolekce Přesměrování) – bez ní se ztratí SEO a odkazy
+- [ ] Účty redaktorů (pozvánky), admin SEBIT
+- [ ] `NEXT_PUBLIC_SERVER_URL=https://www.profispojky.cz`, `ALLOW_INDEXING=true` (jen production)
+- [ ] Doména ve Vercelu (`www.profispojky.cz` + redirect z apex), TTL DNS snížit den předem
+- [ ] Po přepnutí: Google Search Console – nová sitemap, kontrola 404
+- [ ] Volitelně: e-maily z domény `profispojky.cz` (ověřit doménu v Resendu) – až po spuštění

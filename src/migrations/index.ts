@@ -1,6 +1,7 @@
 import * as migration_20261002_082055_initial from './20261002_082055_initial';
 import * as migration_20261002_090544_storage_object_key from './20261002_090544_storage_object_key';
 import * as migration_20261002_092459_trash_and_versions from './20261002_092459_trash_and_versions';
+import * as migration_20261002_100343_users_name_required from './20261002_100343_users_name_required';
 
 export const migrations = [
   {
@@ -16,6 +17,11 @@ export const migrations = [
   {
     up: migration_20261002_092459_trash_and_versions.up,
     down: migration_20261002_092459_trash_and_versions.down,
-    name: '20261002_092459_trash_and_versions'
+    name: '20261002_092459_trash_and_versions',
+  },
+  {
+    up: migration_20261002_100343_users_name_required.up,
+    down: migration_20261002_100343_users_name_required.down,
+    name: '20261002_100343_users_name_required'
   },
 ];

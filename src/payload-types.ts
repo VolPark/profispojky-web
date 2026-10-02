@@ -775,14 +775,16 @@ export interface BcImport {
   focalY?: number | null;
 }
 /**
+ * Nový účet: vyplňte e-mail, jméno a roli, heslo zadejte libovolné dočasné. Uživateli hned přijde e-mail, kde si nastaví vlastní heslo.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
   id: number;
-  name?: string | null;
+  name: string;
   /**
-   * Editor: aktuality a texty. Správce katalogu: navíc produkty, řady, dokumenty a import z BC. Admin: vše.
+   * Editor: aktuality a texty. Správce katalogu: navíc produkty, řady, dokumenty a import z BC. Admin: vše včetně uživatelů.
    */
   role: 'editor' | 'catalog' | 'admin';
   updatedAt: string;

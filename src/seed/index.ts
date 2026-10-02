@@ -59,7 +59,7 @@ const run = async () => {
   /* ---------- uživatel ---------- */
   const email = process.env.SEED_ADMIN_EMAIL || 'admin@profispojky.local'
   const password = process.env.SEED_ADMIN_PASSWORD || crypto.randomBytes(9).toString('base64url')
-  await payload.create({ collection: 'users', data: { email, password, name: 'Admin SEBIT', role: 'admin' } })
+  await payload.create({ collection: 'users', data: { email, password, name: 'Admin SEBIT', role: 'admin' }, context: { skipInvite: true } })
 
   /* ---------- divize ---------- */
   const divisionIds = new Map<string, number>()
