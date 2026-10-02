@@ -97,6 +97,10 @@ export const Footer = ({ settings, divisions }: { settings: SiteSetting; divisio
             {l.label}
           </Link>
         ))}
+        {/* Přihlášení pro redaktory – nenápadně v patičce, návštěvníci ho nepotřebují. */}
+        <Link href="/admin" prefetch={false} rel="nofollow">
+          Přihlášení do administrace
+        </Link>
       </div>
     </div>
   </footer>

@@ -31,6 +31,14 @@ Cíl: web běží bez podpory; když se něco rozbije, chodí e-mail s vysokou p
 5. Poškozená data v DB → Neon point-in-time restore / snapshot (nejdřív na nové větvi, ověřit, pak přepnout).
 6. Neúspěšný import → nic se nezapsalo; zkontrolovat soubor (sloupce), nahrát znovu.
 
+**Uživatelé adminu** (`src/collections/Users.ts`, e-maily `src/email/auth-emails.ts`):
+- Účty zakládá jen Admin (Nastavení → Uživatelé): e-mail, jméno, role, libovolné dočasné heslo → uživateli přijde **pozvánka** s odkazem na nastavení vlastního hesla (platí 7 dní, jednorázový).
+- **Zapomenuté heslo**: odkaz na přihlašovací stránce `/admin` → e-mail s odkazem (platí 1 h).
+- Heslo min. 10 znaků; po 5 špatných pokusech zámek na 10 min (Admin může odemknout); přihlášení platí 8 h.
+- Admin nemůže smazat sám sebe ani si odebrat roli Admin (web nesmí zůstat bez správce).
+- E-maily jdou přes Resend (`RESEND_API_KEY`) z `EMAIL_FROM_ADDRESS` (teď `asistent@ai.sebit.cz` jako správce webu); lokálně bez klíče se jen logují.
+- Odkaz „Přihlášení do administrace“ je v patičce webu.
+
 **Ochrana proti redaktorům:** role (Editor nesahá na katalog), koš + verze všude, natrvalo maže jen Admin (`src/hooks/adminOnlyPermanentDelete.ts`), mazat strukturu (divize, značky, řady, obrázky, stránky) a měnit jejich URL smí jen Admin, BC pole jsou read-only.
 
 ## Příkazy
@@ -102,3 +110,16 @@ This version has breaking changes — APIs, conventions, and file structure may 
 This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
 
 <!-- END:nextjs-agent-rules -->
+
+## Spuštění na profispojky.cz (go-live checklist)
+
+Tento web nahradí současný profispojky.cz. Před přepnutím DNS:
+
+- [ ] Produkční DB (rozhodnutí Supabase / Neon / Vercel Postgres, placený plán kvůli PITR zálohám) → `DATABASE_URL`, `PAYLOAD_SECRET` (nový) pro **production**
+- [ ] Migrace + import dat (obsah z preview nebo čistý seed + reálný import z BC)
+- [ ] **Mapa 301** ze všech URL starého webu (crawl/sitemap starého webu → kolekce Přesměrování) – bez ní se ztratí SEO a odkazy
+- [ ] Účty redaktorů (pozvánky), admin SEBIT
+- [ ] `NEXT_PUBLIC_SERVER_URL=https://www.profispojky.cz`, `ALLOW_INDEXING=true` (jen production)
+- [ ] Doména ve Vercelu (`www.profispojky.cz` + redirect z apex), TTL DNS snížit den předem
+- [ ] Po přepnutí: Google Search Console – nová sitemap, kontrola 404
+- [ ] Volitelně: e-maily z domény `profispojky.cz` (ověřit doménu v Resendu) – až po spuštění
