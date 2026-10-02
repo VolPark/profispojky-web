@@ -102,6 +102,13 @@ export const BcImports: CollectionConfig = {
         } catch (err) {
           await killTransaction(req)
           req.payload.logger.error({ err, msg: 'BC import failed' })
+          const { sendAlert } = await import('@/lib/alert')
+          await sendAlert({
+            title: 'Import z BC selhal',
+            key: `bc-import|${id}`,
+            impact: 'Potvrzení importu se nezapsalo – katalog na webu zůstal beze změny (transakce byla vrácena).',
+            details: { Import: String(doc.filename ?? id), Uživatel: req.user && 'email' in req.user ? String(req.user.email) : undefined, Chyba: err instanceof Error ? err.message.slice(0, 1000) : String(err) },
+          })
           return Response.json({ error: 'Import se nepodařilo zapsat. Nic se nezměnilo.' }, { status: 500 })
         }
       },

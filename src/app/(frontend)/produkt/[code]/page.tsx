@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import React from 'react'
 
+import { productParams } from '@/lib/static-params'
 import { Breadcrumbs } from '@/components/site/Breadcrumbs'
 import { Icon } from '@/components/site/Icon'
 import { docTypeMeta } from '@/lib/doc-types'
@@ -14,6 +15,9 @@ import { urls } from '@/lib/urls'
 import type { Brand, Division, Series } from '@/payload-types'
 
 type Props = { params: Promise<{ code: string }> }
+
+// Všechny stránky se předgenerují při buildu (static-params.ts), nové při první návštěvě.
+export const generateStaticParams = productParams
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const p = await getProduct(decodeURIComponent((await params).code))

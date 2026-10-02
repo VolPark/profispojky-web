@@ -3,6 +3,7 @@
 import React, { useMemo, useState } from 'react'
 
 import { Icon } from './Icon'
+import { useUrlParam } from './useUrlParam'
 
 export type LibraryDoc = {
   id: number
@@ -23,11 +24,13 @@ type Props = {
   types: { value: string; label: string }[]
   brands: string[]
   divisions: string[]
-  initialType?: string
 }
 
-export const LibraryClient = ({ docs, types, brands, divisions, initialType = 'all' }: Props) => {
-  const [t, setT] = useState(types.some((x) => x.value === initialType) ? initialType : 'all')
+export const LibraryClient = ({ docs, types, brands, divisions }: Props) => {
+  // ?typ= z dlaždic na úvodní stránce – čteno v prohlížeči, stránka zůstává statická (ISR).
+  const urlType = useUrlParam('typ')
+  const [pickedType, setT] = useState<string | null>(null)
+  const t = pickedType ?? (types.some((x) => x.value === urlType) ? urlType : 'all')
   const [q, setQ] = useState('')
   const [brand, setBrand] = useState('')
   const [div, setDiv] = useState('')

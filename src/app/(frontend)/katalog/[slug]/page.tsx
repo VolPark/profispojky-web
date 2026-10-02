@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import React from 'react'
 
+import { seriesParams } from '@/lib/static-params'
 import { Breadcrumbs } from '@/components/site/Breadcrumbs'
 import { CatalogClient, type CatalogRow } from '@/components/site/CatalogClient'
 import { Icon } from '@/components/site/Icon'
@@ -12,7 +13,10 @@ import { documentUrl, getDocumentsFor, getSeries, getSeriesProducts, rel } from 
 import { urls } from '@/lib/urls'
 import type { Brand, Division } from '@/payload-types'
 
-type Props = { params: Promise<{ slug: string }>; searchParams: Promise<{ q?: string }> }
+type Props = { params: Promise<{ slug: string }> }
+
+// Všechny stránky se předgenerují při buildu (static-params.ts), nové při první návštěvě.
+export const generateStaticParams = seriesParams
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const s = await getSeries((await params).slug)
@@ -24,8 +28,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
-export default async function SeriesPage({ params, searchParams }: Props) {
-  const [{ slug }, { q }] = await Promise.all([params, searchParams])
+export default async function SeriesPage({ params }: Props) {
+  const { slug } = await params
   const series = await getSeries(slug)
   if (!series) notFound()
   const brand = rel<Brand>(series.brand)
@@ -87,7 +91,6 @@ export default async function SeriesPage({ params, searchParams }: Props) {
           dimensionLabel={series.dimensionLabel || 'Rozměr'}
           dimensionUnit={series.dimensionUnit ?? 'mm'}
           threadLabel={series.threadLabel || 'Závit'}
-          initialQuery={q ?? ''}
         />
       ) : (
         <section className="section">

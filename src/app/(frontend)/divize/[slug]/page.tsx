@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import React from 'react'
 
+import { divisionParams } from '@/lib/static-params'
 import { Breadcrumbs } from '@/components/site/Breadcrumbs'
 import { HelpBox } from '@/components/site/HelpBox'
 import { Icon } from '@/components/site/Icon'
@@ -14,6 +15,9 @@ import { urls } from '@/lib/urls'
 import type { Document } from '@/payload-types'
 
 type Props = { params: Promise<{ slug: string }> }
+
+// Všechny stránky se předgenerují při buildu (static-params.ts), nové při první návštěvě.
+export const generateStaticParams = divisionParams
 
 const plural = (n: number) => (n === 1 ? 'produktová řada' : n >= 2 && n <= 4 ? 'produktové řady' : 'produktových řad')
 

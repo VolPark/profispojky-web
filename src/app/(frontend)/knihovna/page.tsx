@@ -15,10 +15,7 @@ export const metadata: Metadata = {
   description: 'Katalogy, letáky, technické listy, certifikáty, prohlášení o shodě, montážní návody a videa ke stažení.',
 }
 
-type Props = { searchParams: Promise<{ typ?: string }> }
-
-export default async function LibraryPage({ searchParams }: Props) {
-  const { typ } = await searchParams
+export default async function LibraryPage() {
   const all = await getLibrary()
   const featured = all.find((d) => d.featured)
 
@@ -83,7 +80,7 @@ export default async function LibraryPage({ searchParams }: Props) {
               </span>
             </a>
           )}
-          <LibraryClient docs={docs} types={types} brands={brands} divisions={divisions} initialType={typ} />
+          <LibraryClient docs={docs} types={types} brands={brands} divisions={divisions} />
         </div>
       </section>
     </>

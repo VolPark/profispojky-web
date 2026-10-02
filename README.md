@@ -35,7 +35,9 @@ Env proměnné projektu:
 | `BLOB_READ_WRITE_TOKEN` | Vercel Blob – fotky a dokumenty |
 | `ALLOW_INDEXING` | `true` až na ostré doméně |
 
-Build (`vercel.json`) nejdřív spustí DB migrace (`pnpm payload migrate`), pak `next build`.
+Build (`vercel.json`) nejdřív spustí DB migrace (`pnpm payload migrate`), pak `next build`, který předgeneruje všechny stránky (build proto potřebuje DB). Když build nebo migrace selže, zůstává nasazená předchozí verze.
+
+Volitelně: `RESEND_API_KEY`, `ALERT_EMAIL_TO`, `ALERT_EMAIL_FROM` – e-mail s vysokou prioritou při chybě serveru. `GET /health` pro uptime monitor.
 
 ## Import z Business Central
 

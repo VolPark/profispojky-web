@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import React from 'react'
 
+import { newsParams } from '@/lib/static-params'
 import { Breadcrumbs } from '@/components/site/Breadcrumbs'
 import { Icon } from '@/components/site/Icon'
 import { RichText } from '@/components/site/RichText'
@@ -16,6 +17,9 @@ import { urls } from '@/lib/urls'
 import type { Division, Document } from '@/payload-types'
 
 type Props = { params: Promise<{ slug: string }> }
+
+// Všechny stránky se předgenerují při buildu (static-params.ts), nové při první návštěvě.
+export const generateStaticParams = newsParams
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const n = await getNews((await params).slug)

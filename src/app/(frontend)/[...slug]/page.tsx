@@ -1,15 +1,19 @@
 /* eslint-disable @next/next/no-img-element */
 import type { Metadata } from 'next'
-import { notFound, permanentRedirect } from 'next/navigation'
+import { notFound } from 'next/navigation'
 import React from 'react'
 
+import { pageParams } from '@/lib/static-params'
 import { Breadcrumbs } from '@/components/site/Breadcrumbs'
 import { RichText } from '@/components/site/RichText'
 import { mediaAlt, mediaUrl } from '@/lib/media'
-import { findRedirect, getPage } from '@/lib/queries'
-import { urlForDoc } from '@/lib/urls'
+import { getPage } from '@/lib/queries'
 
-type Props = { params: Promise<{ slug: string[] }>; searchParams: Promise<Record<string, string | string[] | undefined>> }
+type Props = { params: Promise<{ slug: string[] }> }
+
+// Všechny stránky se předgenerují při buildu (static-params.ts), nové při první návštěvě.
+// Přesměrování starých URL řeší src/proxy.ts.
+export const generateStaticParams = pageParams
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
@@ -19,32 +23,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return { title: page.meta?.title || page.title, description: page.meta?.description || page.lead || undefined }
 }
 
-/** Stará URL z profispojky.cz → 301 na novou stránku (správa v adminu: Přesměrování). */
-const tryRedirect = async (path: string, search: string) => {
-  const candidates = search ? [`${path}?${search}`, path] : [path]
-  for (const from of candidates) {
-    const r = await findRedirect(from)
-    if (!r?.to) continue
-    if (r.to.type === 'custom' && r.to.url) permanentRedirect(r.to.url)
-    const ref = r.to.reference
-    if (ref && typeof ref.value === 'object' && ref.value) {
-      const url = urlForDoc(ref.relationTo, ref.value as { slug?: string; code?: string })
-      if (url) permanentRedirect(url)
-    }
-  }
-}
-
-export default async function GenericPage({ params, searchParams }: Props) {
-  const [{ slug }, sp] = await Promise.all([params, searchParams])
+export default async function GenericPage({ params }: Props) {
+  const { slug } = await params
   const page = slug.length === 1 ? await getPage(slug[0]) : null
-
-  if (!page) {
-    const search = new URLSearchParams(
-      Object.entries(sp).flatMap(([k, v]) => (Array.isArray(v) ? v.map((x) => [k, x]) : v !== undefined ? [[k, v]] : [])),
-    ).toString()
-    await tryRedirect(`/${slug.map(decodeURIComponent).join('/')}`, search)
-    notFound()
-  }
+  if (!page) notFound()
 
   return (
     <>

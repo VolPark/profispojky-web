@@ -12,6 +12,9 @@ import type { Brand, Series } from '@/payload-types'
 
 type Props = { searchParams: Promise<{ q?: string; typ?: string }> }
 
+// Výsledky hledání závisí na dotazu – jediná stránka webu, která se vždy renderuje živě.
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = { title: 'Hledání v katalogu', robots: { index: false, follow: true } }
 
 export default async function SearchPage({ searchParams }: Props) {

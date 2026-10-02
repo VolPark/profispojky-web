@@ -5,6 +5,7 @@ import Link from 'next/link'
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 
 import { Icon } from './Icon'
+import { useUrlParam } from './useUrlParam'
 
 export type CatalogRow = {
   code: string
@@ -25,7 +26,6 @@ type Props = {
   dimensionLabel: string
   dimensionUnit: string
   threadLabel: string
-  initialQuery?: string
 }
 
 type SortKey = 'code' | 'dimension' | 'name'
@@ -40,11 +40,14 @@ const threadValue = (t: string) => {
   return (whole ? Number(whole) : 0) + (b ? Number(a) / Number(b) : Number(a))
 }
 
-export const CatalogClient = ({ rows, shapes, dimensionLabel, dimensionUnit, threadLabel, initialQuery = '' }: Props) => {
+export const CatalogClient = ({ rows, shapes, dimensionLabel, dimensionUnit, threadLabel }: Props) => {
+  // ?q= z URL (např. z hledání v hlavičce) – čteno až v prohlížeči, aby stránka zůstala statická (ISR).
+  const urlQuery = useUrlParam('q')
   const [shape, setShape] = useState('all')
   const [dims, setDims] = useState<Set<number>>(new Set())
   const [threads, setThreads] = useState<Set<string>>(new Set())
-  const [q, setQ] = useState(initialQuery)
+  const [typedQ, setQ] = useState<string | null>(null)
+  const q = typedQ ?? urlQuery
   const [sort, setSort] = useState<SortKey>('code')
   const [sheet, setSheet] = useState(false)
   const toggleRef = useRef<HTMLButtonElement>(null)

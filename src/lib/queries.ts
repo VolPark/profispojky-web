@@ -231,14 +231,6 @@ export const getContacts = cache(async () => {
   return (await payload.find({ collection: 'contacts', sort: 'order', depth: 1, pagination: false })).docs
 })
 
-/* ---------- přesměrování ---------- */
-
-export const findRedirect = async (from: string) => {
-  const payload = await getPayloadClient()
-  const res = await payload.find({ collection: 'redirects', where: { from: { equals: from } }, depth: 1, limit: 1 })
-  return res.docs[0] ?? null
-}
-
 export type { Product }
 
 export const getBrandsByDivision = cache(async () => {

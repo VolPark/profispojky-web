@@ -11,8 +11,11 @@ import { getDivisions, getSettings } from '@/lib/queries'
 
 import './styles.css'
 
-// Obsah se čte přímo z DB při každém požadavku – změna v adminu je na webu hned.
-export const dynamic = 'force-dynamic'
+// ISR: stránky se servírují z cache a na pozadí se přegenerují nejvýš jednou za 60 s,
+// takže změna z adminu je na webu do minuty. Když přegenerování selže (výpadek DB, chyba
+// v kódu), Next.js dál servíruje poslední funkční verzi stránky.
+// Záměrně bez okamžité invalidace (revalidatePath) – ta cache zahodí a při výpadku DB by web spadl.
+export const revalidate = 60
 
 const indexing = process.env.ALLOW_INDEXING === 'true'
 

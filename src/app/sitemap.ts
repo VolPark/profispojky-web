@@ -4,7 +4,7 @@ import { getPayloadClient } from '@/lib/payload'
 import { serverUrl } from '@/lib/preview'
 import { urls } from '@/lib/urls'
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 3600
 
 /** Sitemap – hlavně stránky řad (dle SEO handoffu), divize, aktuality a textové stránky. */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
