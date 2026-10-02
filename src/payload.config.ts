@@ -36,7 +36,8 @@ export default buildConfig({
   admin: {
     user: Users.slug,
     importMap: { baseDir: path.resolve(dirname) },
-    meta: { titleSuffix: ' – PROFI SPOJKY administrace' },
+    // OG obrázky adminu vypnuté – admin se nesdílí a /api/og na Vercelu padal (chybějící importMap → alerty).
+    meta: { titleSuffix: ' – PROFI SPOJKY administrace', defaultOGImageType: 'off' },
     avatar: 'default',
     components: {
       graphics: {
