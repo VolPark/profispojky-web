@@ -7,7 +7,8 @@ const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&l
 /** Pozvánka (nový účet) vs. zapomenuté heslo – rozlišeno přes req.context.invite. */
 const isInvite = (req?: PayloadRequest) => Boolean(req?.context?.invite)
 
-const resetUrl = (token: string) => `${serverUrl()}/admin/reset/${token}`
+// Přes /nastavit-heslo – odhlásí případný jiný účet v prohlížeči, jinak Payload formulář neukáže.
+const resetUrl = (token: string) => `${serverUrl()}/nastavit-heslo?token=${encodeURIComponent(token)}`
 
 export const authEmailSubject = ({ req }: { req?: PayloadRequest } = {}) =>
   isInvite(req) ? 'Váš přístup do administrace webu PROFI SPOJKY' : 'Obnovení hesla do administrace webu PROFI SPOJKY'
