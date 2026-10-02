@@ -29,7 +29,7 @@ Env proměnné projektu:
 
 | Proměnná | Popis |
 |---|---|
-| `DATABASE_URL` | Postgres (produkční platforma zatím nerozhodnuta – Supabase / Neon / Vercel Postgres) |
+| `DATABASE_URL` | Postgres (produkce: Neon `profispojky-prod`, preview: Neon `cold-smoke-61447884`, lokálně docker-compose) |
 | `PAYLOAD_SECRET` | náhodný řetězec ≥ 32 znaků |
 | `NEXT_PUBLIC_SERVER_URL` | veřejná URL webu |
 | `BLOB_READ_WRITE_TOKEN` | Vercel Blob – fotky a dokumenty |
