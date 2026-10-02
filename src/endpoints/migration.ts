@@ -14,7 +14,7 @@ type Ref = { $ref: CollectionSlug; key: string; value: string | number }
 type Item = Record<string, unknown>
 type Body =
   | { op: 'upsert'; collection: CollectionSlug; key: string; items: Item[]; onlyExisting?: boolean }
-  | { op: 'file'; collection: 'media' | 'documents'; items: { fileUrl: string; filename: string; data: Item; matchExternalUrl?: string }[] }
+  | { op: 'file'; collection: 'media' | 'documents'; force?: boolean; items: { fileUrl: string; filename: string; data: Item; matchExternalUrl?: string }[] }
   | { op: 'trash'; collection: CollectionSlug; ids: (number | string)[] }
   | { op: 'global'; slug: 'site-settings' | 'homepage'; data: Item }
   | { op: 'find'; collection: CollectionSlug; where?: Where; select?: Record<string, true>; limit?: number; page?: number; trash?: boolean }
@@ -34,7 +34,9 @@ export const migrationEndpoint: Endpoint = {
     const body = (req.json ? await req.json() : null) as Body | null
     if (!body?.op) return Response.json({ error: 'missing op' }, { status: 400 })
     const { payload } = req
-    const context = { skipInvite: true, migration: true }
+    // Pro každé volání nový objekt – plugin úložiště si do req.context ukládá data souboru
+    // (_payloadCloudStorage); sdílený objekt by u dalších souborů v dávce podstrčil první soubor.
+    const ctx = () => ({ skipInvite: true, migration: true })
     const refCache = new Map<string, number | string | null>()
 
     const resolveRef = async (r: Ref) => {
@@ -86,13 +88,13 @@ export const migrationEndpoint: Endpoint = {
 
       if (body.op === 'global') {
         const data = (await resolve(body.data)) as Item
-        await payload.updateGlobal({ slug: body.slug, data, overrideAccess: true, depth: 0, context } as never)
+        await payload.updateGlobal({ slug: body.slug, data, overrideAccess: true, depth: 0, context: ctx() } as never)
         return Response.json({ results: [{ key: body.slug, action: 'updated' }] })
       }
 
       if (body.op === 'trash') {
         for (const id of body.ids) {
-          await payload.update({ collection: body.collection, id, data: { deletedAt: new Date().toISOString() }, overrideAccess: true, context })
+          await payload.update({ collection: body.collection, id, data: { deletedAt: new Date().toISOString() }, overrideAccess: true, context: ctx() })
           results.push({ id, action: 'trashed' })
         }
         return Response.json({ results })
@@ -111,14 +113,14 @@ export const migrationEndpoint: Endpoint = {
                 data: { ...data, ...(existing.deletedAt ? { deletedAt: null } : {}) },
                 overrideAccess: true,
                 depth: 0,
-                context,
+                context: ctx(),
                 trash: true,
               })
               results.push({ key: keyValue, id: existing.id, action: 'updated' })
             } else if (body.onlyExisting) {
               results.push({ key: keyValue, action: 'skipped' })
             } else {
-              const doc = await payload.create({ collection: body.collection, data, overrideAccess: true, depth: 0, context } as never)
+              const doc = await payload.create({ collection: body.collection, data, overrideAccess: true, depth: 0, context: ctx() } as never)
               results.push({ key: keyValue, id: doc.id, action: 'created' })
             }
           } catch (err) {
@@ -139,9 +141,9 @@ export const migrationEndpoint: Endpoint = {
             if (!existing && item.matchExternalUrl) {
               existing = await findBy(body.collection, { externalUrl: { equals: item.matchExternalUrl } })
             }
-            if (existing?.filename) {
+            if (existing?.filename && !body.force) {
               // Soubor už je převzatý – jen aktualizovat údaje.
-              await payload.update({ collection: body.collection, id: existing.id, data, overrideAccess: true, depth: 0, context, trash: true })
+              await payload.update({ collection: body.collection, id: existing.id, data, overrideAccess: true, depth: 0, context: ctx(), trash: true })
               results.push({ key: sourceUrl, id: existing.id, action: 'updated' })
               continue
             }
@@ -158,12 +160,12 @@ export const migrationEndpoint: Endpoint = {
                 file,
                 overrideAccess: true,
                 depth: 0,
-                context,
+                context: ctx(),
                 trash: true,
               })
               results.push({ key: sourceUrl, id: existing.id, action: 'file-added' })
             } else {
-              const doc = await payload.create({ collection: body.collection, data, file, overrideAccess: true, depth: 0, context } as never)
+              const doc = await payload.create({ collection: body.collection, data, file, overrideAccess: true, depth: 0, context: ctx() } as never)
               results.push({ key: sourceUrl, id: doc.id, action: 'created' })
             }
           } catch (err) {
