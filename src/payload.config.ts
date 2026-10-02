@@ -86,6 +86,8 @@ export default buildConfig({
     }),
     vercelBlobStorage({
       enabled: Boolean(process.env.BLOB_READ_WRITE_TOKEN),
+      // Pole pluginu (_objectKey…) musí být ve schématu vždy, jinak se lokální migrace liší od Vercelu.
+      alwaysInsertFields: true,
       // Klientský upload obchází 4,5MB limit serverless funkcí (katalogy mají přes 15 MB).
       clientUploads: true,
       collections: {

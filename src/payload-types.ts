@@ -290,6 +290,8 @@ export interface Media {
    * Krátký popis pro nevidomé a vyhledávače, např. „Mosazná svěrná spojka BA 32“.
    */
   alt: string;
+  prefix?: string | null;
+  _objectKey?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -361,6 +363,8 @@ export interface Document {
   brands?: (number | Brand)[] | null;
   showInLibrary?: boolean | null;
   featured?: boolean | null;
+  prefix?: string | null;
+  _objectKey?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -1345,6 +1349,8 @@ export interface ContactsSelect<T extends boolean = true> {
  */
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
+  prefix?: T;
+  _objectKey?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -1492,6 +1498,8 @@ export interface DocumentsSelect<T extends boolean = true> {
   brands?: T;
   showInLibrary?: T;
   featured?: T;
+  prefix?: T;
+  _objectKey?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
