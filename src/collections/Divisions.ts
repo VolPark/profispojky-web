@@ -1,10 +1,14 @@
 import type { CollectionConfig } from 'payload'
 
-import { anyone, staff } from '@/access/roles'
+import { admins, anyone, staff } from '@/access/roles'
 import { slugField } from '@/fields/slug'
 
 export const Divisions: CollectionConfig = {
   slug: 'divisions',
+  // Smazané jde do koše a dá se obnovit (admin → Koš, nebo přes MCP).
+  trash: true,
+  // Historie změn – každou úpravu lze vrátit (záložka Verze v adminu).
+  versions: { maxPerDoc: 20 },
   labels: { singular: 'Divize', plural: 'Divize' },
   admin: {
     group: 'Obsah',
@@ -13,10 +17,10 @@ export const Divisions: CollectionConfig = {
     description: 'Produktové divize podle materiálu. Novou divizi můžete založit sami.',
   },
   defaultSort: 'order',
-  access: { read: anyone, create: staff, update: staff, delete: staff },
+  access: { read: anyone, create: staff, update: staff, delete: admins },
   fields: [
     { name: 'name', label: 'Název', type: 'text', required: true },
-    slugField('name'),
+    slugField('name', { lockForNonAdmins: true }),
     {
       name: 'status',
       label: 'Stav',

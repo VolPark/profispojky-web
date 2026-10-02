@@ -4,6 +4,7 @@ import { anyone, staff } from '@/access/roles'
 
 export const Homepage: GlobalConfig = {
   slug: 'homepage',
+  versions: { max: 20 },
   label: 'Úvodní stránka',
   admin: { group: 'Obsah' },
   access: { read: anyone, update: staff },

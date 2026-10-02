@@ -1,10 +1,16 @@
 import type { CollectionConfig } from 'payload'
 
 import { anyone, staff } from '@/access/roles'
+import { adminOnlyPermanentDelete } from '@/hooks/adminOnlyPermanentDelete'
 import { REGIONS } from '@/lib/regions'
 
 export const Partners: CollectionConfig = {
   slug: 'partners',
+  // Smazané jde do koše a dá se obnovit (admin → Koš, nebo přes MCP).
+  trash: true,
+  hooks: { beforeDelete: [adminOnlyPermanentDelete] },
+  // Historie změn – každou úpravu lze vrátit (záložka Verze v adminu).
+  versions: { maxPerDoc: 20 },
   labels: { singular: 'Prodejní místo', plural: 'Prodejní síť' },
   admin: {
     group: 'Obsah',

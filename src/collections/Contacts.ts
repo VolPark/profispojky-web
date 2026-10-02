@@ -1,9 +1,15 @@
 import type { CollectionConfig } from 'payload'
 
 import { anyone, staff } from '@/access/roles'
+import { adminOnlyPermanentDelete } from '@/hooks/adminOnlyPermanentDelete'
 
 export const Contacts: CollectionConfig = {
   slug: 'contacts',
+  // Smazané jde do koše a dá se obnovit (admin → Koš, nebo přes MCP).
+  trash: true,
+  hooks: { beforeDelete: [adminOnlyPermanentDelete] },
+  // Historie změn – každou úpravu lze vrátit (záložka Verze v adminu).
+  versions: { maxPerDoc: 20 },
   labels: { singular: 'Kontaktní osoba', plural: 'Kontakty' },
   admin: { group: 'Obsah', useAsTitle: 'name', defaultColumns: ['name', 'role', 'phone', 'email', 'order'] },
   defaultSort: 'order',

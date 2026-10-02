@@ -1,6 +1,6 @@
 import type { CollectionConfig } from 'payload'
 
-import { staff } from '@/access/roles'
+import { admins, staff } from '@/access/roles'
 import { slugField } from '@/fields/slug'
 import { previewUrl } from '@/lib/preview'
 
@@ -9,6 +9,8 @@ const RESERVED = ['produkty', 'divize', 'katalog', 'produkt', 'znacky', 'knihovn
 
 export const Pages: CollectionConfig = {
   slug: 'pages',
+  // Smazané jde do koše a dá se obnovit (admin → Koš, nebo přes MCP).
+  trash: true,
   labels: { singular: 'Stránka', plural: 'Stránky' },
   admin: {
     group: 'Obsah',
@@ -22,11 +24,12 @@ export const Pages: CollectionConfig = {
     read: ({ req }) => (req.user ? true : { _status: { equals: 'published' } }),
     create: staff,
     update: staff,
-    delete: staff,
+    delete: admins,
   },
   fields: [
     { name: 'title', label: 'Nadpis', type: 'text', required: true },
     slugField('title', {
+      lockForNonAdmins: true,
       validate: (value: string | null | undefined) =>
         value && RESERVED.includes(value) ? `Adresa „${value}“ je vyhrazená pro jinou část webu.` : true,
     }),

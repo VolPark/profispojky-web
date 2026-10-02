@@ -4,6 +4,7 @@ import { anyone, staff } from '@/access/roles'
 
 export const SiteSettings: GlobalConfig = {
   slug: 'site-settings',
+  versions: { max: 20 },
   label: 'Kontaktní údaje a patička',
   admin: { group: 'Nastavení' },
   access: { read: anyone, update: staff },

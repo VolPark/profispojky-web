@@ -1,12 +1,14 @@
 import type { CollectionConfig } from 'payload'
 
-import { anyone, staff } from '@/access/roles'
+import { admins, anyone, staff } from '@/access/roles'
 
 export const Media: CollectionConfig = {
   slug: 'media',
+  // Smazané jde do koše a dá se obnovit (admin → Koš, nebo přes MCP).
+  trash: true,
   labels: { singular: 'Obrázek', plural: 'Obrázky' },
   admin: { group: 'Obsah', useAsTitle: 'alt' },
-  access: { read: anyone, create: staff, update: staff, delete: staff },
+  access: { read: anyone, create: staff, update: staff, delete: admins },
   fields: [
     {
       name: 'alt',

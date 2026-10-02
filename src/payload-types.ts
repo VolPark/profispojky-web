@@ -231,6 +231,7 @@ export interface News {
   };
   updatedAt: string;
   createdAt: string;
+  deletedAt?: string | null;
   _status?: ('draft' | 'published') | null;
 }
 /**
@@ -279,6 +280,7 @@ export interface Division {
   };
   updatedAt: string;
   createdAt: string;
+  deletedAt?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -294,6 +296,7 @@ export interface Media {
   _objectKey?: string | null;
   updatedAt: string;
   createdAt: string;
+  deletedAt?: string | null;
   url?: string | null;
   thumbnailURL?: string | null;
   filename?: string | null;
@@ -367,6 +370,7 @@ export interface Document {
   _objectKey?: string | null;
   updatedAt: string;
   createdAt: string;
+  deletedAt?: string | null;
   url?: string | null;
   thumbnailURL?: string | null;
   filename?: string | null;
@@ -471,6 +475,7 @@ export interface Series {
   };
   updatedAt: string;
   createdAt: string;
+  deletedAt?: string | null;
 }
 /**
  * Zastoupení výrobci. Divize značky se odvozují z jejích řad.
@@ -500,6 +505,7 @@ export interface Brand {
   };
   updatedAt: string;
   createdAt: string;
+  deletedAt?: string | null;
 }
 /**
  * Kód, název, EAN, MJ a stav přicházejí z importu z BC a nelze je měnit. Fotky, parametry a dokumenty doplňujete zde.
@@ -572,6 +578,7 @@ export interface Product {
   missing?: ('photo' | 'params' | 'series')[] | null;
   updatedAt: string;
   createdAt: string;
+  deletedAt?: string | null;
 }
 /**
  * Textové stránky – O firmě, Pro partnery, obchodní podmínky, ochrana osobních údajů…
@@ -642,6 +649,7 @@ export interface Page {
   };
   updatedAt: string;
   createdAt: string;
+  deletedAt?: string | null;
   _status?: ('draft' | 'published') | null;
 }
 /**
@@ -682,6 +690,7 @@ export interface Partner {
   web?: string | null;
   updatedAt: string;
   createdAt: string;
+  deletedAt?: string | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -697,6 +706,7 @@ export interface Contact {
   order?: number | null;
   updatedAt: string;
   createdAt: string;
+  deletedAt?: string | null;
 }
 /**
  * Nahrajte export položek z Business Central (XLSX nebo CSV). Uvidíte, co je nové, co se změnilo a co se skryje. Změny se zapíšou až po kliknutí na Potvrdit.
@@ -1222,6 +1232,7 @@ export interface NewsSelect<T extends boolean = true> {
       };
   updatedAt?: T;
   createdAt?: T;
+  deletedAt?: T;
   _status?: T;
 }
 /**
@@ -1246,6 +1257,7 @@ export interface DivisionsSelect<T extends boolean = true> {
       };
   updatedAt?: T;
   createdAt?: T;
+  deletedAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1262,6 +1274,7 @@ export interface BrandsSelect<T extends boolean = true> {
   series?: T;
   updatedAt?: T;
   createdAt?: T;
+  deletedAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1314,6 +1327,7 @@ export interface PagesSelect<T extends boolean = true> {
       };
   updatedAt?: T;
   createdAt?: T;
+  deletedAt?: T;
   _status?: T;
 }
 /**
@@ -1328,6 +1342,7 @@ export interface PartnersSelect<T extends boolean = true> {
   web?: T;
   updatedAt?: T;
   createdAt?: T;
+  deletedAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1342,6 +1357,7 @@ export interface ContactsSelect<T extends boolean = true> {
   order?: T;
   updatedAt?: T;
   createdAt?: T;
+  deletedAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1353,6 +1369,7 @@ export interface MediaSelect<T extends boolean = true> {
   _objectKey?: T;
   updatedAt?: T;
   createdAt?: T;
+  deletedAt?: T;
   url?: T;
   thumbnailURL?: T;
   filename?: T;
@@ -1431,6 +1448,7 @@ export interface ProductsSelect<T extends boolean = true> {
   missing?: T;
   updatedAt?: T;
   createdAt?: T;
+  deletedAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1479,6 +1497,7 @@ export interface SeriesSelect<T extends boolean = true> {
       };
   updatedAt?: T;
   createdAt?: T;
+  deletedAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1502,6 +1521,7 @@ export interface DocumentsSelect<T extends boolean = true> {
   _objectKey?: T;
   updatedAt?: T;
   createdAt?: T;
+  deletedAt?: T;
   url?: T;
   thumbnailURL?: T;
   filename?: T;

@@ -1,11 +1,16 @@
 import type { CollectionConfig } from 'payload'
 
 import { anyone, catalogStaff, hiddenUnlessCatalog } from '@/access/roles'
+import { adminOnlyPermanentDelete } from '@/hooks/adminOnlyPermanentDelete'
 import { EXPIRY_LABELS, expiryState } from '@/lib/doc-expiry'
 import { DOC_TYPES } from '@/lib/doc-types'
 
 export const Documents: CollectionConfig = {
   slug: 'documents',
+  // Smazané jde do koše a dá se obnovit (admin → Koš, nebo přes MCP).
+  trash: true,
+  // Historie změn – každou úpravu lze vrátit (záložka Verze v adminu).
+  versions: { maxPerDoc: 20 },
   labels: { singular: 'Dokument', plural: 'Knihovna dokumentů' },
   admin: {
     group: 'Katalog',
@@ -22,6 +27,7 @@ export const Documents: CollectionConfig = {
     mimeTypes: ['application/pdf', 'image/*', 'application/zip', 'application/vnd.openxmlformats-officedocument.*'],
   },
   hooks: {
+    beforeDelete: [adminOnlyPermanentDelete],
     beforeValidate: [
       ({ data, req, originalDoc }) => {
         const hasFile = Boolean(req.file || originalDoc?.filename || data?.filename)

@@ -1,10 +1,14 @@
 import type { CollectionConfig } from 'payload'
 
-import { anyone, staff } from '@/access/roles'
+import { admins, anyone, staff } from '@/access/roles'
 import { slugField } from '@/fields/slug'
 
 export const Brands: CollectionConfig = {
   slug: 'brands',
+  // Smazané jde do koše a dá se obnovit (admin → Koš, nebo přes MCP).
+  trash: true,
+  // Historie změn – každou úpravu lze vrátit (záložka Verze v adminu).
+  versions: { maxPerDoc: 20 },
   labels: { singular: 'Značka', plural: 'Značky' },
   admin: {
     group: 'Obsah',
@@ -13,10 +17,10 @@ export const Brands: CollectionConfig = {
     description: 'Zastoupení výrobci. Divize značky se odvozují z jejích řad.',
   },
   defaultSort: 'order',
-  access: { read: anyone, create: staff, update: staff, delete: staff },
+  access: { read: anyone, create: staff, update: staff, delete: admins },
   fields: [
     { name: 'name', label: 'Název', type: 'text', required: true },
-    slugField('name'),
+    slugField('name', { lockForNonAdmins: true }),
     { name: 'order', label: 'Pořadí', type: 'number', defaultValue: 10, admin: { position: 'sidebar' } },
     { name: 'manufacturer', label: 'Výrobce', type: 'text', admin: { description: 'např. Valvosanitaria Bugatti S.p.A.' } },
     { name: 'description', label: 'Popis', type: 'textarea', required: true },

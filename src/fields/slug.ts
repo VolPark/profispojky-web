@@ -1,11 +1,16 @@
 import type { TextField } from 'payload'
 
+import { adminsField } from '@/access/roles'
+
 import { slugify } from '@/lib/slugify'
 
 /** Slug pro URL – pokud ho redaktor nevyplní, vygeneruje se z `sourceField`. */
 export const slugField = (
   sourceField = 'name',
-  overrides: Pick<Partial<TextField>, 'validate' | 'admin'> = {},
+  overrides: Pick<Partial<TextField>, 'validate' | 'admin'> & {
+    /** Adresu existující stránky smí měnit jen Admin – změna rozbije odkazy a SEO. */
+    lockForNonAdmins?: boolean
+  } = {},
 ): TextField =>
   ({
     name: 'slug',
@@ -26,5 +31,7 @@ export const slugField = (
         },
       ],
     },
-    ...overrides,
+    ...(overrides.lockForNonAdmins ? { access: { update: adminsField } } : {}),
+    ...(overrides.validate ? { validate: overrides.validate } : {}),
+    ...(overrides.admin ? { admin: overrides.admin } : {}),
   }) as TextField

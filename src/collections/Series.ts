@@ -1,10 +1,14 @@
 import type { CollectionConfig } from 'payload'
 
-import { anyone, catalogStaff, hiddenUnlessCatalog } from '@/access/roles'
+import { admins, anyone, catalogStaff, hiddenUnlessCatalog } from '@/access/roles'
 import { slugField } from '@/fields/slug'
 
 export const Series: CollectionConfig = {
   slug: 'series',
+  // Smazané jde do koše a dá se obnovit (admin → Koš, nebo přes MCP).
+  trash: true,
+  // Historie změn – každou úpravu lze vrátit (záložka Verze v adminu).
+  versions: { maxPerDoc: 20 },
   labels: { singular: 'Řada', plural: 'Řady' },
   admin: {
     group: 'Katalog',
@@ -14,7 +18,7 @@ export const Series: CollectionConfig = {
     hidden: hiddenUnlessCatalog,
   },
   defaultSort: 'order',
-  access: { read: anyone, create: catalogStaff, update: catalogStaff, delete: catalogStaff },
+  access: { read: anyone, create: catalogStaff, update: catalogStaff, delete: admins },
   fields: [
     {
       type: 'row',
@@ -29,7 +33,7 @@ export const Series: CollectionConfig = {
         },
       ],
     },
-    slugField('name'),
+    slugField('name', { lockForNonAdmins: true }),
     { name: 'order', label: 'Pořadí v divizi', type: 'number', defaultValue: 10, admin: { position: 'sidebar' } },
     {
       type: 'row',

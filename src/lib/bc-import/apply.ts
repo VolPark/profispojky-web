@@ -10,6 +10,8 @@ export const loadExistingProducts = async (payload: Payload, req?: PayloadReques
     depth: 0,
     req,
     overrideAccess: true,
+    // I položky v koši – jinak by je import zkusil založit znovu a narazil na unikátní kód.
+    trash: true,
     select: { code: true, name: true, ean: true, unit: true, bcSeriesCode: true, bcStatus: true, bcActive: true },
   })
   return res.docs as unknown as ExistingProduct[]
@@ -75,6 +77,7 @@ export const applyImport = async (payload: Payload, rows: BcRow[], req: PayloadR
       id: ch.id,
       req,
       overrideAccess: true,
+      trash: true,
       data: {
         name: row.name,
         ean: row.ean ?? null,
@@ -88,7 +91,7 @@ export const applyImport = async (payload: Payload, rows: BcRow[], req: PayloadR
   }
 
   for (const h of diff.hidden) {
-    await payload.update({ collection: 'products', id: h.id, req, overrideAccess: true, data: { bcActive: false } })
+    await payload.update({ collection: 'products', id: h.id, req, overrideAccess: true, trash: true, data: { bcActive: false } })
   }
 
   return diff

@@ -1,6 +1,7 @@
 import type { CollectionConfig, FieldAccess } from 'payload'
 
 import { admins, adminsField, catalogStaff, hiddenUnlessCatalog, isStaffUser } from '@/access/roles'
+import { adminOnlyPermanentDelete } from '@/hooks/adminOnlyPermanentDelete'
 import { computeProductStatus, MISSING_LABELS } from '@/lib/product-status'
 
 const bcReadOnly = { readOnly: true }
@@ -8,6 +9,10 @@ const bcFieldAccess: { create: FieldAccess; update: FieldAccess } = { create: ad
 
 export const Products: CollectionConfig = {
   slug: 'products',
+  // Smazané jde do koše a dá se obnovit (admin → Koš, nebo přes MCP).
+  trash: true,
+  // Historie změn – každou úpravu lze vrátit (záložka Verze v adminu).
+  versions: { maxPerDoc: 20 },
   labels: { singular: 'Produkt', plural: 'Produkty' },
   admin: {
     group: 'Katalog',
@@ -24,9 +29,10 @@ export const Products: CollectionConfig = {
     read: ({ req }) => (isStaffUser(req.user) ? true : { isPublished: { equals: true } }),
     create: admins,
     update: catalogStaff,
-    delete: admins,
+    delete: catalogStaff,
   },
   hooks: {
+    beforeDelete: [adminOnlyPermanentDelete],
     beforeChange: [
       ({ data, originalDoc }) => {
         const merged = { ...originalDoc, ...data }

@@ -1,12 +1,16 @@
 import type { CollectionConfig, Where } from 'payload'
 
 import { staff } from '@/access/roles'
+import { adminOnlyPermanentDelete } from '@/hooks/adminOnlyPermanentDelete'
 import { slugField } from '@/fields/slug'
 import { NEWS_CATEGORIES } from '@/lib/news'
 import { previewUrl } from '@/lib/preview'
 
 export const News: CollectionConfig = {
   slug: 'news',
+  // Smazané jde do koše a dá se obnovit (admin → Koš, nebo přes MCP).
+  trash: true,
+  hooks: { beforeDelete: [adminOnlyPermanentDelete] },
   labels: { singular: 'Aktualita', plural: 'Aktuality' },
   admin: {
     group: 'Obsah',
