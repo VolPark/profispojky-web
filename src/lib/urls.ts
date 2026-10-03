@@ -1,3 +1,5 @@
+import { slugify } from './slugify'
+
 export const urls = {
   home: '/',
   products: '/produkty',
@@ -17,6 +19,9 @@ export const urls = {
   news: '/aktuality',
   newsDetail: (slug: string) => `/aktuality/${slug}`,
   contact: '/kontakt',
+  /** Technický list tvaru řady (PDF z dat); `v` = verze dat, aby CDN mohla PDF držet dlouho. */
+  techSheet: (seriesSlug: string, shapeCode: string, v?: string) =>
+    `/technicky-list/${seriesSlug}/${slugify(shapeCode) || 'tvar'}.pdf${v ? `?v=${v}` : ''}`,
   page: (slug: string) => `/${slug}`,
 }
 

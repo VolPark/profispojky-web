@@ -11,6 +11,7 @@ import { VideoEmbed } from '@/components/site/VideoEmbed'
 import { docTypeMeta } from '@/lib/doc-types'
 import { formatBytes } from '@/lib/format'
 import { mediaAlt, mediaUrl } from '@/lib/media'
+import { techSheetLinks } from '@/lib/tech-sheet/links'
 import { documentUrl, getDocumentsFor, getProduct, getProductVariants, rel } from '@/lib/queries'
 import { urls } from '@/lib/urls'
 import type { Brand, Division, Series } from '@/payload-types'
@@ -46,7 +47,9 @@ export default async function ProductPage({ params }: Props) {
     series ? getProductVariants(series.id, product.shape) : Promise.resolve([]),
   ])
   const videos = allDocs.filter((d) => d.type === 'video')
-  const docs = allDocs.filter((d) => d.type !== 'video')
+  // Generovaný technický list (z dat) nahrazuje nahrané PDF technických listů.
+  const techSheet = series && product.dimensions?.length ? techSheetLinks(series, variants).find((t) => t.code === product.shape) : undefined
+  const docs = allDocs.filter((d) => d.type !== 'video' && !(techSheet && d.type === 'tl'))
 
   const unit = series?.dimensionUnit ?? 'mm'
   const dim = typeof product.dimension === 'number' ? `${product.dimension} ${unit}` : null
@@ -54,7 +57,7 @@ export default async function ProductPage({ params }: Props) {
   const shapeText = shapeInfo ? shapeInfo.description || `${shapeInfo.code} – ${shapeInfo.label}` : product.shape
   const seriesName = [brand?.name, series?.name].filter(Boolean).join(' ')
   const img = mediaUrl(product.images?.[0], 'large')
-  const mainDoc = docs.find((d) => d.type === 'tl') ?? docs[0]
+  const mainDoc = techSheet ? null : (docs.find((d) => d.type === 'tl') ?? docs[0])
 
   const keys: { label: string; value: string }[] = [
     ...(dim ? [{ label: series?.dimensionLabel?.replace(/^Rozměr\s+/i, '') || 'Rozměr', value: dim }] : []),
@@ -156,6 +159,12 @@ export default async function ProductPage({ params }: Props) {
                 <Icon name="pin" />
                 Kde koupit
               </Link>
+              {techSheet && (
+                <a className="btn btn-outline" href={techSheet.href} target="_blank" rel="noopener">
+                  <Icon name="file" />
+                  Technický list (PDF)
+                </a>
+              )}
               {mainDoc && (
                 <a className="btn btn-outline" href={documentUrl(mainDoc)} target="_blank" rel="noopener">
                   <Icon name="file" />
@@ -182,10 +191,19 @@ export default async function ProductPage({ params }: Props) {
             ))}
           </dl>
         </section>
-        {docs.length > 0 && (
+        {(docs.length > 0 || techSheet) && (
           <section>
             <h2>Soubory ke stažení</h2>
             <div className="files">
+              {techSheet && (
+                <a className="card file" href={techSheet.href} target="_blank" rel="noopener">
+                  <span className="ibox">
+                    <Icon name={docTypeMeta('tl').icon} />
+                  </span>
+                  <b>Technický list – {techSheet.label}</b>
+                  <span>PDF · vždy aktuální</span>
+                </a>
+              )}
               {docs.map((d) => (
                 <a key={d.id} className="card file" href={documentUrl(d)} target="_blank" rel="noopener">
                   <span className="ibox">
@@ -273,6 +291,11 @@ export default async function ProductPage({ params }: Props) {
           <Icon name="pin" />
           Kde koupit
         </Link>
+        {techSheet && (
+          <a className="btn btn-outline" href={techSheet.href} target="_blank" rel="noopener" aria-label="Technický list (PDF)" style={{ padding: '0 16px' }}>
+            <Icon name="file" />
+          </a>
+        )}
         {mainDoc && (
           <a className="btn btn-outline" href={documentUrl(mainDoc)} target="_blank" rel="noopener" aria-label={mainDoc.title} style={{ padding: '0 16px' }}>
             <Icon name="file" />

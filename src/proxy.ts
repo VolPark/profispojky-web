@@ -29,6 +29,7 @@ const SITE_SECTIONS = new Set([
   'kontakt',
   'nastavit-heslo',
   'soubory',
+  'technicky-list',
   'health',
   'next',
   'admin',

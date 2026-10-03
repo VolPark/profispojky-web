@@ -110,6 +110,25 @@ export const Products: CollectionConfig = {
                 },
               ],
             },
+            {
+              name: 'dimensions',
+              label: 'Kóty dle výkresu',
+              labels: { singular: 'Kóta', plural: 'Kóty' },
+              type: 'array',
+              admin: {
+                description: 'Rozměry z technického výkresu tvaru (A, E, Ch1, PN…). Z nich se generuje technický list (PDF).',
+                initCollapsed: true,
+              },
+              fields: [
+                {
+                  type: 'row',
+                  fields: [
+                    { name: 'label', label: 'Kóta', type: 'text', required: true },
+                    { name: 'value', label: 'Hodnota', type: 'text', required: true },
+                  ],
+                },
+              ],
+            },
           ],
         },
         {

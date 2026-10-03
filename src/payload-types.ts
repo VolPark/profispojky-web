@@ -447,13 +447,26 @@ export interface Series {
   dimensionUnit?: string | null;
   threadLabel?: string | null;
   /**
-   * Číselník tvarů pro filtr, např. A = vnější závit.
+   * Číselník tvarů pro filtr a technické listy, např. A = vnější závit.
    */
   shapes?:
     | {
         code: string;
         label: string;
         description?: string | null;
+        /**
+         * Ilustrace (fotka + výkres s kótami) a sloupce tabulky. Více výkresů = více provedení (např. velké rozměry s přírubou) – položka se zařadí k výkresu, jehož kóty má vyplněné.
+         */
+        sheets?:
+          | {
+              illustration: number | Media;
+              /**
+               * Kóty oddělené čárkou v pořadí tabulky, např. „A, E, Ch1, Ch2, PN“.
+               */
+              columns: string;
+              id?: string | null;
+            }[]
+          | null;
         id?: string | null;
       }[]
     | null;
@@ -552,6 +565,16 @@ export interface Product {
    * Jen parametry specifické pro položku. Společné parametry se berou z řady. Prázdné se nezobrazí.
    */
   params?:
+    | {
+        label: string;
+        value: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Rozměry z technického výkresu tvaru (A, E, Ch1, PN…). Z nich se generuje technický list (PDF).
+   */
+  dimensions?:
     | {
         label: string;
         value: string;
@@ -1445,6 +1468,13 @@ export interface ProductsSelect<T extends boolean = true> {
         value?: T;
         id?: T;
       };
+  dimensions?:
+    | T
+    | {
+        label?: T;
+        value?: T;
+        id?: T;
+      };
   documents?: T;
   ean?: T;
   unit?: T;
@@ -1494,6 +1524,13 @@ export interface SeriesSelect<T extends boolean = true> {
         code?: T;
         label?: T;
         description?: T;
+        sheets?:
+          | T
+          | {
+              illustration?: T;
+              columns?: T;
+              id?: T;
+            };
         id?: T;
       };
   products?: T;

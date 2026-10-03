@@ -10,6 +10,7 @@ import { RichText } from '@/components/site/RichText'
 import { VideoEmbed } from '@/components/site/VideoEmbed'
 import { docTypeMeta } from '@/lib/doc-types'
 import { mediaUrl } from '@/lib/media'
+import { techSheetLinks } from '@/lib/tech-sheet/links'
 import { documentUrl, getDocumentsFor, getSeries, getSeriesProducts, rel } from '@/lib/queries'
 import { urls } from '@/lib/urls'
 import type { Brand, Division } from '@/payload-types'
@@ -47,7 +48,10 @@ export default async function SeriesPage({ params }: Props) {
     img: mediaUrl(p.images?.[0], 'thumb'),
     sale: p.bcStatus === 'sale',
   }))
-  const headDocs = docs.filter((d) => ['tl', 'navod', 'katalog'].includes(d.type)).slice(0, 3)
+  // Generované technické listy (z dat) nahrazují nahraná PDF technických listů.
+  const techSheets = techSheetLinks(series, products)
+  const headTypes = techSheets.length ? ['navod', 'katalog'] : ['tl', 'navod', 'katalog']
+  const headDocs = docs.filter((d) => headTypes.includes(d.type)).slice(0, 3)
   const videos = docs.filter((d) => d.type === 'video')
 
   return (
@@ -109,6 +113,24 @@ export default async function SeriesPage({ params }: Props) {
                 Knihovna médií
                 <Icon name="arrow" />
               </a>
+            </div>
+          </div>
+        </section>
+      )}
+      {techSheets.length > 0 && (
+        <section className="section">
+          <div className="container">
+            <h2 style={{ fontSize: 28, marginBottom: 16 }}>Technické listy</h2>
+            <div className="files">
+              {techSheets.map((t) => (
+                <a key={t.code} className="card file" href={t.href} target="_blank" rel="noopener">
+                  <span className="ibox">
+                    <Icon name={docTypeMeta('tl').icon} />
+                  </span>
+                  <b>{t.label.charAt(0).toUpperCase() + t.label.slice(1)}</b>
+                  <span>Tvar {t.code} · PDF</span>
+                </a>
+              ))}
             </div>
           </div>
         </section>
