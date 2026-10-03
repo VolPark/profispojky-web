@@ -6,11 +6,12 @@ Web pro profispojky.cz (PROFI SPOJKY) – **katalogový web bez e-shopu**: produ
 
 - **Next.js 16 (App Router) + Payload CMS 3** v jedné aplikaci. Web = `src/app/(frontend)`, administrace = `/admin` (`src/app/(payload)`).
 - **Postgres** (`@payloadcms/db-postgres`) – lokálně `docker-compose.yml` (Postgres 17). Produkce: **Neon** (projekt `profispojky-prod`, Free plan; před go-live přepnout na Launch) – kód přesto musí zůstat **DB-agnostický**: žádné `@supabase/*`, Supabase Auth/Storage, RLS, Edge Functions, Realtime ani nestandardní extensions (nejdřív se zeptat Vojty). Schéma jen přes migrace.
-- **Soubory**: lokálně `/media`, na Vercelu **Vercel Blob** (`BLOB_READ_WRITE_TOKEN`, klientský upload kvůli 4,5MB limitu).
+- **Soubory**: lokálně `/media`, na Vercelu **Vercel Blob** (`BLOB_READ_WRITE_TOKEN`, klientský upload kvůli 4,5MB limitu). Na webu se dokumenty odkazují přes stabilní adresu **`/soubory/<název>`** (`src/app/soubory/[name]/route.ts` → 302 na úložiště), nikdy přímo na doménu úložiště – odkazy přežijí změnu úložiště. Fotky se vkládají přímo z Blob (zmenšeniny thumb/card/large). Zálohy souborů zatím nejsou (rozhodnutí: spoléháme na Koš). **Pozor: tým je na Vercel Hobby** – při překročení limitů Vercel úložiště zablokuje (403 na všechny soubory, stalo se 2. 10. 2026 při importu); hromadné nahrávání jen po přechodu na Pro. **Preview** (deploy každého PR) má vlastní testovací DB, ale zatím sdílí úložiště s produkcí (soubory ve složce `preview/`) – katalog ani soubory se na preview neimportují (`MIGRATION_TOKEN` jen pro production). Až to Vercel dovolí: samostatný Blob store pro preview (`BLOB_READ_WRITE_TOKEN` jen pro Preview), pak složku `preview/` v `payload.config.ts` zrušit.
 - Hosting: Vercel, projekt `profispojky-web` (tým `sebit-solutions-projects`).
 - **ISR, revalidate 60 s** (`src/app/(frontend)/layout.tsx`): všechny stránky se předgenerují při buildu (`src/lib/static-params.ts`) a servírují z cache; změna z adminu je na webu do minuty (okamžitě v Náhledu). Při výpadku DB / chybě kódu Next.js dál servíruje **poslední funkční verzi** – ověřeno testem s vypnutou DB. Živě se renderuje jen hledání (`/katalog?q=`), `/health` a admin.
 - **Nepoužívat `revalidatePath`/`revalidateTag` bez `'max'`** – zahodí cache a při výpadku DB web spadne (ověřeno). Build proto potřebuje DB.
-- Přesměrování starých URL: `src/proxy.ts` (mapa z kolekce Přesměrování, cache 5 min, při chybě nic nepřesměruje).
+- Přesměrování starých URL: `src/proxy.ts` – pro každou adresu mimo sekce webu dohledá řádek v kolekci Přesměrování (~4 300 řádků: produkty, kategorie, `download.php?fid=…`, aktuality), výsledek cachuje 5 min, při chybě nic nepřesměruje.
+- **Obsah převzatý ze starého webu** (katalog ~4 050 položek, 157 souborů, videa, aktuality, stránky): záznamy mají `sourceUrl` (média, dokumenty). Převod: dočasný endpoint `POST /api/migration` (`src/endpoints/migration.ts`), zapnutý jen s env `MIGRATION_TOKEN` – po dokončení migrace env smazat a endpoint odstranit.
 
 ## Provoz a obnova (runbook)
 
@@ -84,6 +85,7 @@ Cíl: web běží bez podpory; když se něco rozbije, chodí e-mail s vysokou p
 - Položka je na webu jen když má fotku + aspoň jeden parametr + řadu, je aktivní v BC a má „Zobrazit na webu“. Jinak je ve frontě „Doplnit obsah“ (`/admin/doplnit-obsah`).
 - Společné parametry (PN, těsnění, normy…) se vyplňují u **řady**, ne u položky. Chybějící atribut se na webu nezobrazuje.
 - Typy výrobků (rozcestník „Vyberte typ výrobku“) se generují z hodnot `products.productType`.
+- **Technický list (PDF) se generuje z dat**, neukládá se: `/technicky-list/<řada>/<tvar>.pdf` (`src/app/technicky-list`, `src/lib/tech-sheet`, `@react-pdf/renderer`, písma IBM Plex v `assets/`). Podklady: Řada → Tvar → *Technický list* (výchozí ilustrace = fotka + výkres s písmeny kót, sloupce kót), u položky volitelně *Vlastní výkres* (přepíše výchozí, vlastní blok v listu) a *Kóty dle výkresu*. Položka patří k výkresu, jehož kóty má; bez kót v listu není. **Cíl: všechny texty a technické údaje (kóty, parametry, marketingový popis) z BC, na webu jen fotky a výkresy** – požadavky na data v BC: dokument „PROFI SPOJKY – požadavky na data položek v BC pro web“. Kde generovaný list existuje, nahrané PDF typu TL se na webu nezobrazují. Odkazy nesou `?v=` (verze dat) → CDN drží PDF dlouho. Pilot: Bugatti Valvopat (ilustrace a kóty převzaté ze starých PDF).
 - Knihovna: dokument ↔ řada/produkt, *Vydáno* / *Platné do*, 60 dní před expirací upozornění na nástěnce.
 - Aktuality: Koncept / Publikováno / Naplánováno (= publikováno s datem v budoucnu, veřejný read filtruje `publishedAt <= now`).
 - SEO: 301 přesměrování ve kolekci Přesměrování (catch-all `[...slug]`), indexovat hlavně stránky řad, `BreadcrumbList` + `Product` schema. Indexace vypnutá, dokud `ALLOW_INDEXING !== 'true'`.
@@ -119,7 +121,8 @@ Tento web nahradí současný profispojky.cz. Před přepnutím DNS:
 - [ ] Den před přepnutím DNS: Neon na **Launch** (PITR 7 dní, plánované snapshoty, bez limitu CU-h) + spending notification ~$25
 - [ ] Testovací stupně: 1) `profispojky.sebit.cz` (interní), 2) `beta.profispojky.cz` (UAT business) – obě na produkčním prostředí, indexace vypnutá
 - [ ] Migrace + import dat (obsah z preview nebo čistý seed + reálný import z BC)
-- [ ] **Mapa 301** ze všech URL starého webu (crawl/sitemap starého webu → kolekce Přesměrování) – bez ní se ztratí SEO a odkazy
+- [x] **Mapa 301** ze všech URL starého webu (sitemap + výpisy kategorií + soubory) → kolekce Přesměrování
+- [ ] Těsně před přepnutím DNS: znovu spustit převod ze starého webu (změny od posledního importu), pak `MIGRATION_TOKEN` smazat
 - [ ] Účty redaktorů (pozvánky), admin SEBIT
 - [ ] `NEXT_PUBLIC_SERVER_URL=https://www.profispojky.cz`, `ALLOW_INDEXING=true` (jen production)
 - [ ] Doména ve Vercelu (`www.profispojky.cz` + redirect z apex), TTL DNS snížit den předem

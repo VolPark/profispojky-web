@@ -13,6 +13,10 @@ const nextConfig: NextConfig = {
   async headers() {
     return indexing ? [] : [{ source: '/:path*', headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }] }]
   },
+  // Technický list (PDF) čte písma a logo ze souborů – musí být v balíčku funkce.
+  outputFileTracingIncludes: {
+    '/technicky-list/**': ['./src/lib/tech-sheet/assets/**', './public/logo.svg'],
+  },
   images: {
     localPatterns: [
       {

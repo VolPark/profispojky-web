@@ -61,6 +61,12 @@ export const Products: CollectionConfig = {
               type: 'text',
               admin: { description: 'např. „Spojka s vnějším závitem“' },
             },
+            {
+              name: 'description',
+              label: 'Popis produktu',
+              type: 'textarea',
+              admin: { description: 'Delší text na stránce položky. Odstavce oddělte prázdným řádkem.' },
+            },
             { name: 'series', label: 'Řada', type: 'relationship', relationTo: 'series', index: true },
             {
               name: 'images',
@@ -99,6 +105,35 @@ export const Products: CollectionConfig = {
                   type: 'row',
                   fields: [
                     { name: 'label', label: 'Parametr', type: 'text', required: true },
+                    { name: 'value', label: 'Hodnota', type: 'text', required: true },
+                  ],
+                },
+              ],
+            },
+            {
+              name: 'techSheetIllustration',
+              label: 'Vlastní výkres pro technický list',
+              type: 'upload',
+              relationTo: 'media',
+              admin: {
+                description:
+                  'Jen když se položka liší od výkresu tvaru (Řada → Tvar → Technický list). Fotka + výkres s písmeny kót, JPG/PNG.',
+              },
+            },
+            {
+              name: 'dimensions',
+              label: 'Kóty dle výkresu',
+              labels: { singular: 'Kóta', plural: 'Kóty' },
+              type: 'array',
+              admin: {
+                description: 'Rozměry z technického výkresu tvaru (A, E, Ch1, PN…). Z nich se generuje technický list (PDF).',
+                initCollapsed: true,
+              },
+              fields: [
+                {
+                  type: 'row',
+                  fields: [
+                    { name: 'label', label: 'Kóta', type: 'text', required: true },
                     { name: 'value', label: 'Hodnota', type: 'text', required: true },
                   ],
                 },

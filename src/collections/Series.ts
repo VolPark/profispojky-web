@@ -103,7 +103,7 @@ export const Series: CollectionConfig = {
           label: 'Tvary',
           labels: { singular: 'Tvar', plural: 'Tvary' },
           type: 'array',
-          admin: { description: 'Číselník tvarů pro filtr, např. A = vnější závit.' },
+          admin: { description: 'Číselník tvarů pro filtr a technické listy, např. A = vnější závit.' },
           fields: [
             {
               type: 'row',
@@ -111,6 +111,31 @@ export const Series: CollectionConfig = {
                 { name: 'code', label: 'Kód', type: 'text', required: true },
                 { name: 'label', label: 'Krátký název', type: 'text', required: true },
                 { name: 'description', label: 'Dlouhý popis', type: 'text' },
+              ],
+            },
+            {
+              name: 'sheets',
+              label: 'Technický list (PDF)',
+              labels: { singular: 'Výkres', plural: 'Výkresy' },
+              type: 'array',
+              admin: {
+                description:
+                  'Ilustrace (fotka + výkres s kótami) a sloupce tabulky. Více výkresů = více provedení (např. velké rozměry s přírubou) – položka se zařadí k výkresu, jehož kóty má vyplněné.',
+              },
+              fields: [
+                {
+                  type: 'row',
+                  fields: [
+                    { name: 'illustration', label: 'Ilustrace (JPG/PNG)', type: 'upload', relationTo: 'media', required: true },
+                    {
+                      name: 'columns',
+                      label: 'Sloupce tabulky',
+                      type: 'text',
+                      required: true,
+                      admin: { description: 'Kóty oddělené čárkou v pořadí tabulky, např. „A, E, Ch1, Ch2, PN“.' },
+                    },
+                  ],
+                },
               ],
             },
           ],
