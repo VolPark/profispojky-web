@@ -100,7 +100,7 @@ export const getProductVariants = cache(async (seriesId: number, shape: string |
   const res = await payload.find({
     collection: 'products',
     where: { and: [PUBLISHED, { series: { equals: seriesId } }, shape ? { shape: { equals: shape } } : { shape: { exists: false } }] },
-    select: { code: true, name: true, dimension: true, thread: true, shape: true, dimensions: true, updatedAt: true },
+    select: { code: true, name: true, dimension: true, thread: true, shape: true, dimensions: true, techSheetIllustration: true, updatedAt: true },
     sort: 'code',
     depth: 0,
     limit: 300,

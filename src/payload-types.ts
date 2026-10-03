@@ -572,6 +572,10 @@ export interface Product {
       }[]
     | null;
   /**
+   * Jen když se položka liší od výkresu tvaru (Řada → Tvar → Technický list). Fotka + výkres s písmeny kót, JPG/PNG.
+   */
+  techSheetIllustration?: (number | null) | Media;
+  /**
    * Rozměry z technického výkresu tvaru (A, E, Ch1, PN…). Z nich se generuje technický list (PDF).
    */
   dimensions?:
@@ -1468,6 +1472,7 @@ export interface ProductsSelect<T extends boolean = true> {
         value?: T;
         id?: T;
       };
+  techSheetIllustration?: T;
   dimensions?:
     | T
     | {

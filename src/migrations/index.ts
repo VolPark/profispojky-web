@@ -4,6 +4,7 @@ import * as migration_20261002_092459_trash_and_versions from './20261002_092459
 import * as migration_20261002_100343_users_name_required from './20261002_100343_users_name_required';
 import * as migration_20261002_154733_old_site_import from './20261002_154733_old_site_import';
 import * as migration_20261003_053358_tech_sheets from './20261003_053358_tech_sheets';
+import * as migration_20261003_061718_product_tech_sheet_illustration from './20261003_061718_product_tech_sheet_illustration';
 
 export const migrations = [
   {
@@ -34,6 +35,11 @@ export const migrations = [
   {
     up: migration_20261003_053358_tech_sheets.up,
     down: migration_20261003_053358_tech_sheets.down,
-    name: '20261003_053358_tech_sheets'
+    name: '20261003_053358_tech_sheets',
+  },
+  {
+    up: migration_20261003_061718_product_tech_sheet_illustration.up,
+    down: migration_20261003_061718_product_tech_sheet_illustration.down,
+    name: '20261003_061718_product_tech_sheet_illustration'
   },
 ];

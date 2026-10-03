@@ -111,6 +111,16 @@ export const Products: CollectionConfig = {
               ],
             },
             {
+              name: 'techSheetIllustration',
+              label: 'Vlastní výkres pro technický list',
+              type: 'upload',
+              relationTo: 'media',
+              admin: {
+                description:
+                  'Jen když se položka liší od výkresu tvaru (Řada → Tvar → Technický list). Fotka + výkres s písmeny kót, JPG/PNG.',
+              },
+            },
+            {
               name: 'dimensions',
               label: 'Kóty dle výkresu',
               labels: { singular: 'Kóta', plural: 'Kóty' },

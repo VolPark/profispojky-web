@@ -2,18 +2,17 @@ import type { Series } from '@/payload-types'
 
 import { urls } from '../urls'
 
-type Item = { shape?: string | null; updatedAt?: string; dimensions?: unknown[] | null }
+type Item = { shape?: string | null; updatedAt?: string; dimensions?: unknown[] | null; techSheetIllustration?: unknown }
 
 /**
- * Odkazy na generované technické listy tvarů řady. List existuje, když tvar má výkres
- * a aspoň jedna položka kóty. `v` = poslední změna dat → nová adresa pro CDN po každé změně.
+ * Odkazy na generované technické listy tvarů řady. List existuje, když aspoň jedna položka tvaru
+ * má kóty a výkres (výchozí u tvaru, nebo vlastní u položky). `v` = poslední změna dat → nová adresa pro CDN po každé změně.
  */
 export function techSheetLinks(series: Pick<Series, 'slug' | 'shapes' | 'updatedAt'>, items: Item[]) {
   if (!series.slug) return []
   return (series.shapes ?? [])
-    .filter((s) => s.sheets?.length)
     .flatMap((s) => {
-      const own = items.filter((i) => i.shape === s.code && i.dimensions?.length)
+      const own = items.filter((i) => i.shape === s.code && i.dimensions?.length && (s.sheets?.length || i.techSheetIllustration))
       if (!own.length) return []
       const stamps = [
         series.updatedAt,
