@@ -46,18 +46,26 @@ const s = StyleSheet.create({
   paramLabel: { fontSize: 6.5, color: C.muted, letterSpacing: 0.6, textTransform: 'uppercase' },
   paramValue: { fontSize: 9, fontWeight: 600, color: C.navy, marginTop: 1 },
   figure: { borderWidth: 1, borderColor: C.border, borderRadius: 4, padding: 10, alignItems: 'center', marginBottom: 10 },
-  illustration: { maxHeight: 230, objectFit: 'contain' },
+  illustration: { maxHeight: 210, objectFit: 'contain' },
   table: { marginBottom: 18 },
   tr: { flexDirection: 'row', borderBottomWidth: 0.5, borderBottomColor: C.border },
   th: { backgroundColor: C.navy, color: '#FFFFFF', fontSize: 7.5, fontWeight: 600, paddingVertical: 5, paddingHorizontal: 4, textAlign: 'center' },
   td: { paddingVertical: 4, paddingHorizontal: 4, textAlign: 'center' },
   code: { fontFamily: 'PlexMono', fontSize: 8.5, color: C.navy, textAlign: 'left' },
   note: { fontSize: 8, color: C.muted, marginTop: 2 },
+  groupRow: { flexDirection: 'row' },
+  groupCell: { fontSize: 7, fontWeight: 600, letterSpacing: 0.6, paddingVertical: 3, paddingHorizontal: 4, textAlign: 'center' },
+  groupDims: { backgroundColor: C.blueDark, color: '#FFFFFF' },
+  hl: { backgroundColor: '#DDF3FB', borderLeftWidth: 2, borderLeftColor: C.blue },
+  tableNote: { fontSize: 7.5, color: C.muted, marginTop: 4 },
   link: { color: C.blueDark, textDecoration: 'none' },
   footer: { position: 'absolute', left: 40, right: 40, bottom: 26, borderTopWidth: 0.5, borderTopColor: C.border, paddingTop: 7, flexDirection: 'row', justifyContent: 'space-between' },
   footerText: { fontSize: 6.8, color: C.muted, lineHeight: 1.45 },
   pageNo: { fontSize: 7, color: C.muted },
 })
+
+// Záhlaví identifikačních sloupců (hodnoty rozměru a závitu nesou jednotku samy).
+const IDENT_HEAD: Record<string, string> = { 'Síla stěny trubky': 'Síla stěny [mm]' }
 
 const capitalize = (t: string) => t.charAt(0).toUpperCase() + t.slice(1)
 const dateCz = (iso: string) => new Date(iso).toLocaleDateString('cs-CZ', { timeZone: 'Europe/Prague' })
@@ -72,11 +80,13 @@ type Props = {
 }
 
 export function TechSheetDocument({ data, settings, logo, brandLogo, illustrations, seriesUrl }: Props) {
-  const { series, brand, shape, blocks, hasThread } = data
+  const { series, brand, shape, blocks, common } = data
+  // parametry řady + atributy společné všem položkám listu (bez duplicit podle názvu)
+  const own = new Set((series.commonParams ?? []).map((p) => p.label))
+  const params = [...(series.commonParams ?? []).map((p) => ({ label: p.label, value: p.value })), ...common.filter((c) => !own.has(c.label))]
   const title = `${capitalize(shape.label)}`
   const eyebrow = [brand?.name, series.name].filter(Boolean).join(' ').toUpperCase()
-  const kicker = `${eyebrow}  ·  TVAR ${shape.code.toUpperCase()}`
-  const dimHead = `${series.dimensionLabel || 'Rozměr'}${series.dimensionUnit ? ` (${series.dimensionUnit})` : ''}`
+  const kicker = shape.code ? `${eyebrow}  ·  TVAR ${shape.code.toUpperCase()}` : eyebrow
   const host = seriesUrl.replace(/^https?:\/\//, '').replace(/\/.*$/, '')
   const contacts = [settings.phone, settings.phone2, settings.email, settings.email2, host].filter(Boolean).join('  ·  ')
 
@@ -108,10 +118,10 @@ export function TechSheetDocument({ data, settings, logo, brandLogo, illustratio
           )}
         </View>
 
-        {!!series.commonParams?.length && (
+        {params.length > 0 && (
           <View style={s.params}>
-            {series.commonParams.map((p) => (
-              <View key={p.id ?? p.label} style={s.param}>
+            {params.map((p) => (
+              <View key={p.label} style={s.param}>
                 <Text style={s.paramLabel}>{p.label}</Text>
                 <Text style={s.paramValue}>{p.value}</Text>
               </View>
@@ -121,24 +131,29 @@ export function TechSheetDocument({ data, settings, logo, brandLogo, illustratio
 
         {blocks.map((b, i) => {
           const img = illustrations[i]
-          const cols = [
-            { key: 'code', head: 'Katalogové číslo', flex: 1.7 },
-            { key: 'dim', head: dimHead, flex: 1.2 },
-            ...(hasThread ? [{ key: 'thread', head: series.threadLabel || 'Závit', flex: 1 }] : []),
-            ...b.columns.map((c) => ({ key: c, head: c, flex: 0.8 })),
-          ]
-          const cell = (r: TechSheetData['blocks'][number]['rows'][number], key: string) =>
-            key === 'code' ? r.code : key === 'dim' ? r.dimension : key === 'thread' ? r.thread : (r.values[key] ?? '–')
+          // Stejná struktura u všech listů: katalogové číslo → identifikace → kóty dle výkresu [mm].
+          const ident = b.ident.map((k) => ({ key: k, head: IDENT_HEAD[k] ?? k, flex: k.length > 10 ? 1.2 : 0.9 }))
+          const dims = b.columns.map((c) => ({ key: c, head: c, flex: 0.7 }))
+          const cols = [{ key: 'code', head: 'Katalogové číslo', flex: 1.6 }, ...ident, ...dims]
+          const sum = (xs: { flex: number }[]) => xs.reduce((t, x) => t + x.flex, 0)
+          const cell = (r: TechSheetData['blocks'][number]['rows'][number], key: string) => (key === 'code' ? r.code : (r.values[key] ?? '–'))
+          // Výkres nezůstane na konci strany bez tabulky; záhlaví tabulky se na další straně zopakuje.
           return (
             <View key={i}>
               {img && (
-                <View style={s.figure} wrap={false} minPresenceAhead={80}>
+                <View style={s.figure} wrap={false} minPresenceAhead={90}>
                   {/* eslint-disable-next-line jsx-a11y/alt-text */}
                   <Image style={s.illustration} src={img} />
                 </View>
               )}
               <View style={s.table}>
-                <View style={s.tr} fixed={false} wrap={false}>
+                {dims.length > 0 && (
+                  <View style={s.groupRow} fixed>
+                    <Text style={[s.groupCell, { flex: sum(cols) - sum(dims) }]} />
+                    <Text style={[s.groupCell, s.groupDims, { flex: sum(dims) }]}>Kóty dle výkresu [mm]</Text>
+                  </View>
+                )}
+                <View style={s.tr} fixed>
                   {cols.map((c) => (
                     <Text key={c.key} style={[s.th, { flex: c.flex }, c.key === 'code' ? { textAlign: 'left' } : {}]}>
                       {c.head}
@@ -146,7 +161,7 @@ export function TechSheetDocument({ data, settings, logo, brandLogo, illustratio
                   ))}
                 </View>
                 {b.rows.map((r, n) => (
-                  <View key={r.code} style={[s.tr, n % 2 ? { backgroundColor: C.bgAlt } : {}]} wrap={false}>
+                  <View key={r.code} style={[s.tr, n % 2 ? { backgroundColor: C.bgAlt } : {}, r.code === data.highlight ? s.hl : {}]} wrap={false}>
                     {cols.map((c) => (
                       <Text key={c.key} style={[s.td, { flex: c.flex }, c.key === 'code' ? s.code : {}]}>
                         {cell(r, c.key)}
@@ -154,6 +169,7 @@ export function TechSheetDocument({ data, settings, logo, brandLogo, illustratio
                     ))}
                   </View>
                 ))}
+                {b.note && <Text style={s.tableNote}>{b.note}</Text>}
               </View>
             </View>
           )

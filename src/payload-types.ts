@@ -455,15 +455,19 @@ export interface Series {
         label: string;
         description?: string | null;
         /**
-         * Ilustrace (fotka + výkres s kótami) a sloupce tabulky. Více výkresů = více provedení (např. velké rozměry s přírubou) – položka se zařadí k výkresu, jehož kóty má vyplněné.
+         * Ilustrace (výkres s písmeny kót, nebo fotka) a kóty. Více výkresů = více provedení (např. velké rozměry s přírubou) – položka se zařadí k výkresu, jehož kóty má vyplněné.
          */
         sheets?:
           | {
               illustration: number | Media;
               /**
-               * Kóty oddělené čárkou v pořadí tabulky, např. „A, E, Ch1, Ch2, PN“.
+               * Písmena kót z výkresu oddělená čárkou v pořadí tabulky, např. „A, E, Ch1, Ch2“. Prázdné = ilustrace bez kót (jen fotka). Ostatní atributy položek se doplní samy.
                */
-              columns: string;
+              columns?: string | null;
+              /**
+               * Volitelné, např. „Kóty jsou orientační.“
+               */
+              note?: string | null;
               id?: string | null;
             }[]
           | null;
@@ -576,7 +580,7 @@ export interface Product {
    */
   techSheetIllustration?: (number | null) | Media;
   /**
-   * Rozměry z technického výkresu tvaru (A, E, Ch1, PN…). Z nich se generuje technický list (PDF).
+   * Technické atributy z BC (list „Atributy“ v importu) – z nich se generuje technický list (PDF). Kóty = písmena z výkresu (A, B, Ch1, min…); ostatní (Rozměr trubky s jednotkou, Závit, PN, Pracovní rozsah…) jsou identifikace. Hodnoty stejné u všech položek tvaru se v listu ukážou jako parametry.
    */
   dimensions?:
     | {
@@ -742,7 +746,7 @@ export interface Contact {
   deletedAt?: string | null;
 }
 /**
- * Nahrajte export položek z Business Central (XLSX nebo CSV). Uvidíte, co je nové, co se změnilo a co se skryje. Změny se zapíšou až po kliknutí na Potvrdit.
+ * Nahrajte export položek z Business Central (XLSX nebo CSV). XLSX může mít list „Atributy“ (Kód · Atribut · Hodnota · Jednotka) – z něj se plní technické atributy a technický list. Uvidíte, co je nové, co se změnilo a co se skryje. Změny se zapíšou až po kliknutí na Potvrdit.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "bc-imports".
@@ -1534,6 +1538,7 @@ export interface SeriesSelect<T extends boolean = true> {
           | {
               illustration?: T;
               columns?: T;
+              note?: T;
               id?: T;
             };
         id?: T;

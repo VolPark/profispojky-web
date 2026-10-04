@@ -120,7 +120,7 @@ export const Series: CollectionConfig = {
               type: 'array',
               admin: {
                 description:
-                  'Ilustrace (fotka + výkres s kótami) a sloupce tabulky. Více výkresů = více provedení (např. velké rozměry s přírubou) – položka se zařadí k výkresu, jehož kóty má vyplněné.',
+                  'Ilustrace (výkres s písmeny kót, nebo fotka) a kóty. Více výkresů = více provedení (např. velké rozměry s přírubou) – položka se zařadí k výkresu, jehož kóty má vyplněné.',
               },
               fields: [
                 {
@@ -129,12 +129,20 @@ export const Series: CollectionConfig = {
                     { name: 'illustration', label: 'Ilustrace (JPG/PNG)', type: 'upload', relationTo: 'media', required: true },
                     {
                       name: 'columns',
-                      label: 'Sloupce tabulky',
+                      label: 'Kóty dle výkresu',
                       type: 'text',
-                      required: true,
-                      admin: { description: 'Kóty oddělené čárkou v pořadí tabulky, např. „A, E, Ch1, Ch2, PN“.' },
+                      admin: {
+                        description:
+                          'Písmena kót z výkresu oddělená čárkou v pořadí tabulky, např. „A, E, Ch1, Ch2“. Prázdné = ilustrace bez kót (jen fotka). Ostatní atributy položek se doplní samy.',
+                      },
                     },
                   ],
+                },
+                {
+                  name: 'note',
+                  label: 'Poznámka pod tabulkou',
+                  type: 'text',
+                  admin: { description: 'Volitelné, např. „Kóty jsou orientační.“' },
                 },
               ],
             },

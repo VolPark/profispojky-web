@@ -13,7 +13,7 @@ export const BcImports: CollectionConfig = {
     useAsTitle: 'filename',
     defaultColumns: ['filename', 'status', 'createdAt', 'uploadedBy'],
     description:
-      'Nahrajte export položek z Business Central (XLSX nebo CSV). Uvidíte, co je nové, co se změnilo a co se skryje. Změny se zapíšou až po kliknutí na Potvrdit.',
+      'Nahrajte export položek z Business Central (XLSX nebo CSV). XLSX může mít list „Atributy“ (Kód · Atribut · Hodnota · Jednotka) – z něj se plní technické atributy a technický list. Uvidíte, co je nové, co se změnilo a co se skryje. Změny se zapíšou až po kliknutí na Potvrdit.',
     hidden: hiddenUnlessCatalog,
   },
   defaultSort: '-createdAt',

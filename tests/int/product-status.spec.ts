@@ -21,6 +21,11 @@ describe('computeProductStatus', () => {
     expect(s.contentComplete).toBe(true)
   })
 
+  it('za parametr se počítají i technické atributy z BC', () => {
+    const s = computeProductStatus({ ...complete, dimension: null, dimensions: [{ label: 'Rozměr trubky', value: '32 mm' }] })
+    expect(s.contentComplete).toBe(true)
+  })
+
   it('skrytá v BC, neaktivní nebo vypnutá položka není na webu', () => {
     expect(computeProductStatus({ ...complete, bcActive: false }).isPublished).toBe(false)
     expect(computeProductStatus({ ...complete, bcStatus: 'inactive' }).isPublished).toBe(false)

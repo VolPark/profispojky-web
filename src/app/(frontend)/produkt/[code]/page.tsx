@@ -11,7 +11,7 @@ import { VideoEmbed } from '@/components/site/VideoEmbed'
 import { docTypeMeta } from '@/lib/doc-types'
 import { formatBytes } from '@/lib/format'
 import { mediaAlt, mediaUrl } from '@/lib/media'
-import { techSheetLinks } from '@/lib/tech-sheet/links'
+import { techSheetItemLink } from '@/lib/tech-sheet/links'
 import { documentUrl, getDocumentsFor, getProduct, getProductVariants, rel } from '@/lib/queries'
 import { urls } from '@/lib/urls'
 import type { Brand, Division, Series } from '@/payload-types'
@@ -48,7 +48,7 @@ export default async function ProductPage({ params }: Props) {
   ])
   const videos = allDocs.filter((d) => d.type === 'video')
   // Generovaný technický list (z dat) nahrazuje nahrané PDF technických listů.
-  const techSheet = series && product.dimensions?.length ? techSheetLinks(series, variants).find((t) => t.code === product.shape) : undefined
+  const techSheet = series ? techSheetItemLink(series, product, variants) : null
   const docs = allDocs.filter((d) => d.type !== 'video' && !(techSheet && d.type === 'tl'))
 
   const unit = series?.dimensionUnit ?? 'mm'

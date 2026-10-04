@@ -2,7 +2,7 @@ import ExcelJS from 'exceljs'
 import { describe, expect, it } from 'vitest'
 
 import { diffImport } from '@/lib/bc-import/diff'
-import { normalizeStatus, parseBcFile, parseCsv, rowsFromTable } from '@/lib/bc-import/parse'
+import { attributesFromTable, normalizeStatus, parseBcFile, parseCsv, rowsFromTable } from '@/lib/bc-import/parse'
 import type { ExistingProduct } from '@/lib/bc-import/types'
 
 describe('rowsFromTable', () => {
@@ -108,6 +108,61 @@ describe('diffImport', () => {
     expect(diff.changed[1].changes).toEqual([{ field: 'bcActive', from: 'skryto', to: 'v importu' }])
     // C chybí v exportu → skryje se; E je už skrytá → nic
     expect(diff.hidden.map((h) => h.code)).toEqual(['C'])
+    expect(diff.unchangedCount).toBe(1)
+  })
+})
+
+describe('atributy z BC (list „Atributy“)', () => {
+  it('spojí hodnotu s jednotkou, u kót z výkresu jen hodnotu, desetinná čárka', () => {
+    const { byCode, errors } = attributesFromTable([
+      ['Kód', 'Atribut', 'Hodnota', 'Jednotka'],
+      ['30000007', 'Rozměr trubky', '20', 'mm'],
+      ['30000007', 'Závit', '1/2"', ''],
+      ['30000007', 'A', '47.5', 'mm'],
+      ['30000007', 'PN', '30', ''],
+      ['30000007', 'E', '', 'mm'],
+      ['30000007', 'A', '48', 'mm'],
+    ])
+    expect(byCode.get('30000007')).toEqual([
+      { label: 'Rozměr trubky', value: '20 mm' },
+      { label: 'Závit', value: '1/2"' },
+      { label: 'A', value: '47,5' },
+      { label: 'PN', value: '30' },
+    ])
+    expect(errors).toHaveLength(1)
+    expect(errors[0]).toContain('vícekrát')
+  })
+
+  it('XLSX s listem Atributy: atributy u položek, volitelné sloupce, změna v náhledu', async () => {
+    const wb = new ExcelJS.Workbook()
+    wb.addWorksheet('Položky').addRows([
+      ['Kód', 'Název', 'Tvar', 'Typ výrobku'],
+      ['30000007', 'BA 20 x 1/2"', 'A', 'Svěrné spojky'],
+      ['30000011', 'BA 25 x 1/2"', 'A', 'Svěrné spojky'],
+    ])
+    wb.addWorksheet('Atributy').addRows([
+      ['Kód', 'Atribut', 'Hodnota', 'Jednotka'],
+      ['30000007', 'Rozměr trubky', 20, 'mm'],
+      ['99999999', 'A', 1, 'mm'],
+    ])
+    const res = await parseBcFile(Buffer.from(await wb.xlsx.writeBuffer()), 'export.xlsx')
+    expect(res.attributeItems).toBe(1)
+    expect(res.rows[0]).toMatchObject({ shape: 'A', productType: 'Svěrné spojky', attributes: [{ label: 'Rozměr trubky', value: '20 mm' }] })
+    expect(res.rows[1].attributes).toEqual([])
+    expect(res.errors.some((e) => e.includes('99999999'))).toBe(true)
+
+    const diff = diffImport(
+      [{ id: 1, code: '30000007', name: 'BA 20 x 1/2"', bcStatus: 'active', shape: 'A', productType: 'Svěrné spojky', dimensions: [] }],
+      [res.rows[0]],
+    )
+    expect(diff.changed[0].changes).toEqual([{ field: 'attributes', from: '', to: 'Rozměr trubky: 20 mm' }])
+  })
+
+  it('soubor bez listu Atributy atributy nemění', () => {
+    const diff = diffImport(
+      [{ id: 1, code: '1', name: 'X', bcStatus: 'active', dimensions: [{ label: 'A', value: '1' }] }],
+      [{ code: '1', name: 'X', status: 'active' }],
+    )
     expect(diff.unchangedCount).toBe(1)
   })
 })
