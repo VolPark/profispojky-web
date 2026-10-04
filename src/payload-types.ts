@@ -292,6 +292,7 @@ export interface Media {
    * Krátký popis pro nevidomé a vyhledávače, např. „Mosazná svěrná spojka BA 32“.
    */
   alt: string;
+  sourceUrl?: string | null;
   prefix?: string | null;
   _objectKey?: string | null;
   updatedAt: string;
@@ -365,6 +366,7 @@ export interface Document {
   divisions?: (number | Division)[] | null;
   brands?: (number | Brand)[] | null;
   showInLibrary?: boolean | null;
+  sourceUrl?: string | null;
   featured?: boolean | null;
   prefix?: string | null;
   _objectKey?: string | null;
@@ -445,13 +447,26 @@ export interface Series {
   dimensionUnit?: string | null;
   threadLabel?: string | null;
   /**
-   * Číselník tvarů pro filtr, např. A = vnější závit.
+   * Číselník tvarů pro filtr a technické listy, např. A = vnější závit.
    */
   shapes?:
     | {
         code: string;
         label: string;
         description?: string | null;
+        /**
+         * Ilustrace (fotka + výkres s kótami) a sloupce tabulky. Více výkresů = více provedení (např. velké rozměry s přírubou) – položka se zařadí k výkresu, jehož kóty má vyplněné.
+         */
+        sheets?:
+          | {
+              illustration: number | Media;
+              /**
+               * Kóty oddělené čárkou v pořadí tabulky, např. „A, E, Ch1, Ch2, PN“.
+               */
+              columns: string;
+              id?: string | null;
+            }[]
+          | null;
         id?: string | null;
       }[]
     | null;
@@ -521,6 +536,10 @@ export interface Product {
    * např. „Spojka s vnějším závitem“
    */
   subtitle?: string | null;
+  /**
+   * Delší text na stránce položky. Odstavce oddělte prázdným řádkem.
+   */
+  description?: string | null;
   series?: (number | null) | Series;
   /**
    * První fotka je hlavní.
@@ -546,6 +565,20 @@ export interface Product {
    * Jen parametry specifické pro položku. Společné parametry se berou z řady. Prázdné se nezobrazí.
    */
   params?:
+    | {
+        label: string;
+        value: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Jen když se položka liší od výkresu tvaru (Řada → Tvar → Technický list). Fotka + výkres s písmeny kót, JPG/PNG.
+   */
+  techSheetIllustration?: (number | null) | Media;
+  /**
+   * Rozměry z technického výkresu tvaru (A, E, Ch1, PN…). Z nich se generuje technický list (PDF).
+   */
+  dimensions?:
     | {
         label: string;
         value: string;
@@ -1367,6 +1400,7 @@ export interface ContactsSelect<T extends boolean = true> {
  */
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
+  sourceUrl?: T;
   prefix?: T;
   _objectKey?: T;
   updatedAt?: T;
@@ -1424,6 +1458,7 @@ export interface ProductsSelect<T extends boolean = true> {
   code?: T;
   name?: T;
   subtitle?: T;
+  description?: T;
   series?: T;
   images?: T;
   shape?: T;
@@ -1431,6 +1466,14 @@ export interface ProductsSelect<T extends boolean = true> {
   thread?: T;
   productType?: T;
   params?:
+    | T
+    | {
+        label?: T;
+        value?: T;
+        id?: T;
+      };
+  techSheetIllustration?: T;
+  dimensions?:
     | T
     | {
         label?: T;
@@ -1486,6 +1529,13 @@ export interface SeriesSelect<T extends boolean = true> {
         code?: T;
         label?: T;
         description?: T;
+        sheets?:
+          | T
+          | {
+              illustration?: T;
+              columns?: T;
+              id?: T;
+            };
         id?: T;
       };
   products?: T;
@@ -1518,6 +1568,7 @@ export interface DocumentsSelect<T extends boolean = true> {
   divisions?: T;
   brands?: T;
   showInLibrary?: T;
+  sourceUrl?: T;
   featured?: T;
   prefix?: T;
   _objectKey?: T;

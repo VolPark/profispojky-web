@@ -94,6 +94,21 @@ export const getSeriesProducts = cache(async (seriesId: number) => {
   return res.docs
 })
 
+/** Ostatní rozměry stejného tvaru pro tabulku na detailu – jen potřebné sloupce (řady mají až stovky položek). */
+export const getProductVariants = cache(async (seriesId: number, shape: string | null | undefined) => {
+  const payload = await getPayloadClient()
+  const res = await payload.find({
+    collection: 'products',
+    where: { and: [PUBLISHED, { series: { equals: seriesId } }, shape ? { shape: { equals: shape } } : { shape: { exists: false } }] },
+    select: { code: true, name: true, dimension: true, thread: true, shape: true, dimensions: true, techSheetIllustration: true, updatedAt: true },
+    sort: 'code',
+    depth: 0,
+    limit: 300,
+    overrideAccess: false,
+  })
+  return res.docs
+})
+
 export const getProduct = cache(async (code: string) => {
   const payload = await getPayloadClient()
   const res = await payload.find({
@@ -144,7 +159,9 @@ export const getProductTypes = cache(async () => {
 
 /* ---------- dokumenty ---------- */
 
-export const documentUrl = (d: Pick<Document, 'externalUrl' | 'url'>) => d.externalUrl || d.url || '#'
+/** Odkaz na dokument: nahraný soubor přes stabilní adresu /soubory/… (nezávislou na úložišti), jinak externí odkaz (videa). */
+export const documentUrl = (d: Pick<Document, 'externalUrl' | 'url' | 'filename'>) =>
+  d.filename ? `/soubory/${encodeURIComponent(d.filename)}` : d.externalUrl || d.url || '#'
 
 export const getLibrary = cache(async () => {
   const payload = await getPayloadClient()
