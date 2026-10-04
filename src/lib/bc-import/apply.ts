@@ -12,7 +12,20 @@ export const loadExistingProducts = async (payload: Payload, req?: PayloadReques
     overrideAccess: true,
     // I položky v koši – jinak by je import zkusil založit znovu a narazil na unikátní kód.
     trash: true,
-    select: { code: true, name: true, ean: true, unit: true, bcSeriesCode: true, bcStatus: true, bcActive: true },
+    select: {
+      code: true,
+      name: true,
+      ean: true,
+      unit: true,
+      bcSeriesCode: true,
+      bcStatus: true,
+      bcActive: true,
+      subtitle: true,
+      shape: true,
+      productType: true,
+      description: true,
+      dimensions: true,
+    },
   })
   return res.docs as unknown as ExistingProduct[]
 }
@@ -31,6 +44,15 @@ export const diffSummary = (diff: ImportDiff) => ({
  * Zapíše import do katalogu. Diff se přepočítá proti aktuálnímu stavu,
  * aby potvrzení starého náhledu nepřepsalo mezitím provedené změny.
  */
+/** Volitelná pole z BC – zapíšou se jen, když je soubor obsahuje. */
+const optionalData = (row: BcRow) => ({
+  ...(row.subtitle !== undefined ? { subtitle: row.subtitle || null } : {}),
+  ...(row.shape !== undefined ? { shape: row.shape || null } : {}),
+  ...(row.productType !== undefined ? { productType: row.productType || null } : {}),
+  ...(row.description !== undefined ? { description: row.description || null } : {}),
+  ...(row.attributes !== undefined ? { dimensions: row.attributes } : {}),
+})
+
 export const applyImport = async (payload: Payload, rows: BcRow[], req: PayloadRequest) => {
   const diff = await computeDiff(payload, rows, req)
   const now = new Date().toISOString()
@@ -66,6 +88,7 @@ export const applyImport = async (payload: Payload, rows: BcRow[], req: PayloadR
         lastImportedAt: now,
         showOnWeb: true,
         series: row.seriesCode ? (seriesByCode.get(row.seriesCode) as number | undefined) : undefined,
+        ...optionalData(row),
       },
     })
   }
@@ -86,6 +109,7 @@ export const applyImport = async (payload: Payload, rows: BcRow[], req: PayloadR
         bcStatus: row.status,
         bcActive: true,
         lastImportedAt: now,
+        ...optionalData(row),
       },
     })
   }

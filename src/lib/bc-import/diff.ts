@@ -1,4 +1,4 @@
-import type { BcRow, ExistingProduct, FieldChange, ImportDiff } from './types'
+import { attributesText, type BcRow, type ExistingProduct, type FieldChange, type ImportDiff } from './types'
 
 const COMPARED: { row: keyof BcRow; product: keyof ExistingProduct }[] = [
   { row: 'name', product: 'name' },
@@ -6,6 +6,13 @@ const COMPARED: { row: keyof BcRow; product: keyof ExistingProduct }[] = [
   { row: 'unit', product: 'unit' },
   { row: 'seriesCode', product: 'bcSeriesCode' },
   { row: 'status', product: 'bcStatus' },
+]
+// Porovnávají se jen, když je soubor obsahuje.
+const OPTIONAL: { row: keyof BcRow; product: keyof ExistingProduct }[] = [
+  { row: 'subtitle', product: 'subtitle' },
+  { row: 'shape', product: 'shape' },
+  { row: 'productType', product: 'productType' },
+  { row: 'description', product: 'description' },
 ]
 
 const str = (v: unknown) => (v === null || v === undefined ? '' : String(v))
@@ -34,6 +41,17 @@ export const diffImport = (existing: ExistingProduct[], rows: BcRow[]): ImportDi
       // Prázdný stav v DB = výchozí „active“
       if (rk === 'status' && !from && to === 'active') continue
       if (from !== to) changes.push({ field: rk, from, to })
+    }
+    for (const { row: rk, product: pk } of OPTIONAL) {
+      if (row[rk] === undefined) continue
+      const from = str(p[pk])
+      const to = str(row[rk])
+      if (from !== to) changes.push({ field: rk, from, to })
+    }
+    if (row.attributes) {
+      const from = attributesText(p.dimensions)
+      const to = attributesText(row.attributes)
+      if (from !== to) changes.push({ field: 'attributes', from, to })
     }
     if (p.bcActive === false) changes.push({ field: 'bcActive', from: 'skryto', to: 'v importu' })
     if (changes.length) diff.changed.push({ id: p.id, code: p.code, name: row.name, changes, row })

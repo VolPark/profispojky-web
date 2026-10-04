@@ -122,19 +122,21 @@ export const Products: CollectionConfig = {
             },
             {
               name: 'dimensions',
-              label: 'Kóty a rozměry',
-              labels: { singular: 'Kóta', plural: 'Kóty' },
+              label: 'Kóty a rozměry (BC)',
+              labels: { singular: 'Atribut', plural: 'Atributy' },
               type: 'array',
+              access: bcFieldAccess,
               admin: {
                 description:
-                  'Atributy pro technický list (PDF), cíl: z BC. Kóty = písmena z výkresu (A, B, Ch1, min…); ostatní (Rozměr trubky s jednotkou, Závit, PN, Pracovní rozsah…) jsou identifikace. Hodnoty stejné u všech položek tvaru se v listu ukážou jako parametry.',
+                  'Technické atributy z BC (list „Atributy“ v importu) – z nich se generuje technický list (PDF). Kóty = písmena z výkresu (A, B, Ch1, min…); ostatní (Rozměr trubky s jednotkou, Závit, PN, Pracovní rozsah…) jsou identifikace. Hodnoty stejné u všech položek tvaru se v listu ukážou jako parametry.',
                 initCollapsed: true,
+                readOnly: true,
               },
               fields: [
                 {
                   type: 'row',
                   fields: [
-                    { name: 'label', label: 'Kóta', type: 'text', required: true },
+                    { name: 'label', label: 'Atribut', type: 'text', required: true },
                     { name: 'value', label: 'Hodnota', type: 'text', required: true },
                   ],
                 },

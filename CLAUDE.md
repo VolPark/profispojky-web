@@ -81,7 +81,7 @@ Cíl: web běží bez podpory; když se něco rozbije, chodí e-mail s vysokou p
 ## Doménová pravidla
 
 - **Business Central (BC) = master** pro kód, název, EAN, MJ, řadu a stav (aktivní / výprodej / neaktivní). Tato pole jsou v adminu jen ke čtení, mění je jen import. Na webu se BC nezmiňuje.
-- Import: nahrání XLSX/CSV → náhled (nové / změněné / skryjí se) → **Potvrdit** (v transakci). Položka chybějící v exportu se skryje (`bcActive=false`), nemaže se. Nová položka se k řadě přiřadí přes `series.bcCode`.
+- Import: nahrání XLSX/CSV → náhled (nové / změněné / skryjí se) → **Potvrdit** (v transakci). Volitelně sloupce Podtitulek, Tvar, Typ výrobku, Marketingový popis a v XLSX list **„Atributy“** (Kód · Atribut · Hodnota · Jednotka) → technické atributy položky (jen ke čtení, zdroj technického listu); co soubor neobsahuje, import nemění. Položka chybějící v exportu se skryje (`bcActive=false`), nemaže se. Nová položka se k řadě přiřadí přes `series.bcCode`.
 - Položka je na webu jen když má fotku + aspoň jeden parametr + řadu, je aktivní v BC a má „Zobrazit na webu“. Jinak je ve frontě „Doplnit obsah“ (`/admin/doplnit-obsah`).
 - Společné parametry (PN, těsnění, normy…) se vyplňují u **řady**, ne u položky. Chybějící atribut se na webu nezobrazuje.
 - Typy výrobků (rozcestník „Vyberte typ výrobku“) se generují z hodnot `products.productType`.

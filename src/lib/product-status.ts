@@ -12,6 +12,8 @@ export type ProductStatusInput = {
   dimension?: number | null
   thread?: string | null
   params?: { label?: string | null; value?: string | null }[] | null
+  /** Technické atributy z BC. */
+  dimensions?: { label?: string | null; value?: string | null }[] | null
   series?: unknown
   showOnWeb?: boolean | null
   bcActive?: boolean | null
@@ -32,7 +34,8 @@ export const computeProductStatus = (p: ProductStatusInput) => {
     Boolean(p.shape) ||
     typeof p.dimension === 'number' ||
     Boolean(p.thread) ||
-    Boolean(p.params?.some((x) => x?.label && x?.value))
+    Boolean(p.params?.some((x) => x?.label && x?.value)) ||
+    Boolean(p.dimensions?.some((x) => x?.label && x?.value))
   if (!hasParams) missing.push('params')
   if (!p.series) missing.push('series')
 

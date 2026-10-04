@@ -580,7 +580,7 @@ export interface Product {
    */
   techSheetIllustration?: (number | null) | Media;
   /**
-   * Atributy pro technický list (PDF), cíl: z BC. Kóty = písmena z výkresu (A, B, Ch1, min…); ostatní (Rozměr trubky s jednotkou, Závit, PN, Pracovní rozsah…) jsou identifikace. Hodnoty stejné u všech položek tvaru se v listu ukážou jako parametry.
+   * Technické atributy z BC (list „Atributy“ v importu) – z nich se generuje technický list (PDF). Kóty = písmena z výkresu (A, B, Ch1, min…); ostatní (Rozměr trubky s jednotkou, Závit, PN, Pracovní rozsah…) jsou identifikace. Hodnoty stejné u všech položek tvaru se v listu ukážou jako parametry.
    */
   dimensions?:
     | {
@@ -746,7 +746,7 @@ export interface Contact {
   deletedAt?: string | null;
 }
 /**
- * Nahrajte export položek z Business Central (XLSX nebo CSV). Uvidíte, co je nové, co se změnilo a co se skryje. Změny se zapíšou až po kliknutí na Potvrdit.
+ * Nahrajte export položek z Business Central (XLSX nebo CSV). XLSX může mít list „Atributy“ (Kód · Atribut · Hodnota · Jednotka) – z něj se plní technické atributy a technický list. Uvidíte, co je nové, co se změnilo a co se skryje. Změny se zapíšou až po kliknutí na Potvrdit.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "bc-imports".

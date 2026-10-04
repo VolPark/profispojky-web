@@ -14,6 +14,11 @@ const FIELD_LABELS: Record<string, string> = {
   seriesCode: 'Řada',
   status: 'Stav',
   bcActive: 'Viditelnost',
+  subtitle: 'Podtitulek',
+  shape: 'Tvar',
+  productType: 'Typ výrobku',
+  description: 'Popis',
+  attributes: 'Atributy',
 }
 const STATUS_LABELS: Record<string, string> = { active: 'aktivní', sale: 'výprodej', inactive: 'neaktivní' }
 const v = (field: string, value: string) => (field === 'status' ? (STATUS_LABELS[value] ?? value) : value) || '–'
