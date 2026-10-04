@@ -22,6 +22,8 @@ export const urls = {
   /** Technický list tvaru řady (PDF z dat); `v` = verze dat, aby CDN mohla PDF držet dlouho. */
   techSheet: (seriesSlug: string, shapeCode: string, v?: string) =>
     `/technicky-list/${seriesSlug}/${slugify(shapeCode) || 'tvar'}.pdf${v ? `?v=${v}` : ''}`,
+  /** Technický list položky (list jejího tvaru se zvýrazněnou položkou). */
+  techSheetItem: (code: string, v?: string) => `/technicky-list/${encodeURIComponent(code)}.pdf${v ? `?v=${v}` : ''}`,
   page: (slug: string) => `/${slug}`,
 }
 

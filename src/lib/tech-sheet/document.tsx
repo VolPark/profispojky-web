@@ -56,6 +56,7 @@ const s = StyleSheet.create({
   groupRow: { flexDirection: 'row' },
   groupCell: { fontSize: 7, fontWeight: 600, letterSpacing: 0.6, paddingVertical: 3, paddingHorizontal: 4, textAlign: 'center' },
   groupDims: { backgroundColor: C.blueDark, color: '#FFFFFF' },
+  hl: { backgroundColor: '#DDF3FB', borderLeftWidth: 2, borderLeftColor: C.blue },
   tableNote: { fontSize: 7.5, color: C.muted, marginTop: 4 },
   link: { color: C.blueDark, textDecoration: 'none' },
   footer: { position: 'absolute', left: 40, right: 40, bottom: 26, borderTopWidth: 0.5, borderTopColor: C.border, paddingTop: 7, flexDirection: 'row', justifyContent: 'space-between' },
@@ -85,7 +86,7 @@ export function TechSheetDocument({ data, settings, logo, brandLogo, illustratio
   const params = [...(series.commonParams ?? []).map((p) => ({ label: p.label, value: p.value })), ...common.filter((c) => !own.has(c.label))]
   const title = `${capitalize(shape.label)}`
   const eyebrow = [brand?.name, series.name].filter(Boolean).join(' ').toUpperCase()
-  const kicker = `${eyebrow}  ·  TVAR ${shape.code.toUpperCase()}`
+  const kicker = shape.code ? `${eyebrow}  ·  TVAR ${shape.code.toUpperCase()}` : eyebrow
   const host = seriesUrl.replace(/^https?:\/\//, '').replace(/\/.*$/, '')
   const contacts = [settings.phone, settings.phone2, settings.email, settings.email2, host].filter(Boolean).join('  ·  ')
 
@@ -160,7 +161,7 @@ export function TechSheetDocument({ data, settings, logo, brandLogo, illustratio
                   ))}
                 </View>
                 {b.rows.map((r, n) => (
-                  <View key={r.code} style={[s.tr, n % 2 ? { backgroundColor: C.bgAlt } : {}]} wrap={false}>
+                  <View key={r.code} style={[s.tr, n % 2 ? { backgroundColor: C.bgAlt } : {}, r.code === data.highlight ? s.hl : {}]} wrap={false}>
                     {cols.map((c) => (
                       <Text key={c.key} style={[s.td, { flex: c.flex }, c.key === 'code' ? s.code : {}]}>
                         {cell(r, c.key)}
