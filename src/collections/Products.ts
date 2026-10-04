@@ -122,11 +122,12 @@ export const Products: CollectionConfig = {
             },
             {
               name: 'dimensions',
-              label: 'Kóty dle výkresu',
+              label: 'Kóty a rozměry',
               labels: { singular: 'Kóta', plural: 'Kóty' },
               type: 'array',
               admin: {
-                description: 'Rozměry z technického výkresu tvaru (A, E, Ch1, PN…). Z nich se generuje technický list (PDF).',
+                description:
+                  'Atributy pro technický list (PDF), cíl: z BC. Kóty = písmena z výkresu (A, B, Ch1, min…); ostatní (Rozměr trubky s jednotkou, Závit, PN, Pracovní rozsah…) jsou identifikace. Hodnoty stejné u všech položek tvaru se v listu ukážou jako parametry.',
                 initCollapsed: true,
               },
               fields: [
