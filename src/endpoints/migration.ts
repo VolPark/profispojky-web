@@ -14,7 +14,7 @@ type Ref = { $ref: CollectionSlug; key: string; value: string | number }
 type Item = Record<string, unknown>
 type Body =
   | { op: 'upsert'; collection: CollectionSlug; key: string; items: Item[]; onlyExisting?: boolean }
-  | { op: 'file'; collection: 'media' | 'documents'; force?: boolean; items: { fileUrl: string; filename: string; data: Item; matchExternalUrl?: string }[] }
+  | { op: 'file'; collection: 'media' | 'documents'; force?: boolean; items: { fileUrl?: string; fileBase64?: string; filename: string; data: Item; matchExternalUrl?: string }[] }
   | { op: 'trash'; collection: CollectionSlug; ids: (number | string)[] }
   | { op: 'global'; slug: 'site-settings' | 'homepage'; data: Item }
   | { op: 'find'; collection: CollectionSlug; where?: Where; select?: Record<string, true>; limit?: number; page?: number; trash?: boolean }
@@ -135,8 +135,9 @@ export const migrationEndpoint: Endpoint = {
           const data = (await resolve(item.data)) as Item
           const sourceUrl = data.sourceUrl as string
           try {
-            const host = new URL(item.fileUrl).hostname
-            if (!ALLOWED_FILE_HOSTS.includes(host)) throw new Error(`host ${host} není povolen`)
+            // Soubor buď ze starého webu, nebo přímo v požadavku (jen obrázky – ilustrace technických listů).
+            if (item.fileBase64 ? body.collection !== 'media' : !item.fileUrl) throw new Error('chybí soubor')
+            if (item.fileUrl && !ALLOWED_FILE_HOSTS.includes(new URL(item.fileUrl).hostname)) throw new Error('host není povolen')
             let existing = await findBy(body.collection, { sourceUrl: { equals: sourceUrl } })
             if (!existing && item.matchExternalUrl) {
               existing = await findBy(body.collection, { externalUrl: { equals: item.matchExternalUrl } })
@@ -147,10 +148,17 @@ export const migrationEndpoint: Endpoint = {
               results.push({ key: sourceUrl, id: existing.id, action: 'updated' })
               continue
             }
-            const res = await fetch(item.fileUrl, { signal: AbortSignal.timeout(60_000) })
-            if (!res.ok) throw new Error(`stažení ${res.status}`)
-            const buf = Buffer.from(await res.arrayBuffer())
-            const mimetype = (res.headers.get('content-type') || 'application/octet-stream').split(';')[0].trim()
+            let buf: Buffer
+            let mimetype: string
+            if (item.fileBase64) {
+              buf = Buffer.from(item.fileBase64, 'base64')
+              mimetype = /\.png$/i.test(item.filename) ? 'image/png' : 'image/jpeg'
+            } else {
+              const res = await fetch(item.fileUrl!, { signal: AbortSignal.timeout(60_000) })
+              if (!res.ok) throw new Error(`stažení ${res.status}`)
+              buf = Buffer.from(await res.arrayBuffer())
+              mimetype = (res.headers.get('content-type') || 'application/octet-stream').split(';')[0].trim()
+            }
             const file = { data: buf, mimetype, name: item.filename, size: buf.length }
             if (existing) {
               await payload.update({
