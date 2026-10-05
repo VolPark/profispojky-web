@@ -29,6 +29,7 @@ const SITE_SECTIONS = new Set([
   'kontakt',
   'nastavit-heslo',
   'soubory',
+  'uloziste',
   'technicky-list',
   'generuji-pdf',
   'health',

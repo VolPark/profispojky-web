@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import React from 'react'
 
+import { serverUrl } from '@/lib/preview'
 import { productParams } from '@/lib/static-params'
 import { Breadcrumbs } from '@/components/site/Breadcrumbs'
 import { Icon } from '@/components/site/Icon'
@@ -87,7 +88,7 @@ export default async function ProductPage({ params }: Props) {
     ...(product.ean ? { gtin13: product.ean } : {}),
     ...(product.subtitle ? { description: product.subtitle } : {}),
     ...(brand ? { brand: { '@type': 'Brand', name: brand.name } } : {}),
-    ...(img ? { image: img } : {}),
+    ...(img ? { image: new URL(img, serverUrl() || 'http://localhost').href } : {}),
   }
 
   return (
