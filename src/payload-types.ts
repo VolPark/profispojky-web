@@ -1830,6 +1830,9 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
 export interface Homepage {
   id: number;
   eyebrow?: string | null;
+  /**
+   * Část nadpisu v *hvězdičkách* se zvýrazní barvou, např. „Spojky a armatury pro *vodu, plyn a topení*“.
+   */
   title: string;
   lead?: string | null;
   stats?:
@@ -1839,9 +1842,23 @@ export interface Homepage {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Nepoužívá se – pás produktů pod úvodem se skládá z fotek řad.
+   */
   heroImages?: (number | Media)[] | null;
   featuredSeries?: (number | null) | Series;
   featuredText?: string | null;
+  /**
+   * Fotka firmy – sklad, stánek na veletrhu, tým. Na šířku.
+   */
+  storyImage?: (number | null) | Media;
+  pillars?:
+    | {
+        title: string;
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
   usps?:
     | {
         icon?: ('clock' | 'file' | 'pin' | 'tool' | 'check' | 'phone' | 'box') | null;
@@ -1898,6 +1915,14 @@ export interface HomepageSelect<T extends boolean = true> {
   heroImages?: T;
   featuredSeries?: T;
   featuredText?: T;
+  storyImage?: T;
+  pillars?:
+    | T
+    | {
+        title?: T;
+        text?: T;
+        id?: T;
+      };
   usps?:
     | T
     | {
