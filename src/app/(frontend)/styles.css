@@ -517,9 +517,9 @@ table.vt tr.cur { background: var(--tint); }
 
 /* čísla */
 .h-numbers { background: var(--ink); color: #fff; padding: clamp(80px, 10vw, 160px) 0; }
-.h-numbers .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0 48px; margin-top: 40px; }
+.h-numbers .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 48px; margin-top: 40px; }
 .h-numbers .grid > div { padding-top: 32px; border-top: 1px solid rgba(255,255,255,.16); }
-.h-numbers b { display: block; font-family: var(--f-display); font-weight: 600; font-size: clamp(72px, 10vw, 168px); line-height: .9; letter-spacing: -.05em; font-variant-numeric: tabular-nums; }
+.h-numbers b { display: block; font-family: var(--f-display); font-weight: 600; font-size: clamp(64px, 7.2vw, 132px); line-height: .9; letter-spacing: -.05em; font-variant-numeric: tabular-nums; }
 .h-numbers span { display: block; max-width: 22ch; margin-top: 20px; font-size: 17px; line-height: 1.5; color: var(--on-navy); }
 
 /* značky */
@@ -593,4 +593,47 @@ table.vt tr.cur { background: var(--tint); }
   .logos { grid-template-columns: repeat(3, 1fr); }
   .logos a { height: 88px; padding: 14px; }
   .logos img { max-height: 40px; }
+}
+
+/* úvodní stránka v2 – texty a animace */
+.h-title { margin-bottom: 28px; }
+.h-lead { font-size: clamp(17px, 1.35vw, 21px); line-height: 1.6; color: var(--gray); max-width: 46ch; margin-bottom: 40px; }
+.h-flow .drops circle { fill: var(--blue); opacity: 0; }
+@media (prefers-reduced-motion: no-preference) {
+  .motion .h-flow .drops circle { animation: h-drop-in .8s 3.2s forwards; }
+}
+@keyframes h-drop-in { to { opacity: .9; } }
+.h-big { color: #fff; font-size: clamp(36px, 5vw, 76px); line-height: 1.02; letter-spacing: -.03em; font-weight: 600; max-width: 18ch; margin-top: 18px; }
+.h-numbers .grid { margin-top: 64px; }
+.h-sub { font-size: 18px; line-height: 1.6; color: var(--gray); max-width: 56ch; margin-top: 18px; }
+.h-head .eyebrow + h2 { margin-top: 14px; }
+.h-story .photo .frame { display: block; overflow: hidden; border-radius: 4px; aspect-ratio: 4 / 3; }
+.h-story .photo .frame img { width: 100%; height: 100%; aspect-ratio: auto; object-fit: cover; border-radius: 0; will-change: transform; }
+.h-story .eyebrow + h2 { margin-top: 14px; }
+@media (prefers-reduced-motion: no-preference) {
+  .motion [data-wipe] .frame { clip-path: inset(0 100% 0 0); transition: clip-path 1.4s var(--ease); }
+  .motion [data-wipe].in .frame { clip-path: inset(0 0 0 0); }
+}
+.btn-ghost-light { background: transparent; color: #fff; border: 1.5px solid rgba(255,255,255,.35); }
+.btn-ghost-light:hover { border-color: #fff; color: #fff; }
+
+/* pás velkých slov */
+.h-band { overflow: hidden; padding: clamp(40px, 6vw, 88px) 0; border-top: 1px solid var(--border); }
+.h-band .row { display: flex; width: max-content; will-change: transform; }
+.h-band span { display: flex; align-items: center; }
+.h-band b { font-family: var(--f-display); font-weight: 600; font-size: clamp(64px, 11vw, 190px); line-height: 1; letter-spacing: -.04em; color: var(--navy); padding: 0 .18em; white-space: nowrap; }
+.h-band b.o { color: transparent; -webkit-text-stroke: 1.5px var(--navy); }
+.h-band i { display: inline-block; width: .55em; height: .55em; font-size: clamp(32px, 5vw, 80px); border-radius: 50%; background: var(--blue); margin: 0 .3em; flex-shrink: 0; }
+
+/* závěrečná výzva */
+.h-cta { background: linear-gradient(120deg, var(--ink) 0%, var(--navy) 60%, var(--blue-dark) 140%); color: var(--on-navy); padding: clamp(80px, 10vw, 150px) 0; position: relative; overflow: hidden; }
+.h-cta .container { display: flex; align-items: flex-end; justify-content: space-between; gap: 48px; flex-wrap: wrap; }
+.h-cta .num { font-family: var(--f-display); font-weight: 600; font-size: clamp(88px, 13vw, 220px); line-height: .85; letter-spacing: -.05em; color: var(--blue); margin-bottom: 24px; }
+.h-cta h2 { color: #fff; font-size: clamp(32px, 4.4vw, 64px); line-height: 1.05; letter-spacing: -.025em; font-weight: 600; max-width: 16ch; }
+.h-cta p { font-size: 18px; line-height: 1.6; margin-top: 18px; max-width: 46ch; }
+.h-cta .btns { display: flex; gap: 12px; flex-wrap: wrap; }
+@media (max-width: 600px) {
+  .h-lead { margin-bottom: 28px; }
+  .h-cta .btns { width: 100%; }
+  .h-cta .btns .btn { flex: 1; white-space: nowrap; padding: 0 16px; font-size: 16px; }
 }

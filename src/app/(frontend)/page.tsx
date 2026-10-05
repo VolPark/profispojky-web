@@ -6,6 +6,7 @@ import { ProductTypes } from '@/components/site/DivisionGrid'
 import { HomeMotion } from '@/components/site/home/HomeMotion'
 import { Icon } from '@/components/site/Icon'
 import { formatDate } from '@/lib/format'
+import { homeText, type HomeCopyKey } from '@/lib/home-copy'
 import { newsCategoryLabel as categoryLabel } from '@/lib/news'
 import { asMedia, mediaAlt, mediaUrl } from '@/lib/media'
 import {
@@ -32,7 +33,7 @@ const LIB_TILES = [
 
 /** „Spojky pro *vodu, plyn*“ → slova pro postupné zobrazení, část v hvězdičkách zvýrazněná. */
 function titleWords(title: string) {
-  return title.split(/(\*[^*]+\*)/).flatMap((part) => {
+  const words = title.split(/(\*[^*]+\*)/).flatMap((part) => {
     const accent = part.startsWith('*') && part.endsWith('*')
     return part
       .replace(/^\*|\*$/g, '')
@@ -40,6 +41,12 @@ function titleWords(title: string) {
       .filter(Boolean)
       .map((w) => ({ w, accent }))
   })
+  // samotná interpunkce za zvýrazněním („*teplo*.“) patří k předchozímu slovu
+  return words.reduce<typeof words>((acc, x) => {
+    if (acc.length && /^[.,!?;:…]+$/.test(x.w)) acc[acc.length - 1] = { ...acc[acc.length - 1], w: acc[acc.length - 1].w + x.w }
+    else acc.push(x)
+    return acc
+  }, [])
 }
 
 export default async function HomePage() {
@@ -58,7 +65,13 @@ export default async function HomePage() {
   const strip = series.filter((s) => (asMedia(s.image)?.width ?? 0) >= 500 && s.slug).slice(0, 16)
   const story = asMedia(home.storyImage)
   const words = titleWords(home.title)
-  const manifesto = (home.lead ?? '').split(/\s+/).filter(Boolean)
+  const t = (k: HomeCopyKey) => homeText(home.copy, k)
+  const manifesto = t('manifesto').split(/\s+/).filter(Boolean)
+  const band = t('bandWords')
+    .split('·')
+    .map((w) => w.trim())
+    .filter(Boolean)
+  const dealerStat = home.stats?.find((x) => /prodej/i.test(x.label))
 
   return (
     <div className="home">
@@ -71,9 +84,27 @@ export default async function HomePage() {
       {/* 1 – úvod: značka, ne katalog */}
       <section className="h-hero" aria-labelledby="h-title">
         <svg className="h-flow" viewBox="0 0 1440 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-          <path d="M-40 620 C 240 620 300 380 560 380 S 900 560 1120 470 S 1380 200 1500 220" />
-          <path d="M-40 690 C 260 690 360 470 600 470 S 960 640 1180 560 S 1400 320 1500 330" />
-          <path d="M-40 560 C 200 560 260 300 520 300 S 860 470 1080 380 S 1360 90 1500 110" />
+          <g className="lines">
+            <path id="hf1" d="M-40 620 C 240 620 300 380 560 380 S 900 560 1120 470 S 1380 200 1500 220" />
+            <path id="hf2" d="M-40 690 C 260 690 360 470 600 470 S 960 640 1180 560 S 1400 320 1500 330" />
+            <path id="hf3" d="M-40 560 C 200 560 260 300 520 300 S 860 470 1080 380 S 1360 90 1500 110" />
+          </g>
+          {/* kapky, které potrubím „tečou“ */}
+          <g className="drops">
+            {[
+              ['hf1', 9, 0],
+              ['hf1', 9, 4.5],
+              ['hf2', 12, 2],
+              ['hf2', 12, 8],
+              ['hf3', 14, 6],
+            ].map(([id, dur, begin], i) => (
+              <circle key={i} r={i % 2 ? 3 : 4.5}>
+                <animateMotion dur={`${dur}s`} begin={`${begin}s`} repeatCount="indefinite" rotate="auto">
+                  <mpath href={`#${id}`} />
+                </animateMotion>
+              </circle>
+            ))}
+          </g>
         </svg>
         <div className="container h-hero-in">
           {home.eyebrow && (
@@ -90,6 +121,11 @@ export default async function HomePage() {
               </React.Fragment>
             ))}
           </h1>
+          {home.lead && (
+            <p className="h-lead" data-reveal>
+              {home.lead}
+            </p>
+          )}
           <div className="h-hero-foot" data-reveal>
             <div className="ctas">
               <Link className="btn btn-navy btn-lg" href={urls.products}>
@@ -164,7 +200,12 @@ export default async function HomePage() {
       {!!home.stats?.length && (
         <section className="h-numbers on-dark" aria-label="PROFI SPOJKY v číslech">
           <div className="container">
-            <div className="eyebrow">PROFI SPOJKY v číslech</div>
+            <div className="eyebrow" data-reveal>
+              PROFI SPOJKY v číslech
+            </div>
+            <h2 className="h-big" data-reveal>
+              {t('numbersTitle')}
+            </h2>
             <div className="grid">
               {home.stats.map((s) => (
                 <div key={s.id} data-reveal>
@@ -182,7 +223,11 @@ export default async function HomePage() {
         <section className="h-brands" aria-labelledby="znacky-h">
           <div className="container">
             <div className="h-head" data-reveal>
-              <h2 id="znacky-h">Značky, které zastupujeme</h2>
+              <div>
+                <div className="eyebrow">Značky, které zastupujeme</div>
+                <h2 id="znacky-h">{t('brandsTitle')}</h2>
+                <p className="h-sub">{t('brandsText')}</p>
+              </div>
               <Link className="link-arrow" href={urls.brands}>
                 Všechny značky
                 <Icon name="arrow" />
@@ -206,14 +251,19 @@ export default async function HomePage() {
         <section className="h-story on-dark" aria-labelledby="story-h">
           <div className="container">
             {story && (
-              <figure className="photo" data-reveal>
-                <img src={mediaUrl(story, 'large') ?? ''} alt={mediaAlt(story)} loading="lazy" />
+              <figure className="photo" data-wipe>
+                <span className="frame">
+                  <img src={mediaUrl(story, 'large') ?? ''} alt={mediaAlt(story)} loading="lazy" data-parallax />
+                </span>
                 {story.alt && <figcaption>{story.alt}</figcaption>}
               </figure>
             )}
             <div>
-              <h2 id="story-h" data-reveal>
+              <div className="eyebrow" data-reveal>
                 Co pro vás děláme
+              </div>
+              <h2 id="story-h" data-reveal>
+                {t('storyTitle')}
               </h2>
               <ol className="pillars">
                 {home.pillars.map((p, i) => (
@@ -231,13 +281,31 @@ export default async function HomePage() {
         </section>
       )}
 
+      {/* pás velkých slov – posouvá se se scrollem */}
+      {band.length > 0 && (
+        <div className="h-band" aria-hidden="true">
+          <div className="row" data-drift>
+            {[0, 1, 2].map((k) => (
+              <span key={k}>
+                {band.map((w, i) => (
+                  <React.Fragment key={i}>
+                    <b className={i % 2 ? 'o' : undefined}>{w}</b>
+                    <i />
+                  </React.Fragment>
+                ))}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* 7 – sortiment */}
       <section className="h-divisions" aria-labelledby="divize-h">
         <div className="container">
           <div className="h-head" data-reveal>
             <div>
               <div className="eyebrow">Sortiment</div>
-              <h2 id="divize-h">Produktové divize</h2>
+              <h2 id="divize-h">{t('divisionsTitle')}</h2>
             </div>
             <Link className="link-arrow" href={urls.products}>
               Všechny produkty
@@ -272,7 +340,7 @@ export default async function HomePage() {
         <div className="container h-find" data-reveal>
           <form action="/katalog" role="search">
             <label className="h-find-l" htmlFor="home-q">
-              Hledáte konkrétní výrobek?
+              {t('findTitle')}
             </label>
             <div className="search-row">
               <div className="input-icon">
@@ -285,6 +353,31 @@ export default async function HomePage() {
             </div>
           </form>
           <ProductTypes types={types} />
+        </div>
+      </section>
+
+      {/* závěrečná výzva */}
+      <section className="h-cta on-dark" aria-labelledby="cta-h">
+        <div className="container">
+          <div data-reveal>
+            {dealerStat && (
+              <div className="num" data-count>
+                {dealerStat.value}
+              </div>
+            )}
+            <h2 id="cta-h">{t('ctaTitle')}</h2>
+            <p>{t('ctaText')}</p>
+          </div>
+          <div className="btns" data-reveal>
+            <Link className="btn btn-primary btn-lg" href={urls.dealers}>
+              <Icon name="pin" />
+              Najít prodejce
+            </Link>
+            <Link className="btn btn-ghost-light btn-lg" href={urls.contact}>
+              Kontaktujte nás
+              <Icon name="arrow" />
+            </Link>
+          </div>
         </div>
       </section>
 

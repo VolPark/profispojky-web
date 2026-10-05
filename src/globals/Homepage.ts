@@ -1,6 +1,20 @@
-import type { GlobalConfig } from 'payload'
+import type { Field, GlobalConfig } from 'payload'
 
 import { anyone, staff } from '@/access/roles'
+import { HOME_COPY, type HomeCopyKey } from '@/lib/home-copy'
+
+const LABELS: Record<HomeCopyKey, string> = {
+  manifesto: 'Manifest (text, který se při scrollu rozsvěcuje)',
+  numbersTitle: 'Nadpis sekce s čísly',
+  brandsTitle: 'Nadpis sekce značek',
+  brandsText: 'Text sekce značek',
+  storyTitle: 'Nadpis bloku Kdo jsme',
+  divisionsTitle: 'Nadpis sekce divizí',
+  findTitle: 'Nadpis hledání',
+  bandWords: 'Běžící pás velkých slov (oddělte tečkou ·)',
+  ctaTitle: 'Závěrečná výzva – nadpis',
+  ctaText: 'Závěrečná výzva – text',
+}
 
 export const Homepage: GlobalConfig = {
   slug: 'homepage',
@@ -73,6 +87,18 @@ export const Homepage: GlobalConfig = {
           ],
         },
       ],
+    },
+    {
+      name: 'copy',
+      label: 'Texty sekcí',
+      type: 'group',
+      admin: { description: 'Prázdné pole = výchozí text (uvedený pod polem).' },
+      fields: (Object.keys(HOME_COPY) as HomeCopyKey[]).map(
+        (key): Field =>
+          HOME_COPY[key].length > 80
+            ? { name: key, label: LABELS[key], type: 'textarea', admin: { description: `Výchozí: ${HOME_COPY[key]}` } }
+            : { name: key, label: LABELS[key], type: 'text', admin: { description: `Výchozí: ${HOME_COPY[key]}` } },
+      ),
     },
     {
       name: 'usps',
