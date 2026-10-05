@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server'
 
+import { siteFileUrl } from '@/lib/media'
 import { getPayloadClient } from '@/lib/payload'
 
 /**
@@ -21,7 +22,8 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ nam
     })
     const url = docs[0]?.url
     if (!url) return new NextResponse('Soubor nenalezen', { status: 404, headers: { 'Cache-Control': 'public, s-maxage=300' } })
-    return NextResponse.redirect(new URL(url, _req.nextUrl.origin), {
+    // přes doménu webu (/uloziste/…), ne přímo na doménu úložiště – firemní sítě ji blokují
+    return NextResponse.redirect(new URL(siteFileUrl(url), _req.nextUrl.origin), {
       status: 302,
       headers: { 'Cache-Control': 'public, max-age=300, s-maxage=3600, stale-while-revalidate=604800' },
     })
