@@ -33,37 +33,26 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE INDEX "_homepage_v_version_version_story_image_idx" ON "_homepage_v" USING btree ("version_story_image_id");`)
 
   // Výchozí obsah nového bloku „Kdo jsme“ – texty ze stránky O firmě; vyplní se jen prázdná pole.
-  const home = await payload.findGlobal({ slug: 'homepage', depth: 0, req })
-  const data: Record<string, unknown> = {}
-  if (!home.pillars?.length) {
-    data.pillars = [
-      {
-        title: 'Dovoz a certifikace',
-        text: 'Zastupujeme dvanáct zahraničních výrobců a staráme se o platnost certifikátů výrobků dle požadavků legislativy. Certifikáty mají každoroční dohled vydavatele.',
-      },
-      {
-        title: 'Centrální sklad',
-        text: 'Zboží distribuujeme partnerům z centrálního skladu v Jesenici u Prahy. Skladové zboží dodáváme do 48 hodin.',
-      },
-      {
-        title: 'Školení a poradenství',
-        text: 'Obchodní a technické poradenství a školení pro partnery v České republice i na Slovensku.',
-      },
-    ]
-  }
-  if (!home.storyImage) {
-    const photos = await payload.find({
-      collection: 'media',
-      where: { filename: { like: 'veletrh-vodovody-kanalizace-2025' } },
-      depth: 0,
-      limit: 10,
-      req,
-    })
-    const landscape = photos.docs.find((m) => (m.width ?? 0) > (m.height ?? 0))
-    if (landscape) data.storyImage = landscape.id
-  }
-  if (home.title === 'Spojky a armatury pro vodu, plyn a topení') data.title = 'Spojky a armatury pro *vodu, plyn a topení*'
-  if (Object.keys(data).length) await payload.updateGlobal({ slug: 'homepage', data, depth: 0, req })
+  // Čisté SQL: Payload API by četlo podle aktuální konfigurace, která může mít sloupce z pozdějších migrací.
+  await db.execute(sql`
+    INSERT INTO "homepage_pillars" ("_order", "_parent_id", "id", "title", "text")
+    SELECT v.ord, h.id, substr(md5(random()::text || v.ord), 1, 24), v.title, v.body
+    FROM "homepage" h
+    CROSS JOIN (VALUES
+      (1, 'Dovoz a certifikace', 'Zastupujeme dvanáct zahraničních výrobců a staráme se o platnost certifikátů výrobků dle požadavků legislativy. Certifikáty mají každoroční dohled vydavatele.'),
+      (2, 'Centrální sklad', 'Zboží distribuujeme partnerům z centrálního skladu v Jesenici u Prahy. Skladové zboží dodáváme do 48 hodin.'),
+      (3, 'Školení a poradenství', 'Obchodní a technické poradenství a školení pro partnery v České republice i na Slovensku.')
+    ) AS v(ord, title, body)
+    WHERE NOT EXISTS (SELECT 1 FROM "homepage_pillars" p WHERE p."_parent_id" = h.id);
+
+    UPDATE "homepage" SET "story_image_id" = (
+      SELECT m.id FROM "media" m
+      WHERE m.filename LIKE 'veletrh-vodovody-kanalizace-2025%' AND m.width > m.height
+      ORDER BY m.id LIMIT 1
+    ) WHERE "story_image_id" IS NULL;
+
+    UPDATE "homepage" SET "title" = 'Spojky a armatury pro *vodu, plyn a topení*'
+    WHERE "title" = 'Spojky a armatury pro vodu, plyn a topení';`)
 }
 
 export async function down({ db, payload, req }: MigrateDownArgs): Promise<void> {
