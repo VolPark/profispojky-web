@@ -1830,6 +1830,9 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
 export interface Homepage {
   id: number;
   eyebrow?: string | null;
+  /**
+   * Část nadpisu v *hvězdičkách* se zvýrazní barvou, např. „Spojky a armatury pro *vodu, plyn a topení*“.
+   */
   title: string;
   lead?: string | null;
   stats?:
@@ -1839,9 +1842,68 @@ export interface Homepage {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Nepoužívá se – pás produktů pod úvodem se skládá z fotek řad.
+   */
   heroImages?: (number | Media)[] | null;
   featuredSeries?: (number | null) | Series;
   featuredText?: string | null;
+  /**
+   * Fotka firmy – sklad, stánek na veletrhu, tým. Na šířku.
+   */
+  storyImage?: (number | null) | Media;
+  pillars?:
+    | {
+        title: string;
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Prázdné pole = výchozí text (uvedený pod polem).
+   */
+  copy?: {
+    /**
+     * Výchozí: Za každým spojem je voda, která má téct, plyn, který nesmí uniknout, a teplo, které má zůstat doma. Proto pečlivě vybíráme výrobce, hlídáme certifikace a držíme zboží skladem. Aby vaše práce vydržela.
+     */
+    manifesto?: string | null;
+    /**
+     * Výchozí: Čísla, za kterými si stojíme.
+     */
+    numbersTitle?: string | null;
+    /**
+     * Výchozí: Dvanáct výrobců. Jeden partner.
+     */
+    brandsTitle?: string | null;
+    /**
+     * Výchozí: Zastupujeme zahraniční výrobce spojovací techniky a armatur. Jejich produkty pro vás dovážíme, hlídáme jejich certifikaci pro český trh a máme je skladem.
+     */
+    brandsText?: string | null;
+    /**
+     * Výchozí: Víc než dovozce
+     */
+    storyTitle?: string | null;
+    /**
+     * Výchozí: Plast, mosaz, litina. Vyberte materiál.
+     */
+    divisionsTitle?: string | null;
+    /**
+     * Výchozí: Víte přesně, co hledáte?
+     */
+    findTitle?: string | null;
+    /**
+     * Výchozí: Voda · Plyn · Topení
+     */
+    bandWords?: string | null;
+    /**
+     * Výchozí: Kupte u partnera ve svém okolí.
+     */
+    ctaTitle?: string | null;
+    /**
+     * Výchozí: Naše produkty najdete na více než 200 prodejních místech v Česku a na Slovensku.
+     */
+    ctaText?: string | null;
+  };
   usps?:
     | {
         icon?: ('clock' | 'file' | 'pin' | 'tool' | 'check' | 'phone' | 'box') | null;
@@ -1898,6 +1960,28 @@ export interface HomepageSelect<T extends boolean = true> {
   heroImages?: T;
   featuredSeries?: T;
   featuredText?: T;
+  storyImage?: T;
+  pillars?:
+    | T
+    | {
+        title?: T;
+        text?: T;
+        id?: T;
+      };
+  copy?:
+    | T
+    | {
+        manifesto?: T;
+        numbersTitle?: T;
+        brandsTitle?: T;
+        brandsText?: T;
+        storyTitle?: T;
+        divisionsTitle?: T;
+        findTitle?: T;
+        bandWords?: T;
+        ctaTitle?: T;
+        ctaText?: T;
+      };
   usps?:
     | T
     | {

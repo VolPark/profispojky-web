@@ -2,12 +2,23 @@
 import Link from 'next/link'
 import React from 'react'
 
-import { DivisionGrid, ProductTypes } from '@/components/site/DivisionGrid'
+import { ProductTypes } from '@/components/site/DivisionGrid'
+import { HomeMotion } from '@/components/site/home/HomeMotion'
 import { Icon } from '@/components/site/Icon'
 import { formatDate } from '@/lib/format'
+import { homeText, type HomeCopyKey } from '@/lib/home-copy'
 import { newsCategoryLabel as categoryLabel } from '@/lib/news'
-import { mediaAlt, mediaUrl } from '@/lib/media'
-import { getBrandsByDivision, getDivisions, getHomepage, getNewsList, getProductTypes, rel } from '@/lib/queries'
+import { asMedia, mediaAlt, mediaUrl } from '@/lib/media'
+import {
+  getAllSeries,
+  getBrandLogos,
+  getBrandsByDivision,
+  getDivisions,
+  getHomepage,
+  getNewsList,
+  getProductTypes,
+  rel,
+} from '@/lib/queries'
 import { urls } from '@/lib/urls'
 import type { Brand, Series } from '@/payload-types'
 
@@ -20,129 +31,361 @@ const LIB_TILES = [
   { icon: 'play', title: 'Videa', sub: 'Ukázky montáže', t: 'video' },
 ]
 
+/** „Spojky pro *vodu, plyn*“ → slova pro postupné zobrazení, část v hvězdičkách zvýrazněná. */
+function titleWords(title: string) {
+  const words = title.split(/(\*[^*]+\*)/).flatMap((part) => {
+    const accent = part.startsWith('*') && part.endsWith('*')
+    return part
+      .replace(/^\*|\*$/g, '')
+      .split(/\s+/)
+      .filter(Boolean)
+      .map((w) => ({ w, accent }))
+  })
+  // samotná interpunkce za zvýrazněním („*teplo*.“) patří k předchozímu slovu
+  return words.reduce<typeof words>((acc, x) => {
+    if (acc.length && /^[.,!?;:…]+$/.test(x.w)) acc[acc.length - 1] = { ...acc[acc.length - 1], w: acc[acc.length - 1].w + x.w }
+    else acc.push(x)
+    return acc
+  }, [])
+}
+
 export default async function HomePage() {
-  const [home, divisions, brandsByDivision, types, news] = await Promise.all([
+  const [home, divisions, brandsByDivision, types, news, series, brandLogos] = await Promise.all([
     getHomepage(),
     getDivisions(),
     getBrandsByDivision(),
     getProductTypes(),
     getNewsList(3),
+    getAllSeries(),
+    getBrandLogos(),
   ])
   const featured = rel<Series>(home.featuredSeries)
-  const heroImgs = (home.heroImages ?? []).slice(0, 3)
   const [lead, ...rest] = news
+  // pás produktů: řady s dostatečně velkou fotkou
+  const strip = series.filter((s) => (asMedia(s.image)?.width ?? 0) >= 500 && s.slug).slice(0, 16)
+  const story = asMedia(home.storyImage)
+  const words = titleWords(home.title)
+  const t = (k: HomeCopyKey) => homeText(home.copy, k)
+  const manifesto = t('manifesto').split(/\s+/).filter(Boolean)
+  const band = t('bandWords')
+    .split('·')
+    .map((w) => w.trim())
+    .filter(Boolean)
+  const dealerStat = home.stats?.find((x) => /prodej/i.test(x.label))
 
   return (
-    <>
-      <section className="hero">
-        <div className="container">
-          <div>
-            {home.eyebrow && <div className="eyebrow">{home.eyebrow}</div>}
-            <h1>{home.title}</h1>
-            {home.lead && <p className="lead">{home.lead}</p>}
-            <form action="/katalog" role="search">
-              <label className="label" htmlFor="hero-q">
-                Hledat v katalogu
-              </label>
-              <div className="search-row" style={{ marginTop: 8 }}>
-                <div className="input-icon">
-                  <Icon name="search" />
-                  <input
-                    id="hero-q"
-                    className="input"
-                    style={{ height: 56 }}
-                    type="search"
-                    name="q"
-                    placeholder="Kód, název nebo rozměr – např. 30000007, BA 32"
-                  />
-                </div>
-                <button className="btn btn-navy" style={{ minHeight: 56 }} type="submit">
-                  Hledat
-                </button>
-              </div>
-            </form>
+    <div className="home">
+      {/* animace zapnout ještě před vykreslením, ať obsah při načtení neproblikne */}
+      <script
+        dangerouslySetInnerHTML={{
+          __html: "if(!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('motion')",
+        }}
+      />
+      {/* 1 – úvod: značka, ne katalog */}
+      <section className="h-hero" aria-labelledby="h-title">
+        <svg className="h-flow" viewBox="0 0 1440 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <g className="lines">
+            <path id="hf1" d="M-40 620 C 240 620 300 380 560 380 S 900 560 1120 470 S 1380 200 1500 220" />
+            <path id="hf2" d="M-40 690 C 260 690 360 470 600 470 S 960 640 1180 560 S 1400 320 1500 330" />
+            <path id="hf3" d="M-40 560 C 200 560 260 300 520 300 S 860 470 1080 380 S 1360 90 1500 110" />
+          </g>
+          {/* kapky, které potrubím „tečou“ */}
+          <g className="drops">
+            {[
+              ['hf1', 9, 0],
+              ['hf1', 9, 4.5],
+              ['hf2', 12, 2],
+              ['hf2', 12, 8],
+              ['hf3', 14, 6],
+            ].map(([id, dur, begin], i) => (
+              <circle key={i} r={i % 2 ? 3 : 4.5}>
+                <animateMotion dur={`${dur}s`} begin={`${begin}s`} repeatCount="indefinite" rotate="auto">
+                  <mpath href={`#${id}`} />
+                </animateMotion>
+              </circle>
+            ))}
+          </g>
+        </svg>
+        <div className="container h-hero-in">
+          {home.eyebrow && (
+            <div className="eyebrow" data-reveal>
+              {home.eyebrow}
+            </div>
+          )}
+          <h1 id="h-title" className="h-title">
+            {words.map(({ w, accent }, i) => (
+              <React.Fragment key={i}>
+                <span className={accent ? 'w acc' : 'w'} style={{ '--i': i } as React.CSSProperties}>
+                  <span>{w}</span>
+                </span>{' '}
+              </React.Fragment>
+            ))}
+          </h1>
+          {home.lead && (
+            <p className="h-lead" data-reveal>
+              {home.lead}
+            </p>
+          )}
+          <div className="h-hero-foot" data-reveal>
             <div className="ctas">
-              <Link className="btn btn-primary" href={urls.products}>
+              <Link className="btn btn-navy btn-lg" href={urls.products}>
                 Katalog produktů
                 <Icon name="arrow" />
               </Link>
-              <Link className="btn btn-outline" href={urls.dealers}>
+              <Link className="btn btn-ghost btn-lg" href={urls.dealers}>
                 <Icon name="pin" />
                 Kde koupit
               </Link>
             </div>
-            {!!home.stats?.length && (
-              <div className="stats">
-                {home.stats.map((s) => (
-                  <div key={s.id}>
-                    <b>{s.value}</b>
-                    <span>{s.label}</span>
-                  </div>
-                ))}
-              </div>
+            {featured?.slug && (
+              <Link className="h-featured" href={urls.series(featured.slug)}>
+                <span className="k">{rel<Brand>(featured.brand)?.name} {featured.name}</span>
+                <b>{home.featuredText || featured.summary}</b>
+                <Icon name="arrow" />
+              </Link>
             )}
+            <a className="h-scroll" href="#kdo-jsme" aria-label="Pokračovat dolů">
+              <span>Scroll</span>
+            </a>
           </div>
-          {heroImgs.length > 0 && (
-            <div className="hero-visual">
-              {heroImgs.map((img, i) => (
-                <img key={i} className={`hv${i + 1}`} src={mediaUrl(img, 'card') ?? ''} alt={mediaAlt(img)} />
-              ))}
-              {featured?.slug && (
-                <Link className="hv-tag" href={urls.series(featured.slug)}>
-                  <span className="chip">
-                    {rel<Brand>(featured.brand)?.name} {featured.name}
-                  </span>
-                  <b>{home.featuredText || featured.summary}</b>
-                  <span className="link-arrow">
-                    Zobrazit řadu
-                    <Icon name="arrow" />
-                  </span>
-                </Link>
-              )}
-            </div>
-          )}
         </div>
       </section>
 
-      <section className="section" aria-labelledby="divize-h">
+      {/* 2 – pás produktů */}
+      {strip.length > 3 && (
+        <section className="h-strip" aria-label="Výběr z produktových řad">
+          <div className="track">
+            {[0, 1].map((copy) => (
+              <ul key={copy} aria-hidden={copy === 1 || undefined}>
+                {strip.map((s) => (
+                  <li key={s.id}>
+                    <Link href={urls.series(s.slug!)} tabIndex={copy === 1 ? -1 : undefined}>
+                      <span className="ph">
+                        <img src={mediaUrl(s.image, 'card') ?? ''} alt="" loading="lazy" />
+                      </span>
+                      <span className="cap">
+                        <small>{rel<Brand>(s.brand)?.name}</small>
+                        {s.name}
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* 3 – manifest */}
+      {manifesto.length > 0 && (
+        <section id="kdo-jsme" className="h-manifesto" aria-label="Kdo jsme">
+          <div className="container">
+            <div className="side">Kdo jsme</div>
+            <div>
+              <p className="big" data-fill>
+                {manifesto.map((w, i) => (
+                  <span key={i}>{w} </span>
+                ))}
+              </p>
+              <Link className="link-arrow" href={urls.page('o-firme')}>
+                O firmě
+                <Icon name="arrow" />
+              </Link>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* 4 – čísla */}
+      {!!home.stats?.length && (
+        <section className="h-numbers on-dark" aria-label="PROFI SPOJKY v číslech">
+          <div className="container">
+            <div className="eyebrow" data-reveal>
+              PROFI SPOJKY v číslech
+            </div>
+            <h2 className="h-big" data-reveal>
+              {t('numbersTitle')}
+            </h2>
+            <div className="grid">
+              {home.stats.map((s) => (
+                <div key={s.id} data-reveal>
+                  <b data-count>{s.value}</b>
+                  <span>{s.label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* 5 – značky */}
+      {brandLogos.length > 0 && (
+        <section className="h-brands" aria-labelledby="znacky-h">
+          <div className="container">
+            <div className="h-head" data-reveal>
+              <div>
+                <div className="eyebrow">Značky, které zastupujeme</div>
+                <h2 id="znacky-h">{t('brandsTitle')}</h2>
+                <p className="h-sub">{t('brandsText')}</p>
+              </div>
+              <Link className="link-arrow" href={urls.brands}>
+                Všechny značky
+                <Icon name="arrow" />
+              </Link>
+            </div>
+            <ul className="logos">
+              {brandLogos.map((b) => (
+                <li key={b.id} data-reveal>
+                  <Link href={urls.brands} title={b.name}>
+                    <img src={mediaUrl(b.logo, 'card') ?? ''} alt={b.name} loading="lazy" />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
+
+      {/* 6 – co děláme */}
+      {!!home.pillars?.length && (
+        <section className="h-story on-dark" aria-labelledby="story-h">
+          <div className="container">
+            {story && (
+              <figure className="photo" data-wipe>
+                <span className="frame">
+                  <img src={mediaUrl(story, 'large') ?? ''} alt={mediaAlt(story)} loading="lazy" data-parallax />
+                </span>
+                {story.alt && <figcaption>{story.alt}</figcaption>}
+              </figure>
+            )}
+            <div>
+              <div className="eyebrow" data-reveal>
+                Co pro vás děláme
+              </div>
+              <h2 id="story-h" data-reveal>
+                {t('storyTitle')}
+              </h2>
+              <ol className="pillars">
+                {home.pillars.map((p, i) => (
+                  <li key={p.id} data-reveal>
+                    <span className="n">{String(i + 1).padStart(2, '0')}</span>
+                    <div>
+                      <h3>{p.title}</h3>
+                      <p>{p.text}</p>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* pás velkých slov – posouvá se se scrollem */}
+      {band.length > 0 && (
+        <div className="h-band" aria-hidden="true">
+          <div className="row" data-drift>
+            {[0, 1, 2].map((k) => (
+              <span key={k}>
+                {band.map((w, i) => (
+                  <React.Fragment key={i}>
+                    <b className={i % 2 ? 'o' : undefined}>{w}</b>
+                    <i />
+                  </React.Fragment>
+                ))}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* 7 – sortiment */}
+      <section className="h-divisions" aria-labelledby="divize-h">
         <div className="container">
-          <div className="sec-head">
+          <div className="h-head" data-reveal>
             <div>
               <div className="eyebrow">Sortiment</div>
-              <h2 id="divize-h" style={{ marginTop: 12 }}>
-                Produktové divize
-              </h2>
-              <p>Sortiment rozdělený podle materiálu. Každá divize obsahuje přehled značek a katalog s technickými parametry.</p>
+              <h2 id="divize-h">{t('divisionsTitle')}</h2>
             </div>
             <Link className="link-arrow" href={urls.products}>
               Všechny produkty
               <Icon name="arrow" />
             </Link>
           </div>
-          <DivisionGrid divisions={divisions} brandsByDivision={brandsByDivision} />
+        </div>
+        <div className="d-tiles">
+          {divisions.map((d, i) => {
+            const brands = brandsByDivision.get(d.id) ?? []
+            const inner = (
+              <>
+                <span className="img">{mediaUrl(d.image, 'card') && <img src={mediaUrl(d.image, 'card')!} alt="" loading="lazy" />}</span>
+                <span className="n">{String(i + 1).padStart(2, '0')}</span>
+                <span className="t">{d.name}</span>
+                <span className="p">{d.perex}</span>
+                {brands.length > 0 && <span className="b">{brands.map((b) => b.name).join(' · ')}</span>}
+                {d.status === 'upcoming' ? <span className="chip">Připravujeme</span> : <Icon name="arrow" />}
+              </>
+            )
+            return d.status === 'upcoming' ? (
+              <div key={d.id} className="d-tile soon" data-reveal>
+                {inner}
+              </div>
+            ) : (
+              <Link key={d.id} className="d-tile" href={urls.division(d.slug!)} data-reveal>
+                {inner}
+              </Link>
+            )
+          })}
+        </div>
+        <div className="container h-find" data-reveal>
+          <form action="/katalog" role="search">
+            <label className="h-find-l" htmlFor="home-q">
+              {t('findTitle')}
+            </label>
+            <div className="search-row">
+              <div className="input-icon">
+                <Icon name="search" />
+                <input id="home-q" className="input" type="search" name="q" placeholder="Kód, název nebo rozměr – např. 30000007, BA 32" />
+              </div>
+              <button className="btn btn-navy" type="submit">
+                Hledat
+              </button>
+            </div>
+          </form>
           <ProductTypes types={types} />
         </div>
       </section>
 
-      {!!home.usps?.length && (
-        <section className="usp" aria-label="Výhody">
-          <div className="container">
-            {home.usps.map((u) => (
-              <div key={u.id} className="item">
-                <span className="ibox">
-                  <Icon name={u.icon ?? 'check'} />
-                </span>
-                {u.text}
+      {/* závěrečná výzva */}
+      <section className="h-cta on-dark" aria-labelledby="cta-h">
+        <div className="container">
+          <div data-reveal>
+            {dealerStat && (
+              <div className="num" data-count>
+                {dealerStat.value}
               </div>
-            ))}
+            )}
+            <h2 id="cta-h">{t('ctaTitle')}</h2>
+            <p>{t('ctaText')}</p>
           </div>
-        </section>
-      )}
+          <div className="btns" data-reveal>
+            <Link className="btn btn-primary btn-lg" href={urls.dealers}>
+              <Icon name="pin" />
+              Najít prodejce
+            </Link>
+            <Link className="btn btn-ghost-light btn-lg" href={urls.contact}>
+              Kontaktujte nás
+              <Icon name="arrow" />
+            </Link>
+          </div>
+        </div>
+      </section>
 
+      {/* 8 – aktuality */}
       {lead && (
         <section className="section section-alt" aria-labelledby="news-h">
           <div className="container">
-            <div className="sec-head">
+            <div className="h-head" data-reveal>
               <h2 id="news-h">Aktuality</h2>
               <Link className="link-arrow" href={urls.news}>
                 Všechny aktuality
@@ -183,6 +426,7 @@ export default async function HomePage() {
         </section>
       )}
 
+      {/* 9 – knihovna */}
       <section className="section" aria-labelledby="lib-h">
         <div className="container lib-teaser">
           <div>
@@ -210,6 +454,7 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
-    </>
+      <HomeMotion />
+    </div>
   )
 }

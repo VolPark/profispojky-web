@@ -71,6 +71,13 @@ export const getBrandsOverview = cache(async () => {
   })
 })
 
+/** Značky s logem – pás log na úvodní stránce. */
+export const getBrandLogos = cache(async () => {
+  const payload = await getPayloadClient()
+  const res = await payload.find({ collection: 'brands', sort: 'order', depth: 1, pagination: false, select: { name: true, slug: true, logo: true } })
+  return res.docs.filter((b) => b.logo && typeof b.logo === 'object')
+})
+
 export const getSeries = cache(async (slug: string) => {
   const payload = await getPayloadClient()
   const res = await payload.find({ collection: 'series', where: { slug: { equals: slug } }, depth: 2, limit: 1 })

@@ -36,7 +36,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const [settings, divisions, draft] = await Promise.all([getSettings(), getDivisions(), draftMode()])
 
   return (
-    <html lang="cs">
+    <html lang="cs" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
