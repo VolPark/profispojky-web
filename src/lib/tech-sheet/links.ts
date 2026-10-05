@@ -21,7 +21,9 @@ export function techSheetLinks(series: Pick<Series, 'slug' | 'shapes' | 'updated
       // výměna souboru ilustrace nemění řadu
       ...(s.sheets ?? []).map((x) => (typeof x.illustration === 'object' ? x.illustration.updatedAt : undefined)),
     ])
-    return [{ code: s.code, label: s.label, v, href: urls.techSheet(series.slug!, s.code, v) }]
+    // odkaz vede přes mezistránku s animací; přímá adresa PDF (pdf) zůstává pro sdílení
+    const pdf = urls.techSheet(series.slug!, s.code, v)
+    return [{ code: s.code, label: s.label, v, pdf, href: urls.pdfLoader(pdf) }]
   })
 }
 
@@ -38,5 +40,6 @@ export function techSheetItemLink(
   const v = shape?.v ?? stamp([series.updatedAt, product.updatedAt])
   const shapeDef = (series.shapes ?? []).find((s) => s.code === product.shape)
   const drawing = Boolean(product.techSheetIllustration || shapeDef?.sheets?.some((x) => x.columns?.trim()))
-  return { label: shape?.label ?? product.subtitle ?? product.name, href: urls.techSheetItem(product.code, v), drawing }
+  const pdf = urls.techSheetItem(product.code, v)
+  return { label: shape?.label ?? product.subtitle ?? product.name, pdf, href: urls.pdfLoader(pdf), drawing }
 }

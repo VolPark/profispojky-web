@@ -30,6 +30,7 @@ const SITE_SECTIONS = new Set([
   'nastavit-heslo',
   'soubory',
   'technicky-list',
+  'generuji-pdf',
   'health',
   'next',
   'admin',
