@@ -137,13 +137,16 @@ export function TechSheetDocument({ data, settings, logo, brandLogo, illustratio
           // Název položky, když ostatní sloupce řádky nerozliší (např. náhradní díly bez atributů).
           const keyOf = (r: (typeof b.rows)[number]) => [...b.ident, ...b.columns].map((k) => r.values[k] ?? '').join('|')
           const needName = b.rows.length > 1 && new Set(b.rows.map(keyOf)).size < b.rows.length
+          // Kód se nesmí lámat: pevná šířka podle nejdelšího kódu (IBM Plex Mono 8,5 pt ≈ 5,1 pt na znak).
+          const codeWidth = Math.max(72, Math.max(...b.rows.map((r) => r.code.length)) * 5.2 + 12)
           const cols = [
-            { key: 'code', head: 'Katalogové číslo', flex: 1.6 },
+            { key: 'code', head: 'Katalogové číslo', flex: 0, width: codeWidth },
             ...(needName ? [{ key: 'name', head: 'Název', flex: 3 }] : []),
             ...ident,
             ...dims,
           ]
           const sum = (xs: { flex: number }[]) => xs.reduce((t, x) => t + x.flex, 0)
+          const colSize = (c: { flex: number; width?: number }) => (c.width ? { width: c.width, flexGrow: 0, flexShrink: 0 } : { flex: c.flex })
           const cell = (r: TechSheetData['blocks'][number]['rows'][number], key: string) => (key === 'code' ? r.code : key === 'name' ? r.name : (r.values[key] ?? '–'))
           // Výkres nezůstane na konci strany bez tabulky; záhlaví tabulky se na další straně zopakuje.
           return (
@@ -157,13 +160,14 @@ export function TechSheetDocument({ data, settings, logo, brandLogo, illustratio
               <View style={s.table}>
                 {dims.length > 0 && (
                   <View style={s.groupRow} fixed>
-                    <Text style={[s.groupCell, { flex: sum(cols) - sum(dims) }]} />
+                    <Text style={[s.groupCell, { width: codeWidth, flexGrow: 0, flexShrink: 0 }]} />
+                    {sum(cols) - sum(dims) > 0 && <Text style={[s.groupCell, { flex: sum(cols) - sum(dims) }]} />}
                     <Text style={[s.groupCell, s.groupDims, { flex: sum(dims) }]}>Kóty dle výkresu [mm]</Text>
                   </View>
                 )}
                 <View style={s.tr} fixed>
                   {cols.map((c) => (
-                    <Text key={c.key} style={[s.th, { flex: c.flex }, c.key === 'code' || c.key === 'name' ? { textAlign: 'left' } : {}]}>
+                    <Text key={c.key} style={[s.th, colSize(c), c.key === 'code' || c.key === 'name' ? { textAlign: 'left' } : {}]}>
                       {c.head}
                     </Text>
                   ))}
@@ -171,7 +175,7 @@ export function TechSheetDocument({ data, settings, logo, brandLogo, illustratio
                 {b.rows.map((r, n) => (
                   <View key={r.code} style={[s.tr, n % 2 ? { backgroundColor: C.bgAlt } : {}, r.code === data.highlight ? s.hl : {}]} wrap={false}>
                     {cols.map((c) => (
-                      <Text key={c.key} style={[s.td, { flex: c.flex }, c.key === 'code' ? s.code : c.key === 'name' ? { textAlign: 'left' } : {}]}>
+                      <Text key={c.key} style={[s.td, colSize(c), c.key === 'code' ? s.code : c.key === 'name' ? { textAlign: 'left' } : {}]}>
                         {cell(r, c.key)}
                       </Text>
                     ))}
