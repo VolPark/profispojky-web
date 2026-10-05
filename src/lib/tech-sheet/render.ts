@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
 
-import { renderToBuffer } from '@react-pdf/renderer'
+import { Font, renderToBuffer } from '@react-pdf/renderer'
 import { NextResponse, type NextRequest } from 'next/server'
 import { createElement } from 'react'
 import sharp from 'sharp'
@@ -44,6 +44,32 @@ const loadImage = async (url: string | null | undefined, origin: string): Promis
   }
 }
 
+/**
+ * react-pdf sdílí načtené písmo mezi dokumenty a při dalším vykreslení v témže procesu v něm chybí
+ * glyfy (např. „Kol no“ místo „Koleno“). Proto se písmo před každým vykreslením načte znovu
+ * a vykreslování jde jedno po druhém (reset by jinak rozbil souběžně vykreslovaný dokument).
+ */
+type FontSourceState = { data: unknown; loadResultPromise: unknown }
+const reloadFonts = () => {
+  // Font.reset() v @react-pdf/font 4.1 nuluje jen `data`, ne `loadResultPromise` → písmo by se už nenačetlo.
+  for (const family of Object.values(Font.getRegisteredFonts()) as { sources: FontSourceState[] }[]) {
+    for (const source of family.sources) {
+      source.data = null
+      source.loadResultPromise = null
+    }
+  }
+}
+
+let queue: Promise<unknown> = Promise.resolve()
+const renderExclusive = (doc: Parameters<typeof renderToBuffer>[0]) => {
+  const run = queue.then(() => {
+    reloadFonts()
+    return renderToBuffer(doc)
+  })
+  queue = run.catch(() => undefined)
+  return run
+}
+
 /** PDF odpověď pro data technického listu (404 bez dat, 503 při chybě – web tím nikdy nespadne). */
 export async function techSheetResponse(req: NextRequest, load: () => Promise<TechSheetData | null>) {
   try {
@@ -59,7 +85,7 @@ export async function techSheetResponse(req: NextRequest, load: () => Promise<Te
       Promise.all(data.blocks.map((b) => loadImage(b.illustration?.url, origin))),
     ])
     const seriesUrl = `${process.env.NEXT_PUBLIC_SERVER_URL || origin}${urls.series(data.series.slug!)}`
-    const pdf = await renderToBuffer(
+    const pdf = await renderExclusive(
       createElement(TechSheetDocument, { data, settings, logo, brandLogo: brandImg, illustrations, seriesUrl }) as Parameters<typeof renderToBuffer>[0],
     )
     const name = `TL-${data.series.name}-${data.highlight ?? data.shape.code}.pdf`.replace(/[^\w.-]+/g, '-')
@@ -73,7 +99,8 @@ export async function techSheetResponse(req: NextRequest, load: () => Promise<Te
           : 'public, max-age=300, s-maxage=3600, stale-while-revalidate=604800',
       },
     })
-  } catch {
+  } catch (err) {
+    console.error('[technicky-list]', err)
     return new NextResponse('Technický list je dočasně nedostupný', { status: 503, headers: { 'Retry-After': '60' } })
   }
 }

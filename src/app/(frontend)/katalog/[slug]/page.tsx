@@ -48,9 +48,10 @@ export default async function SeriesPage({ params }: Props) {
     img: mediaUrl(p.images?.[0], 'thumb'),
     sale: p.bcStatus === 'sale',
   }))
-  // Generované technické listy (z dat) nahrazují nahraná PDF technických listů.
   const techSheets = techSheetLinks(series, products)
-  const headTypes = techSheets.length ? ['navod', 'katalog'] : ['tl', 'navod', 'katalog']
+  // nahrané PDF technických listů nahrazují jen generované listy s výkresem
+  const hasDrawing = (series.shapes ?? []).some((s) => s.sheets?.some((x) => x.columns?.trim()))
+  const headTypes = hasDrawing ? ['navod', 'katalog'] : ['tl', 'navod', 'katalog']
   const headDocs = docs.filter((d) => headTypes.includes(d.type)).slice(0, 3)
   const videos = docs.filter((d) => d.type === 'video')
 

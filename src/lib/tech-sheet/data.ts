@@ -4,7 +4,8 @@ import { getPayloadClient } from '../payload'
 import { slugify } from '../slugify'
 
 /**
- * Data technického listu jednoho tvaru řady. Stejná struktura pro všechny typy produktů;
+ * Data technického listu tvaru řady nebo položky – list má každá zveřejněná položka (bez atributů jen
+ * katalogové číslo, fotka a parametry řady). Stejná struktura pro všechny typy produktů;
  * hodnoty jen z atributů položky (pole „Kóty a rozměry“, cíl: atributy z BC):
  * - parametry: parametry řady + atributy, které mají všechny položky listu stejné,
  * - tabulka: katalogové číslo → identifikace (ostatní atributy) → kóty dle výkresu (písmena u výkresu).
@@ -37,6 +38,7 @@ export const shapeSlug = (code: string) => slugify(code) || 'tvar' // stejně ja
 type ProductDoc = {
   code: string
   name: string
+  subtitle?: string | null
   dimensions?: { label: string; value: string }[] | null
   techSheetIllustration?: number | Media | null
   images?: (number | Media)[] | null
@@ -44,7 +46,7 @@ type ProductDoc = {
 }
 type ShapeDoc = NonNullable<Series['shapes']>[number]
 
-const PRODUCT_SELECT = { code: true, name: true, dimensions: true, techSheetIllustration: true, images: true, updatedAt: true } as const
+const PRODUCT_SELECT = { code: true, name: true, subtitle: true, dimensions: true, techSheetIllustration: true, images: true, updatedAt: true } as const
 
 /** Technický list tvaru řady (celá rodina rozměrů). */
 export async function getTechSheet(seriesSlug: string, shapeParam: string): Promise<TechSheetData | null> {
@@ -74,7 +76,7 @@ export async function getProductTechSheet(code: string): Promise<TechSheetData |
   const found = await payload.find({
     collection: 'products',
     where: { and: [{ isPublished: { equals: true } }, { code: { equals: code } }] },
-    select: { ...PRODUCT_SELECT, series: true, shape: true, subtitle: true },
+    select: { ...PRODUCT_SELECT, series: true, shape: true },
     depth: 1,
     limit: 1,
     overrideAccess: false,
@@ -86,7 +88,7 @@ export async function getProductTechSheet(code: string): Promise<TechSheetData |
   const shape = product.shape ? series.shapes?.find((s) => s.code === product.shape) : undefined
   if (shape) {
     const data = await getTechSheet(series.slug!, shapeSlug(shape.code))
-    return data && data.blocks.some((b) => b.rows.some((r) => r.code === code)) ? { ...data, highlight: code } : null
+    return data ? { ...data, highlight: code } : null
   }
   // titulek jako nadpis položky na webu: „název – popis“
   const label = product.subtitle ? `${product.name} – ${product.subtitle.toLowerCase()}` : product.name
@@ -109,8 +111,6 @@ function buildSheet(series: Series, shape: Pick<ShapeDoc, 'code' | 'label' | 'de
   let updatedAt = series.updatedAt
   for (const p of products) {
     const values = Object.fromEntries((p.dimensions ?? []).map((d) => [d.label.trim(), d.value.trim()]))
-    const keys = Object.keys(values)
-    if (!keys.length) continue // bez atributů do listu nepatří
     // výkres s největší shodou kót (při shodě první)
     const score = (b: SheetBlock) => b.columns.filter((c) => c in values).length - b.columns.filter((c) => !(c in values)).length
     const best = shapeBlocks.length ? shapeBlocks.reduce((a, b) => (score(b) > score(a) ? b : a)) : null
@@ -126,7 +126,7 @@ function buildSheet(series: Series, shape: Pick<ShapeDoc, 'code' | 'label' | 'de
       photoBlock ??= { illustration: media(p.images?.[0]), columns: [], ident: [], rows: [] }
       block = photoBlock
     }
-    block.rows.push({ code: p.code, name: p.name, values })
+    block.rows.push({ code: p.code, name: p.subtitle ? `${p.name} – ${p.subtitle}` : p.name, values })
     if (p.updatedAt > updatedAt) updatedAt = p.updatedAt
   }
   const blocks = [...shapeBlocks, ...ownBlocks.values(), ...(photoBlock ? [photoBlock] : [])]

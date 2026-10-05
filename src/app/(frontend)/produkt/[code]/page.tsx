@@ -47,9 +47,9 @@ export default async function ProductPage({ params }: Props) {
     series ? getProductVariants(series.id, product.shape) : Promise.resolve([]),
   ])
   const videos = allDocs.filter((d) => d.type === 'video')
-  // Generovaný technický list (z dat) nahrazuje nahrané PDF technických listů.
+  // Generovaný technický list má každá položka; nahrané PDF technického listu nahrazuje jen list s výkresem.
   const techSheet = series ? techSheetItemLink(series, product, variants) : null
-  const docs = allDocs.filter((d) => d.type !== 'video' && !(techSheet && d.type === 'tl'))
+  const docs = allDocs.filter((d) => d.type !== 'video' && !(techSheet?.drawing && d.type === 'tl'))
 
   const unit = series?.dimensionUnit ?? 'mm'
   const dim = typeof product.dimension === 'number' ? `${product.dimension} ${unit}` : null
@@ -57,7 +57,7 @@ export default async function ProductPage({ params }: Props) {
   const shapeText = shapeInfo ? shapeInfo.description || `${shapeInfo.code} – ${shapeInfo.label}` : product.shape
   const seriesName = [brand?.name, series?.name].filter(Boolean).join(' ')
   const img = mediaUrl(product.images?.[0], 'large')
-  const mainDoc = techSheet ? null : (docs.find((d) => d.type === 'tl') ?? docs[0])
+  const mainDoc = techSheet?.drawing ? null : (docs.find((d) => d.type === 'tl') ?? null)
 
   const keys: { label: string; value: string }[] = [
     ...(dim ? [{ label: series?.dimensionLabel?.replace(/^Rozměr\s+/i, '') || 'Rozměr', value: dim }] : []),

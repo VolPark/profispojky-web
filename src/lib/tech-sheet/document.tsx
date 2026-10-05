@@ -134,9 +134,17 @@ export function TechSheetDocument({ data, settings, logo, brandLogo, illustratio
           // Stejná struktura u všech listů: katalogové číslo → identifikace → kóty dle výkresu [mm].
           const ident = b.ident.map((k) => ({ key: k, head: IDENT_HEAD[k] ?? k, flex: k.length > 10 ? 1.2 : 0.9 }))
           const dims = b.columns.map((c) => ({ key: c, head: c, flex: 0.7 }))
-          const cols = [{ key: 'code', head: 'Katalogové číslo', flex: 1.6 }, ...ident, ...dims]
+          // Název položky, když ostatní sloupce řádky nerozliší (např. náhradní díly bez atributů).
+          const keyOf = (r: (typeof b.rows)[number]) => [...b.ident, ...b.columns].map((k) => r.values[k] ?? '').join('|')
+          const needName = b.rows.length > 1 && new Set(b.rows.map(keyOf)).size < b.rows.length
+          const cols = [
+            { key: 'code', head: 'Katalogové číslo', flex: 1.6 },
+            ...(needName ? [{ key: 'name', head: 'Název', flex: 3 }] : []),
+            ...ident,
+            ...dims,
+          ]
           const sum = (xs: { flex: number }[]) => xs.reduce((t, x) => t + x.flex, 0)
-          const cell = (r: TechSheetData['blocks'][number]['rows'][number], key: string) => (key === 'code' ? r.code : (r.values[key] ?? '–'))
+          const cell = (r: TechSheetData['blocks'][number]['rows'][number], key: string) => (key === 'code' ? r.code : key === 'name' ? r.name : (r.values[key] ?? '–'))
           // Výkres nezůstane na konci strany bez tabulky; záhlaví tabulky se na další straně zopakuje.
           return (
             <View key={i}>
@@ -155,7 +163,7 @@ export function TechSheetDocument({ data, settings, logo, brandLogo, illustratio
                 )}
                 <View style={s.tr} fixed>
                   {cols.map((c) => (
-                    <Text key={c.key} style={[s.th, { flex: c.flex }, c.key === 'code' ? { textAlign: 'left' } : {}]}>
+                    <Text key={c.key} style={[s.th, { flex: c.flex }, c.key === 'code' || c.key === 'name' ? { textAlign: 'left' } : {}]}>
                       {c.head}
                     </Text>
                   ))}
@@ -163,7 +171,7 @@ export function TechSheetDocument({ data, settings, logo, brandLogo, illustratio
                 {b.rows.map((r, n) => (
                   <View key={r.code} style={[s.tr, n % 2 ? { backgroundColor: C.bgAlt } : {}, r.code === data.highlight ? s.hl : {}]} wrap={false}>
                     {cols.map((c) => (
-                      <Text key={c.key} style={[s.td, { flex: c.flex }, c.key === 'code' ? s.code : {}]}>
+                      <Text key={c.key} style={[s.td, { flex: c.flex }, c.key === 'code' ? s.code : c.key === 'name' ? { textAlign: 'left' } : {}]}>
                         {cell(r, c.key)}
                       </Text>
                     ))}
