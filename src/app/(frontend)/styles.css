@@ -490,23 +490,6 @@ table.vt tr.cur { background: var(--tint); }
 @keyframes h-draw { to { stroke-dashoffset: 0; } }
 @keyframes h-scroll { to { background-position: 0 -112px; } }
 
-/* pás produktů */
-.h-strip { overflow: hidden; border-block: 1px solid var(--border); background: #fff; }
-.h-strip .track { display: flex; width: max-content; }
-.h-strip ul { display: flex; list-style: none; margin: 0; padding: 0; }
-.h-strip a { display: flex; flex-direction: column; width: 300px; padding: 28px 28px 24px; border-right: 1px solid var(--border); color: var(--navy); text-decoration: none; }
-.h-strip .ph { height: 180px; display: flex; align-items: center; justify-content: center; }
-.h-strip img { max-height: 100%; object-fit: contain; mix-blend-mode: multiply; transition: transform .6s var(--ease); }
-.h-strip a:hover img { transform: scale(1.06); }
-.h-strip .cap { margin-top: 18px; font-size: 15px; font-weight: 600; line-height: 1.35; }
-.h-strip small { display: block; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--blue-dark); margin-bottom: 2px; }
-@media (prefers-reduced-motion: no-preference) {
-  .h-strip .track { animation: h-marquee 70s linear infinite; }
-  .h-strip:hover .track, .h-strip:focus-within .track { animation-play-state: paused; }
-}
-@media (prefers-reduced-motion: reduce) { .h-strip { overflow-x: auto; } .h-strip ul[aria-hidden] { display: none; } }
-@keyframes h-marquee { to { transform: translateX(-50%); } }
-
 /* manifest */
 .h-manifesto { padding: clamp(96px, 13vw, 200px) 0; }
 .h-manifesto .container { display: grid; grid-template-columns: minmax(140px, 1fr) 3fr; gap: 48px; }
@@ -586,8 +569,6 @@ table.vt tr.cur { background: var(--tint); }
   .h-title { margin: 20px 0 36px; }
   .h-hero-foot .ctas { width: 100%; }
   .h-hero-foot .ctas .btn { flex: 1; padding: 0 14px; font-size: 16px; white-space: nowrap; }
-  .h-strip a { width: 220px; padding: 20px; }
-  .h-strip .ph { height: 130px; }
   .d-tiles { grid-template-columns: 1fr; }
   .d-tile { min-height: auto; border-right: 0; }
   .logos { grid-template-columns: repeat(3, 1fr); }
@@ -711,7 +692,6 @@ table.vt tr.cur { background: var(--tint); }
 @keyframes mat-flow { to { stroke-dashoffset: -32; } }
 @keyframes mat-lever { 0%, 60%, 100% { transform: rotate(0); } 75%, 90% { transform: rotate(-24deg); } }
 .d-tile:hover .img img { transform: none; }
-.h-divisions .h-strip { margin-top: 0; border-top: 0; }
 
 @media (max-width: 1000px) {
   .h-manifesto .container { grid-template-columns: 1fr; align-items: start; }

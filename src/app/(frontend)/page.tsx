@@ -9,9 +9,8 @@ import { Icon } from '@/components/site/Icon'
 import { formatDate } from '@/lib/format'
 import { homeText, type HomeCopyKey } from '@/lib/home-copy'
 import { newsCategoryLabel as categoryLabel } from '@/lib/news'
-import { asMedia, mediaUrl } from '@/lib/media'
+import { mediaUrl } from '@/lib/media'
 import {
-  getAllSeries,
   getBrandLogos,
   getBrandsByDivision,
   getDivisions,
@@ -51,19 +50,16 @@ function titleWords(title: string) {
 }
 
 export default async function HomePage() {
-  const [home, divisions, brandsByDivision, types, news, series, brandLogos] = await Promise.all([
+  const [home, divisions, brandsByDivision, types, news, brandLogos] = await Promise.all([
     getHomepage(),
     getDivisions(),
     getBrandsByDivision(),
     getProductTypes(),
     getNewsList(3),
-    getAllSeries(),
     getBrandLogos(),
   ])
   const featured = rel<Series>(home.featuredSeries)
   const [lead, ...rest] = news
-  // pás produktů: řady s dostatečně velkou fotkou
-  const strip = series.filter((s) => (asMedia(s.image)?.width ?? 0) >= 500 && s.slug).slice(0, 16)
   const words = titleWords(home.title)
   const t = (k: HomeCopyKey) => homeText(home.copy, k)
   // manifest: první věta velká (rozsvěcí se), zbytek menším písmem vedle
@@ -303,7 +299,84 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 7 – aktuality */}
+      {/* 7 – přechod na sortiment: pás slov posouvaný scrollem */}
+      {band.length > 0 && (
+        <div className="h-band" aria-hidden="true">
+          <div className="row" data-drift>
+            {[0, 1, 2].map((k) => (
+              <span key={k}>
+                {band.map((w, i) => (
+                  <React.Fragment key={i}>
+                    <b className={i % 2 ? 'o' : undefined}>{w}</b>
+                    <i />
+                  </React.Fragment>
+                ))}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* 8 – sortiment: materiály a hledání */}
+      <section className="h-divisions" aria-labelledby="divize-h">
+        <div className="container">
+          <div className="h-head" data-reveal>
+            <div>
+              <div className="eyebrow">Sortiment</div>
+              <h2 id="divize-h">{t('divisionsTitle')}</h2>
+            </div>
+            <Link className="link-arrow" href={urls.products}>
+              Všechny produkty
+              <Icon name="arrow" />
+            </Link>
+          </div>
+        </div>
+        <div className="d-tiles">
+          {divisions.map((d, i) => {
+            const brands = brandsByDivision.get(d.id) ?? []
+            const inner = (
+              <>
+                <span className="img">
+                  <MaterialArt slug={d.slug ?? ''} />
+                </span>
+                <span className="n">{String(i + 1).padStart(2, '0')}</span>
+                <span className="t">{d.name}</span>
+                <span className="p">{d.perex}</span>
+                {brands.length > 0 && <span className="b">{brands.map((b) => b.name).join(' · ')}</span>}
+                {d.status === 'upcoming' ? <span className="chip">Připravujeme</span> : <Icon name="arrow" />}
+              </>
+            )
+            return d.status === 'upcoming' ? (
+              <div key={d.id} className="d-tile soon" data-reveal>
+                {inner}
+              </div>
+            ) : (
+              <Link key={d.id} className="d-tile" href={urls.division(d.slug!)} data-reveal>
+                {inner}
+              </Link>
+            )
+          })}
+        </div>
+        <div className="container h-find" data-reveal>
+          <form action="/katalog" role="search">
+            <label className="h-find-l" htmlFor="home-q">
+              {t('findTitle')}
+            </label>
+            <div className="search-row">
+              <div className="input-icon">
+                <Icon name="search" />
+                <input id="home-q" className="input" type="search" name="q" placeholder="Kód, název nebo rozměr – např. 30000007, BA 32" />
+              </div>
+              <button className="btn btn-navy" type="submit">
+                Hledat
+              </button>
+            </div>
+          </form>
+          <ProductTypes types={types} />
+        </div>
+      </section>
+
+      {/* 9 – aktuality */}
       {lead && (
         <section className="section section-alt" aria-labelledby="news-h">
           <div className="container">
@@ -347,104 +420,6 @@ export default async function HomePage() {
           </div>
         </section>
       )}
-
-      {/* 8 – přechod na sortiment: pás slov posouvaný scrollem */}
-      {band.length > 0 && (
-        <div className="h-band" aria-hidden="true">
-          <div className="row" data-drift>
-            {[0, 1, 2].map((k) => (
-              <span key={k}>
-                {band.map((w, i) => (
-                  <React.Fragment key={i}>
-                    <b className={i % 2 ? 'o' : undefined}>{w}</b>
-                    <i />
-                  </React.Fragment>
-                ))}
-              </span>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* 9 – sortiment: materiály, pás řad, hledání */}
-      <section className="h-divisions" aria-labelledby="divize-h">
-        <div className="container">
-          <div className="h-head" data-reveal>
-            <div>
-              <div className="eyebrow">Sortiment</div>
-              <h2 id="divize-h">{t('divisionsTitle')}</h2>
-            </div>
-            <Link className="link-arrow" href={urls.products}>
-              Všechny produkty
-              <Icon name="arrow" />
-            </Link>
-          </div>
-        </div>
-        <div className="d-tiles">
-          {divisions.map((d, i) => {
-            const brands = brandsByDivision.get(d.id) ?? []
-            const inner = (
-              <>
-                <span className="img">
-                  <MaterialArt slug={d.slug ?? ''} />
-                </span>
-                <span className="n">{String(i + 1).padStart(2, '0')}</span>
-                <span className="t">{d.name}</span>
-                <span className="p">{d.perex}</span>
-                {brands.length > 0 && <span className="b">{brands.map((b) => b.name).join(' · ')}</span>}
-                {d.status === 'upcoming' ? <span className="chip">Připravujeme</span> : <Icon name="arrow" />}
-              </>
-            )
-            return d.status === 'upcoming' ? (
-              <div key={d.id} className="d-tile soon" data-reveal>
-                {inner}
-              </div>
-            ) : (
-              <Link key={d.id} className="d-tile" href={urls.division(d.slug!)} data-reveal>
-                {inner}
-              </Link>
-            )
-          })}
-        </div>
-        <section className="h-strip" aria-label="Výběr z produktových řad">
-            <div className="track">
-              {[0, 1].map((copy) => (
-                <ul key={copy} aria-hidden={copy === 1 || undefined}>
-                  {strip.map((s) => (
-                    <li key={s.id}>
-                      <Link href={urls.series(s.slug!)} tabIndex={copy === 1 ? -1 : undefined}>
-                        <span className="ph">
-                          <img src={mediaUrl(s.image, 'card') ?? ''} alt="" loading="lazy" />
-                        </span>
-                        <span className="cap">
-                          <small>{rel<Brand>(s.brand)?.name}</small>
-                          {s.name}
-                        </span>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              ))}
-            </div>
-          </section>
-        <div className="container h-find" data-reveal>
-          <form action="/katalog" role="search">
-            <label className="h-find-l" htmlFor="home-q">
-              {t('findTitle')}
-            </label>
-            <div className="search-row">
-              <div className="input-icon">
-                <Icon name="search" />
-                <input id="home-q" className="input" type="search" name="q" placeholder="Kód, název nebo rozměr – např. 30000007, BA 32" />
-              </div>
-              <button className="btn btn-navy" type="submit">
-                Hledat
-              </button>
-            </div>
-          </form>
-          <ProductTypes types={types} />
-        </div>
-      </section>
 
       {/* 10 – knihovna */}
       <section className="section" aria-labelledby="lib-h">
