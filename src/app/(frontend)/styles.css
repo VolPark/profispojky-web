@@ -637,3 +637,90 @@ table.vt tr.cur { background: var(--tint); }
   .h-cta .btns { width: 100%; }
   .h-cta .btns .btn { flex: 1; white-space: nowrap; padding: 0 16px; font-size: 16px; }
 }
+
+/* ---------- úvodní stránka v3 (zpětná vazba 6. 10.) ---------- */
+/* kdo jsme: kratší, světle modrý podklad, dva sloupce */
+.h-manifesto { padding: clamp(72px, 9vw, 136px) 0; background: linear-gradient(180deg, var(--tint) 0%, #F5FBFE 100%); }
+.h-manifesto .container { grid-template-columns: 1.5fr 1fr; gap: clamp(32px, 6vw, 96px); align-items: end; }
+.h-manifesto .eyebrow { margin-bottom: 20px; }
+.h-manifesto .big { font-size: clamp(28px, 3.5vw, 54px); margin-bottom: 0; max-width: 22ch; }
+.motion .h-manifesto .big span { color: #B9CBD8; }
+.h-manifesto .side { display: flex; flex-direction: column; gap: 28px; padding: 0; font-size: inherit; letter-spacing: 0; text-transform: none; color: inherit; }
+.h-manifesto .rest { font-size: 18px; line-height: 1.65; color: #3E4A5C; }
+.elements { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.elements li { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; padding: 18px; border-radius: 14px; background: #fff; box-shadow: 0 10px 30px -18px rgba(28,47,90,.35); font-family: var(--f-display); font-weight: 600; font-size: 18px; color: var(--navy); }
+.el { width: 40px; height: 40px; fill: none; stroke: var(--blue-dark); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; overflow: visible; }
+.el-water path:first-child { fill: rgba(69,192,235,.18); }
+.el-gas path:first-child { fill: rgba(69,192,235,.12); }
+.el-gas .core { stroke: var(--blue); }
+@media (prefers-reduced-motion: no-preference) {
+  .motion .el-water { animation: el-bob 3s ease-in-out infinite; }
+  .motion .el-gas { transform-origin: 50% 90%; animation: el-flicker 1.6s ease-in-out infinite; }
+  .motion .el-heat path { stroke-dasharray: 6 5; animation: el-rise 1.4s linear infinite; }
+  .motion .el-heat path:nth-child(2) { animation-delay: .25s; }
+  .motion .el-heat path:nth-child(3) { animation-delay: .5s; }
+}
+@keyframes el-bob { 50% { transform: translateY(-4px); } }
+@keyframes el-flicker { 50% { transform: scale(.94, 1.06); } }
+@keyframes el-rise { to { stroke-dashoffset: -22; } }
+
+/* co děláme: animace toku zboží místo fotky */
+.h-story .network { margin: 0; }
+.art-network { width: 100%; height: auto; display: block; overflow: visible; }
+.art-network .links path { fill: none; stroke: rgba(255,255,255,.12); stroke-width: 1.2; }
+.art-network .links.in path { stroke: rgba(69,192,235,.32); }
+.art-network .flow circle { fill: var(--blue); }
+.art-network .flow circle.o { fill: #fff; opacity: .85; }
+.art-network .maker { fill: var(--ink); stroke: var(--blue); stroke-width: 2; }
+.art-network .dealer { fill: rgba(255,255,255,.75); }
+.art-network .hub { fill: var(--blue); }
+.art-network .ring { fill: none; stroke: var(--blue); stroke-width: 2; transform-origin: 320px 260px; }
+.art-network .labels text { fill: var(--on-navy); font-family: var(--f-body); font-size: 15px; font-weight: 600; letter-spacing: .02em; }
+.art-network .flow { opacity: 0; }
+.motion .art-network .flow { opacity: 1; }
+@media (prefers-reduced-motion: no-preference) {
+  .motion .art-network .ring { animation: net-pulse 2.6s ease-out infinite; }
+  .motion .art-network .glow { animation: net-glow 2.6s ease-in-out infinite; transform-origin: 320px 260px; }
+}
+@media (prefers-reduced-motion: reduce) { .art-network .flow { display: none; } }
+@keyframes net-pulse { 0% { transform: scale(1); opacity: .9; } 100% { transform: scale(2.4); opacity: 0; } }
+@keyframes net-glow { 50% { transform: scale(1.12); } }
+
+/* přechod na sortiment: menší pás slov */
+.h-band { padding: clamp(28px, 4vw, 56px) 0; }
+.h-band b { font-size: clamp(32px, 4.4vw, 72px); }
+.h-band b.o { -webkit-text-stroke-width: 1.2px; }
+.h-band i { font-size: clamp(16px, 2vw, 30px); }
+
+/* sortiment: ilustrace místo fotek, pás řad pod dlaždicemi */
+.d-tile .img { height: 150px; margin: 20px 0 16px; }
+.art-mat { width: 100%; height: 100%; overflow: visible; }
+.art-mat .pipe { stroke: var(--border); stroke-width: 22; stroke-linecap: round; fill: none; }
+.art-mat .flowline { stroke: var(--blue); stroke-width: 3; stroke-linecap: round; stroke-dasharray: 2 14; fill: none; opacity: .9; }
+.art-mat .draw * { fill: #fff; stroke: var(--navy); stroke-width: 2.4; stroke-linejoin: round; stroke-linecap: round; }
+.art-mat .draw .rib { fill: none; stroke-width: 1.4; opacity: .55; }
+.art-mat .draw .lever { fill: var(--blue); stroke: var(--navy); }
+.d-tile:hover .art-mat .draw * { stroke: var(--blue-dark); }
+@media (prefers-reduced-motion: no-preference) {
+  .motion .art-mat .flowline { animation: mat-flow 1.4s linear infinite; }
+  .d-tile:hover .art-mat .flowline { animation-duration: .6s; }
+  .motion .d-tile .art-mat .draw * { stroke-dasharray: 600; stroke-dashoffset: 600; transition: stroke-dashoffset 1.6s var(--ease); }
+  .motion .d-tile.in .art-mat .draw * { stroke-dashoffset: 0; }
+  .motion .art-mat .lever { transform-origin: 140px 34px; animation: mat-lever 5s var(--ease) infinite; }
+}
+@keyframes mat-flow { to { stroke-dashoffset: -32; } }
+@keyframes mat-lever { 0%, 60%, 100% { transform: rotate(0); } 75%, 90% { transform: rotate(-24deg); } }
+.d-tile:hover .img img { transform: none; }
+.h-divisions .h-strip { margin-top: 0; border-top: 0; }
+
+@media (max-width: 1000px) {
+  .h-manifesto .container { grid-template-columns: 1fr; align-items: start; }
+}
+@media (max-width: 600px) {
+  .elements li { padding: 14px 10px; font-size: 15px; }
+  .el { width: 32px; height: 32px; }
+}
+/* Lenis (plynulý scroll): nativní smooth scroll by se s ním přetahoval; videa a mapy musí zůstat ovladatelné */
+html.lenis { scroll-behavior: auto; }
+.lenis.lenis-smooth iframe { pointer-events: auto; }
+.art-network .labels text { paint-order: stroke; stroke: var(--ink); stroke-width: 6px; stroke-linejoin: round; }

@@ -1849,7 +1849,7 @@ export interface Homepage {
   featuredSeries?: (number | null) | Series;
   featuredText?: string | null;
   /**
-   * Fotka firmy – sklad, stánek na veletrhu, tým. Na šířku.
+   * Zatím se nepoužívá – v bloku je animace toku zboží (výrobci → sklad → prodejci).
    */
   storyImage?: (number | null) | Media;
   pillars?:
