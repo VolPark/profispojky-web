@@ -704,3 +704,45 @@ table.vt tr.cur { background: var(--tint); }
 html.lenis { scroll-behavior: auto; }
 .lenis.lenis-smooth iframe { pointer-events: auto; }
 .art-network .labels text { paint-order: stroke; stroke: var(--ink); stroke-width: 6px; stroke-linejoin: round; }
+
+/* ---------- úvodní stránka: rytmus sekcí (6. 10.) ----------
+   Pozadí: bílá → světle modrá → tmavá → bílá → tmavá → modrá → bílá → šedá → bílá → patička.
+   Nikdy dvě tmavé sekce za sebou; svislé mezery jedním tokenem. */
+.home { --sec: clamp(88px, 9vw, 136px); }
+.home .h-manifesto, .home .h-numbers, .home .h-brands, .home .h-story, .home .h-cta { padding-block: var(--sec); }
+.home .h-divisions { padding-top: var(--sec); }
+.home .h-find { padding-bottom: var(--sec); }
+.home .section { padding-block: var(--sec); }
+.home .lib-teaser h2 { font-size: clamp(32px, 4vw, 56px); line-height: 1.05; letter-spacing: -.025em; font-weight: 600; margin-top: 14px; }
+.home .lib-teaser { align-items: center; }
+
+/* prodejní síť: světlá modrá výzva místo další tmavé sekce */
+.h-cta { background: var(--blue); color: var(--navy); }
+.h-cta .container { display: grid; grid-template-columns: 1.25fr 1fr; align-items: center; gap: clamp(32px, 6vw, 96px); }
+.h-cta .eyebrow { color: var(--navy); }
+.h-cta h2 { color: var(--navy); margin-top: 14px; }
+.h-cta p { color: var(--navy); opacity: .85; }
+.h-cta .btns { margin-top: 36px; }
+.h-cta .btn-ghost { border-color: rgba(28,47,90,.45); }
+.h-cta .btn-ghost:hover { border-color: var(--navy); background: rgba(255,255,255,.18); }
+.art-pin { width: 100%; max-width: 420px; justify-self: end; overflow: visible; }
+.art-pin .dot { fill: rgba(28,47,90,.22); }
+.art-pin .pin { fill: var(--navy); }
+.art-pin .hole { fill: var(--blue); }
+.art-pin .pulse { fill: none; stroke: var(--navy); stroke-width: 2; opacity: 0; transform-origin: 170px 150px; }
+@media (prefers-reduced-motion: no-preference) {
+  .motion .art-pin .pulse { animation: pin-pulse 2.8s ease-out infinite; }
+  .motion .art-pin .pulse.p2 { animation-delay: 1.4s; }
+  .motion .art-pin .pin, .motion .art-pin .hole { animation: pin-bob 2.8s ease-in-out infinite; }
+  .motion .art-pin .dot { animation: pin-dot 2.8s ease-in-out infinite; }
+}
+@keyframes pin-pulse { 0% { transform: scale(.6); opacity: .7; } 100% { transform: scale(4.2); opacity: 0; } }
+@keyframes pin-bob { 50% { transform: translateY(-6px); } }
+@keyframes pin-dot { 50% { fill: rgba(255,255,255,.75); } }
+@media (max-width: 1000px) {
+  .h-cta .container { grid-template-columns: 1fr; }
+  .art-pin { max-width: 260px; justify-self: start; }
+}
+.home .lib-teaser { grid-template-columns: minmax(300px, 440px) 1fr; }
+@media (max-width: 1000px) { .home .lib-teaser { grid-template-columns: 1fr; } }
+@media (max-width: 600px) { .art-pin { display: none; } }

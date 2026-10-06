@@ -196,3 +196,25 @@ export function MaterialArt({ slug }: { slug: string }) {
     </svg>
   )
 }
+
+/* ---------- prodejní síť: špendlík s pulzujícími kruhy ---------- */
+
+/** Dekorace k výzvě „Kde koupit“ – mapa naznačená tečkami, uprostřed špendlík, kolem pulzují kruhy. */
+export function PinArt() {
+  const dots = Array.from({ length: 22 }, (_, i) => ({
+    x: 30 + ((i * 53) % 280),
+    y: 30 + ((i * 89) % 220),
+    r: i % 4 ? 3 : 4.5,
+  }))
+  return (
+    <svg className="art-pin" viewBox="0 0 340 280" aria-hidden="true">
+      {dots.map((d, i) => (
+        <circle key={i} cx={d.x} cy={d.y} r={d.r} className="dot" style={{ animationDelay: `${(i % 7) * 0.4}s` }} />
+      ))}
+      <circle cx="170" cy="150" r="24" className="pulse" />
+      <circle cx="170" cy="150" r="24" className="pulse p2" />
+      <path className="pin" d="M170 52 c-30 0 -50 22 -50 50 c0 36 50 86 50 86 s50 -50 50 -86 c0 -28 -20 -50 -50 -50 Z" />
+      <circle cx="170" cy="102" r="17" className="hole" />
+    </svg>
+  )
+}
