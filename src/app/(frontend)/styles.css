@@ -481,9 +481,9 @@ table.vt tr.cur { background: var(--tint); }
 .h-scroll::after { content: ""; width: 1px; height: 56px; background: linear-gradient(var(--blue-dark) 50%, transparent 0) 0 0 / 1px 200%; }
 @media (prefers-reduced-motion: no-preference) {
   .motion .h-title .w > span { transform: translateY(110%); animation: h-rise 1s var(--ease) forwards; animation-delay: calc(var(--i) * 70ms + 120ms); }
-  .motion .h-flow path { stroke-dashoffset: 2600; animation: h-draw 3.2s var(--ease) .3s forwards; }
-  .motion .h-flow path:nth-child(2) { animation-delay: .6s; }
-  .motion .h-flow path:nth-child(3) { animation-delay: .9s; }
+  .motion .h-flow path { stroke-dashoffset: 2600; animation: h-draw 1.4s var(--ease) .1s forwards; }
+  .motion .h-flow path:nth-child(2) { animation-delay: .2s; }
+  .motion .h-flow path:nth-child(3) { animation-delay: .3s; }
   .h-scroll::after { animation: h-scroll 2s linear infinite; }
 }
 @keyframes h-rise { to { transform: none; } }
@@ -581,7 +581,8 @@ table.vt tr.cur { background: var(--tint); }
 .h-lead { font-size: clamp(17px, 1.35vw, 21px); line-height: 1.6; color: var(--gray); max-width: 46ch; margin-bottom: 40px; }
 .h-flow .drops circle { fill: var(--blue); opacity: 0; }
 @media (prefers-reduced-motion: no-preference) {
-  .motion .h-flow .drops circle { animation: h-drop-in .8s 3.2s forwards; }
+  /* tečky naskočí hned s linkami (ne až po jejich vykreslení) */
+  .motion .h-flow .drops circle { animation: h-drop-in .4s .2s forwards; }
 }
 @keyframes h-drop-in { to { opacity: .9; } }
 .h-big { color: #fff; font-size: clamp(36px, 5vw, 76px); line-height: 1.02; letter-spacing: -.03em; font-weight: 600; max-width: 18ch; margin-top: 18px; }
@@ -703,7 +704,8 @@ table.vt tr.cur { background: var(--tint); }
 /* Lenis (plynulý scroll): nativní smooth scroll by se s ním přetahoval; videa a mapy musí zůstat ovladatelné */
 html.lenis { scroll-behavior: auto; }
 .lenis.lenis-smooth iframe { pointer-events: auto; }
-.art-network .labels text { paint-order: stroke; stroke: var(--ink); stroke-width: 6px; stroke-linejoin: round; }
+.art-network .labels .tag { fill: var(--ink); stroke: rgba(69,192,235,.35); stroke-width: 1; }
+.art-network .labels text { font-size: 14px; letter-spacing: .01em; }
 
 /* ---------- úvodní stránka: rytmus sekcí (6. 10.) ----------
    Pozadí: bílá → světle modrá → tmavá → bílá → tmavá → modrá → bílá → šedá → bílá → patička.
