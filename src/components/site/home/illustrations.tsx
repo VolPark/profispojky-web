@@ -84,10 +84,12 @@ export function NetworkArt({ makers, hub, dealers }: NetworkProps) {
         <text x={left[0].x - 6} y={34} textAnchor="middle">
           {makers}
         </text>
-        <text x={hx} y={hy + 70} textAnchor="middle">
+        {/* štítek pod popiskem skladu – čitelný přes linky, bez obrysu písmen (ten slepoval znaky) */}
+        <rect x={hx - 96} y={hy + 52} width="192" height="28" rx="14" className="tag" />
+        <text x={hx} y={hy + 71} textAnchor="middle">
           {hub}
         </text>
-        <text x={W - 70} y={34} textAnchor="middle">
+        <text x={W - 6} y={34} textAnchor="end">
           {dealers}
         </text>
       </g>
