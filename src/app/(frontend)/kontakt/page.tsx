@@ -3,6 +3,7 @@ import React from 'react'
 
 import { Breadcrumbs } from '@/components/site/Breadcrumbs'
 import { Icon } from '@/components/site/Icon'
+import { MotionLayer } from '@/components/site/MotionLayer'
 import { getContacts, getSettings } from '@/lib/queries'
 
 export const metadata: Metadata = {
@@ -26,12 +27,18 @@ export default async function ContactPage() {
         </div>
       </section>
       <section className="section">
-        <div className="container cards3">
-          <div className="card">
+        <div className="container contact-grid">
+          <div data-reveal>
             <h3>Objednávky a sklad</h3>
-            <p style={{ lineHeight: 1.8 }}>
-              <a href={tel(s.phone)}>{s.phone}</a>
-              <br />
+            <a className="big" href={tel(s.phone)}>
+              {s.phone}
+            </a>
+            {s.phone2 && (
+              <a className="big" href={tel(s.phone2)}>
+                {s.phone2}
+              </a>
+            )}
+            <p>
               <a href={`mailto:${s.email}`}>{s.email}</a>
               {s.email2 && (
                 <>
@@ -41,38 +48,43 @@ export default async function ContactPage() {
               )}
             </p>
           </div>
-          <div className="card">
+          <div data-reveal>
             <h3>Sklad, kanceláře a osobní odběr</h3>
-            <p style={{ lineHeight: 1.8 }}>
+            <p>
               {s.warehouseStreet}
               <br />
               {s.warehouseCity}
             </p>
             {warehouse && (
-              <a className="link-arrow" style={{ marginTop: 12 }} href={`https://mapy.cz/zakladni?q=${encodeURIComponent(warehouse)}`} target="_blank" rel="noopener">
+              <a className="link-arrow" href={`https://mapy.cz/zakladni?q=${encodeURIComponent(warehouse)}`} target="_blank" rel="noopener">
                 <Icon name="pin" />
                 Navigovat na Mapy.cz
               </a>
             )}
           </div>
-          <div className="card">
+          <div data-reveal>
             <h3>Fakturační údaje</h3>
-            <p style={{ lineHeight: 1.8 }}>
+            <p>
               {s.companyName}
               <br />
               {s.seat}
               <br />
               IČ {s.ico} · DIČ {s.dic}
             </p>
-            {s.registry && <p style={{ fontSize: 13, color: 'var(--gray)', marginTop: 8 }}>{s.registry}</p>}
+            {s.registry && <p className="small">{s.registry}</p>}
           </div>
         </div>
         {contacts.length > 0 && (
-          <div className="container" style={{ marginTop: 64 }}>
-            <h2 style={{ fontSize: 28, marginBottom: 20 }}>Kontaktní osoby</h2>
+          <div className="container contact-people">
+            <div className="h-head">
+              <div>
+                <div className="eyebrow">Lidé</div>
+                <h2>Kontaktní osoby</h2>
+              </div>
+            </div>
             <div className="team">
               {contacts.map((c) => (
-                <div key={c.id} className="card person">
+                <div key={c.id} className="person" data-reveal>
                   <b>{c.name}</b>
                   <span>{c.role}</span>
                   {c.phone && <a href={tel(c.phone)}>{c.phone}</a>}
@@ -83,6 +95,7 @@ export default async function ContactPage() {
           </div>
         )}
       </section>
+      <MotionLayer />
     </>
   )
 }

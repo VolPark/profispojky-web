@@ -20,15 +20,22 @@ const Motto = ({ text }: { text: string }) => (
 
 export const Footer = ({ settings, divisions, motto }: { settings: SiteSetting; divisions: Division[]; motto?: string }) => (
   <footer className="site-footer">
+    {/* značka + heslo jako jeden celek vlevo, vpravo hlavní akce – tu v patičce lidé hledají */}
     <div className="container statement">
-      <Link className="logo" href="/">
-        <img src="/logo-white.svg" alt="PROFI SPOJKY" width={264} height={51} />
+      <div className="lockup">
+        <Link className="logo" href="/">
+          <img src="/logo-white.svg" alt="PROFI SPOJKY" width={264} height={51} />
+        </Link>
+        {motto && (
+          <p className="motto">
+            <Motto text={motto} />
+          </p>
+        )}
+      </div>
+      <Link className="btn btn-primary" href={urls.dealers}>
+        <Icon name="pin" />
+        Kde koupit
       </Link>
-      {motto && (
-        <p className="motto">
-          <Motto text={motto} />
-        </p>
-      )}
     </div>
     <div className="container top">
       <div>

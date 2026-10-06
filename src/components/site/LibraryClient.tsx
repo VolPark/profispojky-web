@@ -100,7 +100,7 @@ export const LibraryClient = ({ docs, types, brands, divisions }: Props) => {
       </span>
       <div className="docs-grid">
         {list.map((d) => (
-          <article key={d.id} className="card doc">
+          <article key={d.id} className="doc">
             <div className="top">
               <Icon name={d.icon} />
               <span className="tag">{d.typeLabel}</span>

@@ -87,7 +87,7 @@ export const DealersClient = ({ regions, children }: { regions: DealerRegion[]; 
         </div>
       </section>
       <div className="container dealers" id="dealers">
-        <aside className="card region-list" aria-label="Kraje">
+        <aside className="region-list" aria-label="Kraje">
           <h2>Kraje</h2>
           <div>
             {(['CZ', 'SK'] as const).map((country) => (
@@ -124,7 +124,7 @@ export const DealersClient = ({ regions, children }: { regions: DealerRegion[]; 
           </div>
           <div className="dealer-grid" id="ps-list">
             {items.map((p, i) => (
-              <article key={i} className="card dealer">
+              <article key={i} className="dealer">
                 <h3>{p.n}</h3>
                 <span className="addr">{p.a}</span>
                 <span className="m">{p.r}</span>

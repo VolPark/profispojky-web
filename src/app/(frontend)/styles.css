@@ -868,3 +868,128 @@ html.lenis { scroll-behavior: auto; }
   .gallery .main { height: 300px; }
   .sticky-buy .btn { white-space: nowrap; padding: 0 14px; font-size: 15px; }
 }
+
+/* patička: heslo na jeden řádek, výškou odpovídá logu vpravo (zpětná vazba 6. 10.) */
+.site-footer .statement { align-items: center; padding-block: clamp(48px, 5vw, 72px) clamp(36px, 4vw, 56px); }
+.site-footer .motto { font-size: clamp(24px, 2.7vw, 40px); line-height: 1.1; letter-spacing: -.025em; max-width: none; }
+@media (min-width: 900px) { .site-footer .motto { white-space: nowrap; } }
+
+/* ---------- konzistence s úvodní stránkou, 2. várka (6. 10.) ---------- */
+.sec-title { font-size: clamp(28px, 2.6vw, 40px); letter-spacing: -.025em; font-weight: 600; margin-bottom: 24px; }
+
+/* řada v katalogu: hlavička jako page-hero */
+.cat-head { background: linear-gradient(180deg, var(--tint) 0%, #F5FBFE 100%); padding: clamp(40px, 5vw, 80px) 0; margin-bottom: clamp(32px, 4vw, 56px); }
+.cat-head h1 { font-size: clamp(32px, 4.2vw, 64px); line-height: 1.02; letter-spacing: -.03em; font-weight: 600; max-width: 20ch; margin: 18px 0 18px; }
+.cat-head .lead { font-size: clamp(16px, 1.2vw, 19px); line-height: 1.6; color: #3E4A5C; max-width: 64ch; }
+.cat-head .chip { background: #fff; }
+.filters { border-radius: var(--r); }
+.tv button { border-radius: 999px; padding: 0 16px; }
+
+/* knihovna: hlavní katalog jako světle modrá výzva (jako Prodejní síť na úvodní stránce) */
+.featured { background: var(--blue); color: var(--navy); border-radius: var(--r); padding: clamp(28px, 3.4vw, 56px); grid-template-columns: 200px 1fr auto; }
+.featured:hover { background: #3cb6e2; color: var(--navy); }
+.featured .eyebrow { color: var(--navy); }
+.featured .t { font-size: clamp(26px, 2.8vw, 44px); line-height: 1.05; letter-spacing: -.025em; font-weight: 600; margin: 10px 0; }
+.featured small { color: var(--navy); opacity: .8; }
+.featured .cover { border-radius: var(--r); box-shadow: 0 18px 40px -24px rgba(28,47,90,.6); }
+.docs-grid { gap: 0; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); border-top: 1px solid var(--border); border-left: 1px solid var(--border); margin-top: 20px; }
+.doc { border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); background: #fff; transition: background .3s; }
+.doc:hover { background: var(--bg-alt); }
+.doc .top { background: none; height: auto; justify-content: space-between; padding: 22px 22px 0; }
+.doc .top .icon { width: 30px; height: 30px; order: 2; }
+.doc .top .tag { position: static; background: var(--tint); color: var(--blue-dark); border-radius: 999px; padding: 4px 10px; }
+.doc .body { padding: 16px 22px 22px; }
+.doc h3 { font-family: var(--f-display); font-size: 18px; letter-spacing: -.01em; }
+
+/* aktuality: řádky s linkou, fotka vlevo */
+.news-rows { border-top: 1px solid var(--border); }
+.news-row { display: grid; grid-template-columns: minmax(0, 420px) 1fr; gap: clamp(24px, 4vw, 64px); align-items: center; padding: clamp(28px, 3vw, 44px) 0; border-bottom: 1px solid var(--border); }
+.news-row .img { display: block; aspect-ratio: 4 / 3; overflow: hidden; border-radius: var(--r); background: var(--bg-alt); }
+.news-row .img img { width: 100%; height: 100%; object-fit: cover; transition: transform .7s var(--ease); }
+.news-row:hover .img img { transform: scale(1.04); }
+.news-row .body { display: flex; flex-direction: column; gap: 14px; align-items: flex-start; }
+.news-row h2 { font-size: clamp(24px, 2.4vw, 36px); line-height: 1.1; letter-spacing: -.02em; font-weight: 600; }
+.news-row h2 a { color: inherit; text-decoration: none; }
+.news-row h2 a:hover { color: var(--blue-dark); }
+.news-row p { font-size: 17px; line-height: 1.6; color: var(--gray); max-width: 60ch; }
+@media (max-width: 720px) { .news-row { grid-template-columns: 1fr; } }
+
+/* úvodní stránka – aktuality bez krabic */
+.news-feat { border: 0; background: none; border-radius: 0; gap: 32px; }
+.news-feat img { border-radius: var(--r); transition: transform .7s var(--ease); }
+.news-feat .body { padding: 8px 0; }
+.news-feat h3 { font-size: clamp(24px, 2.2vw, 32px); letter-spacing: -.02em; font-weight: 600; }
+.news-list { gap: 0; border-top: 1px solid #D5DBE2; }
+.news-item { border: 0; border-bottom: 1px solid #D5DBE2; border-radius: 0; background: none; padding: 18px 0; }
+.news-item img { border-radius: var(--r); }
+.news-item:hover h3, .news-feat:hover h3 { color: var(--blue-dark); }
+
+/* prodejní síť: kraje bez krabice, prodejny ve mřížce s linkami */
+.dealer-form { border: 0; box-shadow: 0 20px 50px -30px rgba(28,47,90,.45); }
+.region-list { border: 0; padding: 0 8px 0 0; border-top: 1px solid var(--border); border-radius: 0; }
+.region-list h2 { font-size: 20px; margin: 18px 0 8px; }
+.region-list button { border-radius: 999px; }
+.dealer-grid { gap: 0; border-top: 1px solid var(--border); border-left: 1px solid var(--border); }
+.dealer { border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 24px !important; transition: background .3s; }
+.dealer:hover { background: var(--bg-alt); }
+.dealer h3 { font-family: var(--f-display); letter-spacing: -.01em; }
+
+/* O firmě: karty jako číslované pilíře z úvodní stránky, fotky bez velkého zaoblení */
+.pillars-light { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0 clamp(24px, 4vw, 64px); }
+.pillars-light li { padding: 28px 0; border-top: 1px solid var(--border); }
+.pillars-light .n { font-family: var(--f-mono); font-size: 14px; color: var(--blue-dark); }
+.pillars-light h3 { font-size: clamp(22px, 2vw, 28px); letter-spacing: -.02em; font-weight: 600; margin: 14px 0 10px; }
+.pillars-light p { font-size: 16px; line-height: 1.6; color: var(--gray); }
+.about-photo img, .photo-row img { border-radius: var(--r); }
+
+/* kontakt: tři sloupce s linkou, velká čísla */
+.contact-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0 clamp(24px, 4vw, 64px); }
+.contact-grid > div { display: flex; flex-direction: column; gap: 12px; align-items: flex-start; padding-top: 28px; border-top: 1px solid var(--border); }
+.contact-grid h3 { font-family: var(--f-body); font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--blue-dark); margin-bottom: 6px; }
+.contact-grid .big { font-family: var(--f-display); font-size: clamp(24px, 2.2vw, 34px); font-weight: 600; letter-spacing: -.02em; color: var(--navy); text-decoration: none; line-height: 1.15; }
+.contact-grid .big:hover { color: var(--blue-dark); }
+.contact-grid p { font-size: 17px; line-height: 1.7; }
+.contact-grid p.small { font-size: 13px; color: var(--gray); line-height: 1.5; }
+.contact-people { margin-top: clamp(64px, 7vw, 112px); }
+.team { gap: 0; border-top: 1px solid var(--border); border-left: 1px solid var(--border); }
+.person { border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 24px 26px; }
+@media (max-width: 1000px) {
+  .contact-grid { grid-template-columns: 1fr; gap: 32px; }
+  .featured { grid-template-columns: 1fr; }
+  .region-list { border-top: 0; }
+}
+/* patička – lockup logo | heslo (výška písma ≈ výška nápisu v logu), vpravo akce */
+.site-footer .statement { justify-content: space-between; align-items: center; }
+.site-footer .lockup { display: flex; align-items: center; gap: clamp(20px, 2.4vw, 36px); flex-wrap: wrap; }
+.site-footer .statement .logo img { width: clamp(180px, 15vw, 220px); }
+.site-footer .motto { order: 0; font-size: clamp(20px, 1.9vw, 28px); font-weight: 500; letter-spacing: -.015em; color: var(--on-navy); padding-left: clamp(20px, 2.4vw, 36px); border-left: 1px solid rgba(255,255,255,.22); }
+.site-footer .motto em { color: var(--blue); }
+@media (max-width: 720px) { .site-footer .motto { padding-left: 0; border-left: 0; white-space: normal; } }
+/* aktuality: redakční rozvržení na plnou šířku */
+.news-meta { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.news-page .img { display: block; overflow: hidden; border-radius: var(--r); background: var(--bg-alt); }
+.news-page .img img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s var(--ease); }
+.news-lead { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(28px, 4vw, 72px); align-items: center; padding-bottom: clamp(56px, 6vw, 96px); }
+.news-lead .img { aspect-ratio: 16 / 10; }
+.news-lead:hover .img img, .news-card:hover .img img { transform: scale(1.04); }
+.news-lead .body { display: flex; flex-direction: column; align-items: flex-start; gap: 20px; }
+.news-lead h2 { font-size: clamp(30px, 3.6vw, 56px); line-height: 1.04; letter-spacing: -.03em; font-weight: 600; }
+.news-page h2 a, .news-page h3 a { color: inherit; text-decoration: none; }
+.news-page h2 a:hover, .news-page h3 a:hover { color: var(--blue-dark); }
+.news-lead p { font-size: 18px; line-height: 1.6; color: var(--gray); max-width: 52ch; }
+.news-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(40px, 4vw, 64px) clamp(24px, 3vw, 48px); padding-top: clamp(40px, 4vw, 64px); border-top: 1px solid var(--border); }
+.news-card { display: flex; flex-direction: column; gap: 14px; }
+.news-card .img { aspect-ratio: 4 / 3; margin-bottom: 6px; }
+.news-card h3 { font-size: clamp(20px, 1.6vw, 24px); line-height: 1.2; letter-spacing: -.015em; font-weight: 600; }
+.news-card p { font-size: 15px; line-height: 1.6; color: var(--gray); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.motion .news-grid .news-card:nth-child(3n+2) { transition-delay: .08s; }
+.motion .news-grid .news-card:nth-child(3n+3) { transition-delay: .16s; }
+@media (max-width: 1000px) {
+  .news-lead { grid-template-columns: 1fr; }
+  .news-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 600px) { .news-grid { grid-template-columns: 1fr; } }
+.site-footer .btn-primary, .site-footer .btn-primary:hover { color: var(--navy); }
+.featured small { opacity: 1; }
+.featured + * { margin-top: clamp(32px, 4vw, 56px); }
+.cat-head h1 { font-size: clamp(30px, 3.4vw, 52px); max-width: 26ch; }

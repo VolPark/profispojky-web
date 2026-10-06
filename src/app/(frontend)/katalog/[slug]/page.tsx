@@ -74,7 +74,7 @@ export default async function SeriesPage({ params }: Props) {
               {series.media && <span className="chip">{series.media}</span>}
             </div>
             <h1>{series.title || series.name}</h1>
-            <p style={{ fontSize: 17 }}>
+            <p className="lead">
               {series.lead || series.summary}
               {brand?.manufacturer ? ` Výrobce ${brand.manufacturer.replace(/\.$/, '')}.` : ''}
             </p>
@@ -82,7 +82,7 @@ export default async function SeriesPage({ params }: Props) {
           {headDocs.length > 0 && (
             <div className="docs">
               {headDocs.map((d) => (
-                <a key={d.id} className="btn btn-outline btn-sm" href={documentUrl(d)} target="_blank" rel="noopener">
+                <a key={d.id} className="btn btn-ghost btn-sm" href={documentUrl(d)} target="_blank" rel="noopener">
                   <Icon name={docTypeMeta(d.type).icon} />
                   {docTypeMeta(d.type).label}
                 </a>
@@ -121,10 +121,10 @@ export default async function SeriesPage({ params }: Props) {
       {techSheets.length > 0 && (
         <section className="section">
           <div className="container">
-            <h2 style={{ fontSize: 28, marginBottom: 16 }}>Technické listy</h2>
+            <h2 className="sec-title">Technické listy</h2>
             <div className="files">
               {techSheets.map((t) => (
-                <a key={t.code} className="card file" href={t.href} target="_blank" rel="noopener">
+                <a key={t.code} className="file" href={t.href} target="_blank" rel="noopener">
                   <span className="ibox">
                     <Icon name={docTypeMeta('tl').icon} />
                   </span>
@@ -139,7 +139,7 @@ export default async function SeriesPage({ params }: Props) {
       {videos.length > 0 && (
         <section className="section">
           <div className="container">
-            <h2 style={{ fontSize: 28, marginBottom: 16 }}>Video</h2>
+            <h2 className="sec-title">Video</h2>
             <div className="videos">
               {videos.map((v) => (
                 <VideoEmbed key={v.id} title={v.title} url={v.externalUrl} />
