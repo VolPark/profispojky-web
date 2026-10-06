@@ -18,6 +18,8 @@ export const metadata: Metadata = {
 export default async function LibraryPage() {
   const all = await getLibrary()
   const featured = all.find((d) => d.featured)
+  // název převzatý jako název souboru („kompletni-katalog-…“) se jako nadpis nehodí
+  const featuredTitle = featured && /^[\w.-]+$/.test(featured.title) ? 'Kompletní katalog PROFI SPOJKY' : featured?.title
 
   const docs: LibraryDoc[] = all
     .filter((d) => d.id !== featured?.id)
@@ -64,17 +66,15 @@ export default async function LibraryPage() {
                 {featured.edition && <span>Katalog {featured.edition}</span>}
               </span>
               <span>
-                <span className="eyebrow" style={{ color: 'var(--blue)' }}>
-                  Hlavní katalog
-                </span>
-                <span className="t">{featured.title}</span>
+                <span className="eyebrow">Hlavní katalog</span>
+                <span className="t">{featuredTitle}</span>
                 <small>
                   {['Všechny divize a značky', 'PDF', formatBytes(featured.filesize), featured.edition ? `vydání ${featured.edition}` : null]
                     .filter(Boolean)
                     .join(' · ')}
                 </small>
               </span>
-              <span className="btn btn-primary">
+              <span className="btn btn-navy">
                 <Icon name="file" />
                 Stáhnout PDF
               </span>

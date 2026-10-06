@@ -5,16 +5,26 @@ import React from 'react'
 
 import { Breadcrumbs } from '@/components/site/Breadcrumbs'
 import { Icon } from '@/components/site/Icon'
+import { MotionLayer } from '@/components/site/MotionLayer'
 import { formatDate } from '@/lib/format'
 import { mediaUrl } from '@/lib/media'
 import { newsCategoryLabel } from '@/lib/news'
 import { getNewsList } from '@/lib/queries'
 import { urls } from '@/lib/urls'
+import type { News } from '@/payload-types'
 
 export const metadata: Metadata = { title: 'Aktuality', description: 'Novinky v sortimentu, veletrhy a školení PROFI SPOJKY.' }
 
+const Meta = ({ n }: { n: News }) => (
+  <div className="news-meta">
+    {newsCategoryLabel(n.category) && <span className="chip">{newsCategoryLabel(n.category)}</span>}
+    <span className="date">{formatDate(n.publishedAt)}</span>
+  </div>
+)
+
 export default async function NewsPage() {
   const news = await getNewsList(100)
+  const [lead, ...rest] = news
   return (
     <>
       <Breadcrumbs items={[{ label: 'Aktuality' }]} />
@@ -25,33 +35,48 @@ export default async function NewsPage() {
           <p className="lead">Novinky v sortimentu, veletrhy a školení.</p>
         </div>
       </section>
-      <section className="section">
-        <div className="container" style={{ maxWidth: 1000 }}>
+      <section className="section news-page">
+        <div className="container">
           {news.length === 0 && <p>Zatím žádné aktuality.</p>}
-          {news.map((n) => (
-            <article key={n.id} className="card news-feat" style={{ marginBottom: 24 }}>
-              {mediaUrl(n.image) ? <img src={mediaUrl(n.image, 'card')!} alt="" loading="lazy" style={{ objectPosition: 'center' }} /> : <div />}
+          {/* redakční rozvržení: nejnovější zpráva velká, ostatní v mřížce (jako úvodní stránka – bez krabic, linky) */}
+          {lead && (
+            <article className="news-lead" data-reveal>
+              <Link className="img" href={urls.newsDetail(lead.slug!)} tabIndex={-1} aria-hidden="true">
+                {mediaUrl(lead.image) && <img src={mediaUrl(lead.image, 'large')!} alt="" />}
+              </Link>
               <div className="body">
-                <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-                  {newsCategoryLabel(n.category) && <span className="chip">{newsCategoryLabel(n.category)}</span>}
-                  <span className="date">{formatDate(n.publishedAt)}</span>
-                </div>
-                <h2 style={{ fontSize: 26 }}>
-                  <Link href={urls.newsDetail(n.slug!)} style={{ color: 'inherit', textDecoration: 'none' }}>
-                    {n.title}
-                  </Link>
+                <Meta n={lead} />
+                <h2>
+                  <Link href={urls.newsDetail(lead.slug!)}>{lead.title}</Link>
                 </h2>
-                <p>{n.perex}</p>
-                <Link className="link-arrow" href={urls.newsDetail(n.slug!)}>
-                  Číst dál
+                {lead.perex && <p>{lead.perex}</p>}
+                <Link className="btn btn-navy" href={urls.newsDetail(lead.slug!)}>
+                  Číst článek
                   <Icon name="arrow" />
-                  <span className="sr"> – {n.title}</span>
+                  <span className="sr"> – {lead.title}</span>
                 </Link>
               </div>
             </article>
-          ))}
+          )}
+          {rest.length > 0 && (
+            <div className="news-grid">
+              {rest.map((n) => (
+                <article key={n.id} className="news-card" data-reveal>
+                  <Link className="img" href={urls.newsDetail(n.slug!)} tabIndex={-1} aria-hidden="true">
+                    {mediaUrl(n.image) && <img src={mediaUrl(n.image, 'card')!} alt="" loading="lazy" />}
+                  </Link>
+                  <Meta n={n} />
+                  <h3>
+                    <Link href={urls.newsDetail(n.slug!)}>{n.title}</Link>
+                  </h3>
+                  {n.perex && <p>{n.perex}</p>}
+                </article>
+              ))}
+            </div>
+          )}
         </div>
       </section>
+      <MotionLayer />
     </>
   )
 }

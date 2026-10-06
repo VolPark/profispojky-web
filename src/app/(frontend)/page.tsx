@@ -362,7 +362,7 @@ export default async function HomePage() {
               </Link>
             </div>
             <div className="news">
-              <Link className="card news-feat" href={urls.newsDetail(lead.slug!)}>
+              <Link className="news-feat" href={urls.newsDetail(lead.slug!)}>
                 {mediaUrl(lead.image) && <img src={mediaUrl(lead.image, 'card')!} alt="" />}
                 <div className="body">
                   <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
@@ -380,7 +380,7 @@ export default async function HomePage() {
               {rest.length > 0 && (
                 <div className="news-list">
                   {rest.map((n) => (
-                    <Link key={n.id} className="card news-item" href={urls.newsDetail(n.slug!)}>
+                    <Link key={n.id} className="news-item" href={urls.newsDetail(n.slug!)}>
                       {mediaUrl(n.image) && <img src={mediaUrl(n.image, 'thumb')!} alt="" loading="lazy" />}
                       <div>
                         <span className="date">{formatDate(n.publishedAt)}</span>
@@ -411,7 +411,7 @@ export default async function HomePage() {
           </div>
           <div className="tiles">
             {LIB_TILES.map((t) => (
-              <Link key={t.t} className="card tile" href={`${urls.library}?typ=${t.t}`}>
+              <Link key={t.t} className="tile" href={`${urls.library}?typ=${t.t}`}>
                 <span className="ibox">
                   <Icon name={t.icon} />
                 </span>

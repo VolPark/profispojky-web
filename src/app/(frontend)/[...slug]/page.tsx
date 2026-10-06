@@ -5,6 +5,7 @@ import React from 'react'
 
 import { pageParams } from '@/lib/static-params'
 import { Breadcrumbs } from '@/components/site/Breadcrumbs'
+import { MotionLayer } from '@/components/site/MotionLayer'
 import { RichText } from '@/components/site/RichText'
 import { mediaAlt, mediaUrl } from '@/lib/media'
 import { getPage } from '@/lib/queries'
@@ -59,14 +60,15 @@ export default async function GenericPage({ params }: Props) {
           }
           if (block.blockType === 'cards') {
             return (
-              <div key={block.id ?? i} className="container cards3" style={spacing}>
-                {(block.items ?? []).map((c) => (
-                  <div key={c.id} className="card">
+              <ol key={block.id ?? i} className="container pillars-light" style={spacing}>
+                {(block.items ?? []).map((c, j) => (
+                  <li key={c.id} data-reveal>
+                    <span className="n">{String(j + 1).padStart(2, '0')}</span>
                     <h3>{c.title}</h3>
-                    <p style={{ color: 'var(--gray)' }}>{c.text}</p>
-                  </div>
+                    <p>{c.text}</p>
+                  </li>
                 ))}
-              </div>
+              </ol>
             )
           }
           if (block.blockType === 'gallery') {
@@ -81,6 +83,7 @@ export default async function GenericPage({ params }: Props) {
           return null
         })}
       </section>
+      <MotionLayer />
     </>
   )
 }
