@@ -764,3 +764,107 @@ html.lenis { scroll-behavior: auto; }
 .brand-card .logo-box .ph { width: 56px; height: 56px; border-radius: 50%; border: 1.5px solid var(--border); display: flex; align-items: center; justify-content: center; font-family: var(--f-display); font-size: 24px; font-weight: 600; color: var(--blue-dark); }
 .brand-card b { font-family: var(--f-display); font-size: 20px; color: var(--navy); }
 .brand-card span { font-size: 14px; color: var(--gray); line-height: 1.55; }
+
+/* ---------- konzistence s úvodní stránkou, 1. várka (6. 10.) ----------
+   Tlačítka všude jako „pilulky“, karty bez zaoblených krabic: řádky a mřížky oddělené linkami. */
+:root { --r: 4px; }
+.btn { border-radius: 999px; transition: background .25s, border-color .25s, color .25s; }
+.btn .icon { transition: transform .3s var(--ease); }
+.btn:hover .icon { transform: translateX(2px); }
+.btn-outline { background: transparent; border-color: rgba(28,47,90,.28); }
+.btn-outline:hover { background: transparent; border-color: var(--navy); }
+.mnav a.cta { border-radius: 999px; }
+.help { border-radius: var(--r); padding: clamp(28px, 4vw, 56px) clamp(24px, 4vw, 64px); }
+.help h2 { font-size: clamp(26px, 2.6vw, 36px); letter-spacing: -.02em; font-weight: 600; }
+.note { border-radius: var(--r); }
+
+/* řádky s šipkou (řady v divizi) – jako pilíře na úvodní stránce */
+.lines { gap: 0 clamp(24px, 4vw, 64px); border-top: 1px solid var(--border); }
+.line { padding: 22px 0; min-height: 88px; border-bottom: 1px solid var(--border); border-radius: 0; transition: color .25s; }
+.line b { font-family: var(--f-display); font-size: 20px; font-weight: 600; letter-spacing: -.01em; transition: color .25s; }
+.line span span { display: block; margin-top: 4px; line-height: 1.5; }
+.line .icon { transition: transform .3s var(--ease); }
+.line:hover b { color: var(--blue-dark); }
+.line:hover .icon { transform: translateX(4px); }
+
+/* soubory: řádky s linkou místo karet */
+.files { gap: 0; border-top: 1px solid var(--border); }
+.file { padding: 18px 0; border-bottom: 1px solid var(--border); color: inherit; transition: color .25s; }
+.file .ibox { background: none; border: 1.5px solid var(--border); border-radius: 50%; }
+.file:hover b { color: var(--blue-dark); }
+
+/* knihovna na úvodní stránce: mřížka s linkami jako stěna log */
+.tiles { gap: 0; border-top: 1px solid var(--border); border-left: 1px solid var(--border); }
+.tile { border: 0; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); border-radius: 0; padding: 26px 24px; transition: background .3s; }
+.tile:hover { background: var(--bg-alt); }
+.tile .ibox { background: none; border: 1.5px solid var(--border); border-radius: 50%; }
+
+/* divize: ilustrace materiálu v hlavičce, loga u značek */
+.div-hero .container { grid-template-columns: 1fr minmax(320px, 520px); }
+.div-art { height: clamp(180px, 22vw, 300px); display: flex; align-items: center; }
+.div-art .art-mat .pipe { stroke: #D5E9F3; }
+.div-art .art-mat .draw * { fill: #fff; }
+@media (prefers-reduced-motion: no-preference) {
+  .motion .div-art .art-mat .draw * { stroke-dasharray: 600; stroke-dashoffset: 600; animation: mat-draw 1.8s var(--ease) .2s forwards; }
+}
+@keyframes mat-draw { to { stroke-dashoffset: 0; } }
+.anchors a { transition: border-color .25s, background .25s; }
+.anchors a:hover { border-color: var(--navy); color: var(--navy); }
+.div-brands { padding: clamp(64px, 7vw, 112px) 0 clamp(48px, 5vw, 80px); }
+.brand { grid-template-columns: minmax(240px, 340px) 1fr; gap: clamp(32px, 5vw, 80px); padding-top: 40px; margin-bottom: 64px; }
+.brand h2 { font-size: clamp(28px, 2.6vw, 40px); letter-spacing: -.025em; font-weight: 600; }
+.brand p { color: var(--gray); }
+.brand-logo { height: 64px; display: flex; align-items: center; margin-bottom: 20px; }
+.brand-logo img { max-height: 52px; max-width: 220px; object-fit: contain; mix-blend-mode: multiply; }
+
+/* detail položky: čistá galerie, parametry ve dvou sloupcích s linkami */
+.prod .container { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: clamp(32px, 5vw, 96px); padding: clamp(32px, 4vw, 64px) 0 clamp(56px, 6vw, 96px); }
+.gallery .main { background: #fff; border: 1px solid var(--border); border-radius: var(--r); height: clamp(320px, 38vw, 540px); padding: clamp(24px, 4vw, 64px); }
+.gallery .thumbs { display: flex; flex-wrap: wrap; gap: 0; margin-top: -1px; }
+.gallery .thumbs a { display: block; width: 96px; height: 96px; padding: 10px; border: 1px solid var(--border); margin-left: -1px; background: #fff; }
+.gallery .thumbs a:first-child { margin-left: 0; }
+.gallery .thumbs a:hover { border-color: var(--blue-dark); position: relative; }
+.gallery .thumbs img { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; }
+.pinfo { gap: 24px; }
+.pinfo h1 { font-size: clamp(32px, 3.4vw, 54px); line-height: 1.04; letter-spacing: -.03em; font-weight: 600; }
+.pinfo .ctas { display: flex; gap: 12px; flex-wrap: wrap; }
+.keys { gap: 0 24px; }
+.keys div { background: none; border-radius: 0; padding: 18px 0 0; border-top: 1px solid var(--border); }
+.keys b { font-size: clamp(22px, 1.8vw, 28px); font-weight: 600; letter-spacing: -.02em; }
+.p-specs { padding-bottom: clamp(56px, 6vw, 96px); }
+.p-specs h2, .two h2, .vars h2, .p-videos h2 { font-size: clamp(28px, 2.6vw, 40px); letter-spacing: -.025em; font-weight: 600; margin-bottom: 24px; }
+.p-specs dl.params { display: grid; grid-template-columns: 1fr 1fr; column-gap: clamp(32px, 5vw, 96px); border-top: 0; }
+.p-specs dl.params div { grid-template-columns: minmax(140px, 220px) 1fr; gap: 16px; padding: 16px 0; }
+.p-specs dl.params div:nth-child(-n+2) { border-top: 1px solid var(--border); }
+.two { gap: clamp(32px, 5vw, 96px); padding-bottom: clamp(56px, 6vw, 96px); }
+.p-videos { padding-bottom: clamp(56px, 6vw, 96px); }
+.tbl-wrap { border-radius: var(--r); }
+@media (max-width: 1000px) {
+  .div-hero .container { grid-template-columns: 1fr; }
+  .div-art { height: 160px; max-width: 420px; }
+  .brand { grid-template-columns: 1fr; gap: 20px; }
+  .p-specs dl.params { grid-template-columns: 1fr; }
+  .p-specs dl.params div:nth-child(2) { border-top: 0; }
+  .p-specs dl.params div { grid-template-columns: 1fr auto; }
+  main:has(.sticky-buy) { padding-bottom: 76px; }
+  .sticky-buy .btn { flex: 1; }
+}
+
+/* patička: velké heslo a větší logo jako závěr úvodní stránky */
+.site-footer .statement { display: flex; justify-content: space-between; align-items: flex-end; gap: 32px 64px; flex-wrap: wrap; padding: clamp(64px, 8vw, 120px) 0 clamp(48px, 5vw, 72px); border-bottom: 1px solid rgba(255,255,255,.14); }
+.site-footer .statement .logo img { width: clamp(200px, 18vw, 264px); height: auto; }
+.site-footer .motto { font-family: var(--f-display); color: #fff; font-size: clamp(36px, 5.4vw, 88px); line-height: 1; letter-spacing: -.04em; font-weight: 600; max-width: 15ch; order: -1; }
+.site-footer .motto em { font-style: normal; color: var(--blue); }
+.site-footer .top { padding-top: clamp(48px, 5vw, 72px); }
+.site-footer .addr { margin-top: 0; }
+.pinfo h1 { font-size: clamp(28px, 2.8vw, 44px); line-height: 1.08; }
+/* horní linka značky je zároveň první linkou řádků řad */
+.brand { padding-top: 0; }
+.brand > div:first-child { padding-top: 32px; }
+.brand .lines { border-top: 0; }
+.pinfo h1 { overflow-wrap: anywhere; }
+@media (max-width: 1000px) {
+  .prod .container, .two { grid-template-columns: 1fr; }
+  .gallery .main { height: 300px; }
+  .sticky-buy .btn { white-space: nowrap; padding: 0 14px; font-size: 15px; }
+}

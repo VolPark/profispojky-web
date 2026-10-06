@@ -13,6 +13,11 @@ export const rel = <T extends object>(v: T | number | string | null | undefined)
 /* ---------- globály ---------- */
 
 export const getSettings = cache(async () => (await getPayloadClient()).findGlobal({ slug: 'site-settings', depth: 0 }))
+/** Nadpis úvodní stránky – opakuje se jako závěrečné heslo v patičce. */
+export const getHomeTitle = cache(async () => {
+  const home = await (await getPayloadClient()).findGlobal({ slug: 'homepage', depth: 0, select: { title: true } })
+  return home.title || ''
+})
 export const getHomepage = cache(async () => (await getPayloadClient()).findGlobal({ slug: 'homepage', depth: 2 }))
 
 /* ---------- divize, značky, řady ---------- */
