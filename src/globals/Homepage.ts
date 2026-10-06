@@ -73,7 +73,7 @@ export const Homepage: GlobalConfig = {
           label: 'Fotka',
           type: 'upload',
           relationTo: 'media',
-          admin: { description: 'Fotka firmy – sklad, stánek na veletrhu, tým. Na šířku.' },
+          admin: { description: 'Zatím se nepoužívá – v bloku je animace toku zboží (výrobci → sklad → prodejci).' },
         },
         {
           name: 'pillars',

@@ -6,6 +6,7 @@ import React from 'react'
 import { Footer } from '@/components/site/Footer'
 import { Header } from '@/components/site/Header'
 import { IconSprite } from '@/components/site/Icon'
+import { SmoothScroll } from '@/components/site/SmoothScroll'
 import { serverUrl } from '@/lib/preview'
 import { getDivisions, getSettings } from '@/lib/queries'
 
@@ -62,6 +63,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <Header settings={settings} />
         <main id="obsah">{children}</main>
         <Footer settings={settings} divisions={divisions} />
+        <SmoothScroll />
       </body>
     </html>
   )

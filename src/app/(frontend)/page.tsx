@@ -4,11 +4,12 @@ import React from 'react'
 
 import { ProductTypes } from '@/components/site/DivisionGrid'
 import { HomeMotion } from '@/components/site/home/HomeMotion'
+import { ElementIcon, MaterialArt, NetworkArt } from '@/components/site/home/illustrations'
 import { Icon } from '@/components/site/Icon'
 import { formatDate } from '@/lib/format'
 import { homeText, type HomeCopyKey } from '@/lib/home-copy'
 import { newsCategoryLabel as categoryLabel } from '@/lib/news'
-import { asMedia, mediaAlt, mediaUrl } from '@/lib/media'
+import { asMedia, mediaUrl } from '@/lib/media'
 import {
   getAllSeries,
   getBrandLogos,
@@ -63,15 +64,22 @@ export default async function HomePage() {
   const [lead, ...rest] = news
   // pás produktů: řady s dostatečně velkou fotkou
   const strip = series.filter((s) => (asMedia(s.image)?.width ?? 0) >= 500 && s.slug).slice(0, 16)
-  const story = asMedia(home.storyImage)
   const words = titleWords(home.title)
   const t = (k: HomeCopyKey) => homeText(home.copy, k)
-  const manifesto = t('manifesto').split(/\s+/).filter(Boolean)
+  // manifest: první věta velká (rozsvěcí se), zbytek menším písmem vedle
+  const manifestoText = t('manifesto')
+  const cut = manifestoText.search(/[.!?]\s/)
+  const manifesto = (cut > 0 ? manifestoText.slice(0, cut + 1) : manifestoText).split(/\s+/).filter(Boolean)
+  const manifestoRest = cut > 0 ? manifestoText.slice(cut + 2).trim() : ''
   const band = t('bandWords')
     .split('·')
     .map((w) => w.trim())
     .filter(Boolean)
+  const elements = band.slice(0, 3)
   const dealerStat = home.stats?.find((x) => /prodej/i.test(x.label))
+  const makerStat = home.stats?.find((x) => /výrob/i.test(x.label))
+  const makersLabel = makerStat ? `${makerStat.value} výrobců` : 'Výrobci'
+  const dealersLabel = dealerStat ? `${dealerStat.value} prodejních míst` : 'Prodejní místa'
 
   return (
     <div className="home">
@@ -99,7 +107,7 @@ export default async function HomePage() {
               ['hf3', 14, 6],
             ].map(([id, dur, begin], i) => (
               <circle key={i} r={i % 2 ? 3 : 4.5}>
-                <animateMotion dur={`${dur}s`} begin={`${begin}s`} repeatCount="indefinite" rotate="auto">
+                <animateMotion dur={`${dur}s`} begin={`-${begin}s`} repeatCount="indefinite" rotate="auto">
                   <mpath href={`#${id}`} />
                 </animateMotion>
               </circle>
@@ -151,43 +159,37 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 2 – pás produktů */}
-      {strip.length > 3 && (
-        <section className="h-strip" aria-label="Výběr z produktových řad">
-          <div className="track">
-            {[0, 1].map((copy) => (
-              <ul key={copy} aria-hidden={copy === 1 || undefined}>
-                {strip.map((s) => (
-                  <li key={s.id}>
-                    <Link href={urls.series(s.slug!)} tabIndex={copy === 1 ? -1 : undefined}>
-                      <span className="ph">
-                        <img src={mediaUrl(s.image, 'card') ?? ''} alt="" loading="lazy" />
-                      </span>
-                      <span className="cap">
-                        <small>{rel<Brand>(s.brand)?.name}</small>
-                        {s.name}
-                      </span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {/* 3 – manifest */}
+      {/* 2 – kdo jsme: krátké prohlášení + voda/plyn/teplo */}
       {manifesto.length > 0 && (
-        <section id="kdo-jsme" className="h-manifesto" aria-label="Kdo jsme">
+        <section id="kdo-jsme" className="h-manifesto" aria-labelledby="kdo-h">
           <div className="container">
-            <div className="side">Kdo jsme</div>
             <div>
+              <div className="eyebrow" id="kdo-h">
+                Kdo jsme
+              </div>
               <p className="big" data-fill>
                 {manifesto.map((w, i) => (
                   <span key={i}>{w} </span>
                 ))}
               </p>
-              <Link className="link-arrow" href={urls.page('o-firme')}>
+            </div>
+            <div className="side">
+              {manifestoRest && (
+                <p className="rest" data-reveal>
+                  {manifestoRest}
+                </p>
+              )}
+              {elements.length > 0 && (
+                <ul className="elements">
+                  {elements.map((w, i) => (
+                    <li key={i} data-reveal>
+                      <ElementIcon index={i} />
+                      <span>{w}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              <Link className="link-arrow" href={urls.page('o-firme')} data-reveal>
                 O firmě
                 <Icon name="arrow" />
               </Link>
@@ -196,7 +198,7 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* 4 – čísla */}
+      {/* 3 – čísla */}
       {!!home.stats?.length && (
         <section className="h-numbers on-dark" aria-label="PROFI SPOJKY v číslech">
           <div className="container">
@@ -218,7 +220,7 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* 5 – značky */}
+      {/* 4 – značky */}
       {brandLogos.length > 0 && (
         <section className="h-brands" aria-labelledby="znacky-h">
           <div className="container">
@@ -246,18 +248,13 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* 6 – co děláme */}
+      {/* 5 – co děláme: tok výrobci → sklad → prodejci */}
       {!!home.pillars?.length && (
         <section className="h-story on-dark" aria-labelledby="story-h">
           <div className="container">
-            {story && (
-              <figure className="photo" data-wipe>
-                <span className="frame">
-                  <img src={mediaUrl(story, 'large') ?? ''} alt={mediaAlt(story)} loading="lazy" data-parallax />
-                </span>
-                {story.alt && <figcaption>{story.alt}</figcaption>}
-              </figure>
-            )}
+            <figure className="network" data-reveal>
+              <NetworkArt makers={makersLabel} hub="Centrální sklad Jesenice" dealers={dealersLabel} />
+            </figure>
             <div>
               <div className="eyebrow" data-reveal>
                 Co pro vás děláme
@@ -281,82 +278,7 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* pás velkých slov – posouvá se se scrollem */}
-      {band.length > 0 && (
-        <div className="h-band" aria-hidden="true">
-          <div className="row" data-drift>
-            {[0, 1, 2].map((k) => (
-              <span key={k}>
-                {band.map((w, i) => (
-                  <React.Fragment key={i}>
-                    <b className={i % 2 ? 'o' : undefined}>{w}</b>
-                    <i />
-                  </React.Fragment>
-                ))}
-              </span>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* 7 – sortiment */}
-      <section className="h-divisions" aria-labelledby="divize-h">
-        <div className="container">
-          <div className="h-head" data-reveal>
-            <div>
-              <div className="eyebrow">Sortiment</div>
-              <h2 id="divize-h">{t('divisionsTitle')}</h2>
-            </div>
-            <Link className="link-arrow" href={urls.products}>
-              Všechny produkty
-              <Icon name="arrow" />
-            </Link>
-          </div>
-        </div>
-        <div className="d-tiles">
-          {divisions.map((d, i) => {
-            const brands = brandsByDivision.get(d.id) ?? []
-            const inner = (
-              <>
-                <span className="img">{mediaUrl(d.image, 'card') && <img src={mediaUrl(d.image, 'card')!} alt="" loading="lazy" />}</span>
-                <span className="n">{String(i + 1).padStart(2, '0')}</span>
-                <span className="t">{d.name}</span>
-                <span className="p">{d.perex}</span>
-                {brands.length > 0 && <span className="b">{brands.map((b) => b.name).join(' · ')}</span>}
-                {d.status === 'upcoming' ? <span className="chip">Připravujeme</span> : <Icon name="arrow" />}
-              </>
-            )
-            return d.status === 'upcoming' ? (
-              <div key={d.id} className="d-tile soon" data-reveal>
-                {inner}
-              </div>
-            ) : (
-              <Link key={d.id} className="d-tile" href={urls.division(d.slug!)} data-reveal>
-                {inner}
-              </Link>
-            )
-          })}
-        </div>
-        <div className="container h-find" data-reveal>
-          <form action="/katalog" role="search">
-            <label className="h-find-l" htmlFor="home-q">
-              {t('findTitle')}
-            </label>
-            <div className="search-row">
-              <div className="input-icon">
-                <Icon name="search" />
-                <input id="home-q" className="input" type="search" name="q" placeholder="Kód, název nebo rozměr – např. 30000007, BA 32" />
-              </div>
-              <button className="btn btn-navy" type="submit">
-                Hledat
-              </button>
-            </div>
-          </form>
-          <ProductTypes types={types} />
-        </div>
-      </section>
-
-      {/* závěrečná výzva */}
+      {/* 6 – prodejní síť */}
       <section className="h-cta on-dark" aria-labelledby="cta-h">
         <div className="container">
           <div data-reveal>
@@ -381,7 +303,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 8 – aktuality */}
+      {/* 7 – aktuality */}
       {lead && (
         <section className="section section-alt" aria-labelledby="news-h">
           <div className="container">
@@ -426,7 +348,105 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* 9 – knihovna */}
+      {/* 8 – přechod na sortiment: pás slov posouvaný scrollem */}
+      {band.length > 0 && (
+        <div className="h-band" aria-hidden="true">
+          <div className="row" data-drift>
+            {[0, 1, 2].map((k) => (
+              <span key={k}>
+                {band.map((w, i) => (
+                  <React.Fragment key={i}>
+                    <b className={i % 2 ? 'o' : undefined}>{w}</b>
+                    <i />
+                  </React.Fragment>
+                ))}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* 9 – sortiment: materiály, pás řad, hledání */}
+      <section className="h-divisions" aria-labelledby="divize-h">
+        <div className="container">
+          <div className="h-head" data-reveal>
+            <div>
+              <div className="eyebrow">Sortiment</div>
+              <h2 id="divize-h">{t('divisionsTitle')}</h2>
+            </div>
+            <Link className="link-arrow" href={urls.products}>
+              Všechny produkty
+              <Icon name="arrow" />
+            </Link>
+          </div>
+        </div>
+        <div className="d-tiles">
+          {divisions.map((d, i) => {
+            const brands = brandsByDivision.get(d.id) ?? []
+            const inner = (
+              <>
+                <span className="img">
+                  <MaterialArt slug={d.slug ?? ''} />
+                </span>
+                <span className="n">{String(i + 1).padStart(2, '0')}</span>
+                <span className="t">{d.name}</span>
+                <span className="p">{d.perex}</span>
+                {brands.length > 0 && <span className="b">{brands.map((b) => b.name).join(' · ')}</span>}
+                {d.status === 'upcoming' ? <span className="chip">Připravujeme</span> : <Icon name="arrow" />}
+              </>
+            )
+            return d.status === 'upcoming' ? (
+              <div key={d.id} className="d-tile soon" data-reveal>
+                {inner}
+              </div>
+            ) : (
+              <Link key={d.id} className="d-tile" href={urls.division(d.slug!)} data-reveal>
+                {inner}
+              </Link>
+            )
+          })}
+        </div>
+        <section className="h-strip" aria-label="Výběr z produktových řad">
+            <div className="track">
+              {[0, 1].map((copy) => (
+                <ul key={copy} aria-hidden={copy === 1 || undefined}>
+                  {strip.map((s) => (
+                    <li key={s.id}>
+                      <Link href={urls.series(s.slug!)} tabIndex={copy === 1 ? -1 : undefined}>
+                        <span className="ph">
+                          <img src={mediaUrl(s.image, 'card') ?? ''} alt="" loading="lazy" />
+                        </span>
+                        <span className="cap">
+                          <small>{rel<Brand>(s.brand)?.name}</small>
+                          {s.name}
+                        </span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              ))}
+            </div>
+          </section>
+        <div className="container h-find" data-reveal>
+          <form action="/katalog" role="search">
+            <label className="h-find-l" htmlFor="home-q">
+              {t('findTitle')}
+            </label>
+            <div className="search-row">
+              <div className="input-icon">
+                <Icon name="search" />
+                <input id="home-q" className="input" type="search" name="q" placeholder="Kód, název nebo rozměr – např. 30000007, BA 32" />
+              </div>
+              <button className="btn btn-navy" type="submit">
+                Hledat
+              </button>
+            </div>
+          </form>
+          <ProductTypes types={types} />
+        </div>
+      </section>
+
+      {/* 10 – knihovna */}
       <section className="section" aria-labelledby="lib-h">
         <div className="container lib-teaser">
           <div>

@@ -34,23 +34,26 @@ export function HomeMotion() {
     const drifts = [...document.querySelectorAll<HTMLElement>('[data-drift]')]
     const onScroll = () => {
       const vh = window.innerHeight
-      for (const el of parallax) {
-        const r = el.parentElement!.getBoundingClientRect()
+      // nejdřív všechna měření, pak zápisy – jinak prohlížeč přepočítává layout v každém kroku (trhání)
+      const pRects = parallax.map((el) => el.parentElement!.getBoundingClientRect())
+      const dRects = drifts.map((el) => el.getBoundingClientRect())
+      const fRects = fills.map((el) => el.getBoundingClientRect())
+      parallax.forEach((el, i) => {
+        const r = pRects[i]
         const k = (r.top + r.height / 2 - vh / 2) / vh // -1…1 kolem středu okna
         el.style.transform = `translate3d(0, ${(k * -8).toFixed(2)}%, 0) scale(1.18)`
-      }
-      for (const el of drifts) {
-        const r = el.getBoundingClientRect()
-        el.style.transform = `translate3d(${(-(vh - r.top) * 0.35).toFixed(1)}px, 0, 0)`
-      }
-      for (const el of fills) {
-        const r = el.getBoundingClientRect()
+      })
+      drifts.forEach((el, i) => {
+        el.style.transform = `translate3d(${(-(vh - dRects[i].top) * 0.35).toFixed(1)}px, 0, 0)`
+      })
+      fills.forEach((el, i) => {
+        const r = fRects[i]
         // 0 = horní hrana textu na 85 % výšky okna, 1 = spodní hrana na 45 %
         const p = Math.min(1, Math.max(0, (vh * 0.85 - r.top) / (r.height + vh * 0.4)))
         const words = el.querySelectorAll('span')
         const lit = Math.round(p * words.length)
-        words.forEach((w, i) => w.classList.toggle('on', i < lit))
-      }
+        words.forEach((w, j) => w.classList.toggle('on', j < lit))
+      })
     }
     let raf = 0
     const schedule = () => {
