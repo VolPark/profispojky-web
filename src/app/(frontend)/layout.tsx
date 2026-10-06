@@ -8,7 +8,7 @@ import { Header } from '@/components/site/Header'
 import { IconSprite } from '@/components/site/Icon'
 import { SmoothScroll } from '@/components/site/SmoothScroll'
 import { serverUrl } from '@/lib/preview'
-import { getDivisions, getSettings } from '@/lib/queries'
+import { getDivisions, getHomeTitle, getSettings } from '@/lib/queries'
 
 import './styles.css'
 
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
 }
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const [settings, divisions, draft] = await Promise.all([getSettings(), getDivisions(), draftMode()])
+  const [settings, divisions, draft, motto] = await Promise.all([getSettings(), getDivisions(), draftMode(), getHomeTitle()])
 
   return (
     <html lang="cs" suppressHydrationWarning>
@@ -62,7 +62,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         )}
         <Header settings={settings} />
         <main id="obsah">{children}</main>
-        <Footer settings={settings} divisions={divisions} />
+        <Footer settings={settings} divisions={divisions} motto={motto} />
         <SmoothScroll />
       </body>
     </html>

@@ -9,13 +9,29 @@ import { Icon } from './Icon'
 
 const tel = (phone: string) => `tel:${phone.replace(/\s+/g, '')}`
 
-export const Footer = ({ settings, divisions }: { settings: SiteSetting; divisions: Division[] }) => (
+/** „Spojujeme *vodu, plyn a teplo*.“ → text se zvýrazněnou částí (stejný zápis jako nadpis úvodní stránky). */
+const Motto = ({ text }: { text: string }) => (
+  <>
+    {text.split(/(\*[^*]+\*)/).map((part, i) =>
+      part.startsWith('*') && part.endsWith('*') ? <em key={i}>{part.slice(1, -1)}</em> : <React.Fragment key={i}>{part}</React.Fragment>,
+    )}
+  </>
+)
+
+export const Footer = ({ settings, divisions, motto }: { settings: SiteSetting; divisions: Division[]; motto?: string }) => (
   <footer className="site-footer">
+    <div className="container statement">
+      <Link className="logo" href="/">
+        <img src="/logo-white.svg" alt="PROFI SPOJKY" width={264} height={51} />
+      </Link>
+      {motto && (
+        <p className="motto">
+          <Motto text={motto} />
+        </p>
+      )}
+    </div>
     <div className="container top">
       <div>
-        <Link className="logo" href="/">
-          <img src="/logo-white.svg" alt="PROFI SPOJKY" width={198} height={38} />
-        </Link>
         <p className="addr">
           {settings.companyName}
           <br />
