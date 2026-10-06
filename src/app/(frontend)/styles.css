@@ -115,18 +115,7 @@ p { margin: 0; }
 .stats b { display: block; font-family: var(--f-display); font-size: 32px; font-weight: 800; color: var(--navy); }
 .stats span { font-size: 14px; color: var(--gray); }
 .hero .placeholder { min-height: 500px; }
-.div-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
-.div-card { display: flex; flex-direction: column; overflow: hidden; text-decoration: none; color: inherit; transition: border-color .15s, box-shadow .15s; }
-.div-card:hover { border-color: var(--blue); box-shadow: 0 6px 20px rgba(28,47,90,.08); color: inherit; }
-.div-card .img { height: 132px; background: var(--bg-alt); padding: 12px; }
-.div-card .img img { width: 100%; height: 100%; object-fit: contain; }
-.div-card .body { padding: 22px; display: flex; flex-direction: column; gap: 12px; flex: 1; }
-.div-card h3 { font-size: 22px; }
-.div-card p { font-size: 15px; color: var(--gray); line-height: 1.55; }
 .chips { display: flex; flex-wrap: wrap; gap: 6px; }
-.div-card .more { margin-top: auto; padding-top: 8px; color: var(--blue-dark); font-weight: 600; font-size: 15px; display: inline-flex; gap: 8px; align-items: center; }
-.div-card.new { border: 1.5px dashed var(--border-input); padding: 24px; justify-content: center; color: var(--gray); }
-.div-card.new h3 { font-size: 22px; }
 .types { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px; }
 .types h2 { font-family: var(--f-body); font-size: 16px; font-weight: 600; }
 .types .list { display: flex; flex-wrap: wrap; gap: 10px; }
@@ -748,3 +737,30 @@ html.lenis { scroll-behavior: auto; }
 .home .lib-teaser { grid-template-columns: minmax(300px, 440px) 1fr; }
 @media (max-width: 1000px) { .home .lib-teaser { grid-template-columns: 1fr; } }
 @media (max-width: 600px) { .art-pin { display: none; } }
+
+/* ---------- podstránky ve stylu úvodní stránky (6. 10.) ---------- */
+/* hlavička stránky: velká typografie na světle modrém podkladu (jako Kdo jsme) */
+.page-hero { background: linear-gradient(180deg, var(--tint) 0%, #F5FBFE 100%); padding: clamp(56px, 7vw, 104px) 0; }
+.page-hero h1 { font-size: clamp(40px, 6vw, 92px); line-height: .98; letter-spacing: -.035em; font-weight: 600; margin: 18px 0 22px; }
+.page-hero p.lead { font-size: clamp(17px, 1.3vw, 20px); line-height: 1.6; color: #3E4A5C; max-width: 52ch; }
+.motion .page-hero .container > * { animation: ph-in .9s var(--ease) both; }
+.motion .page-hero .container > *:nth-child(2) { animation-delay: .08s; }
+.motion .page-hero .container > *:nth-child(3) { animation-delay: .16s; }
+@keyframes ph-in { from { opacity: 0; transform: translateY(18px); } }
+@media (prefers-reduced-motion: reduce) { .motion .page-hero .container > * { animation: none; } }
+
+/* produkty: dlaždice divizí s animacemi jako na úvodní stránce */
+.page-tiles { padding-top: 0; }
+.page-tiles .d-tiles { border-top: 0; }
+.page-tiles .h-find { padding-bottom: clamp(88px, 9vw, 136px); }
+
+/* značky: stěna s logy a popisem (jako loga na úvodní stránce) */
+.brand-grid-v2 { gap: 0; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); border-top: 1px solid var(--border); border-left: 1px solid var(--border); }
+.brand-card { display: flex; flex-direction: column; gap: 8px; padding: 28px; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); text-decoration: none; color: inherit; transition: background .3s; }
+.brand-card:hover { background: var(--bg-alt); color: inherit; }
+.brand-card .logo-box { height: 72px; display: flex; align-items: center; margin-bottom: 12px; }
+.brand-card .logo-box img { max-height: 56px; max-width: 70%; object-fit: contain; mix-blend-mode: multiply; filter: grayscale(1); opacity: .75; transition: filter .3s, opacity .3s; }
+.brand-card:hover .logo-box img, .brand-card:focus-visible .logo-box img { filter: none; opacity: 1; }
+.brand-card .logo-box .ph { width: 56px; height: 56px; border-radius: 50%; border: 1.5px solid var(--border); display: flex; align-items: center; justify-content: center; font-family: var(--f-display); font-size: 24px; font-weight: 600; color: var(--blue-dark); }
+.brand-card b { font-family: var(--f-display); font-size: 20px; color: var(--navy); }
+.brand-card span { font-size: 14px; color: var(--gray); line-height: 1.55; }
