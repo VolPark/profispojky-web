@@ -4,7 +4,7 @@ import React from 'react'
 
 import { ProductTypes } from '@/components/site/DivisionGrid'
 import { HomeMotion } from '@/components/site/home/HomeMotion'
-import { ElementIcon, MaterialArt, NetworkArt } from '@/components/site/home/illustrations'
+import { ElementIcon, MaterialArt, NetworkArt, PinArt } from '@/components/site/home/illustrations'
 import { Icon } from '@/components/site/Icon'
 import { formatDate } from '@/lib/format'
 import { homeText, type HomeCopyKey } from '@/lib/home-copy'
@@ -275,27 +275,28 @@ export default async function HomePage() {
       )}
 
       {/* 6 – prodejní síť */}
-      <section className="h-cta on-dark" aria-labelledby="cta-h">
+      <section className="h-cta" aria-labelledby="cta-h">
         <div className="container">
-          <div data-reveal>
-            {dealerStat && (
-              <div className="num" data-count>
-                {dealerStat.value}
-              </div>
-            )}
-            <h2 id="cta-h">{t('ctaTitle')}</h2>
-            <p>{t('ctaText')}</p>
+          <div className="txt">
+            <div className="eyebrow" data-reveal>
+              Prodejní síť
+            </div>
+            <h2 id="cta-h" data-reveal>
+              {t('ctaTitle')}
+            </h2>
+            <p data-reveal>{t('ctaText')}</p>
+            <div className="btns" data-reveal>
+              <Link className="btn btn-navy btn-lg" href={urls.dealers}>
+                <Icon name="pin" />
+                Najít prodejce
+              </Link>
+              <Link className="btn btn-ghost btn-lg" href={urls.contact}>
+                Kontaktujte nás
+                <Icon name="arrow" />
+              </Link>
+            </div>
           </div>
-          <div className="btns" data-reveal>
-            <Link className="btn btn-primary btn-lg" href={urls.dealers}>
-              <Icon name="pin" />
-              Najít prodejce
-            </Link>
-            <Link className="btn btn-ghost-light btn-lg" href={urls.contact}>
-              Kontaktujte nás
-              <Icon name="arrow" />
-            </Link>
-          </div>
+          <PinArt />
         </div>
       </section>
 
@@ -381,7 +382,10 @@ export default async function HomePage() {
         <section className="section section-alt" aria-labelledby="news-h">
           <div className="container">
             <div className="h-head" data-reveal>
-              <h2 id="news-h">Aktuality</h2>
+              <div>
+                <div className="eyebrow">Novinky</div>
+                <h2 id="news-h">Aktuality</h2>
+              </div>
               <Link className="link-arrow" href={urls.news}>
                 Všechny aktuality
                 <Icon name="arrow" />
@@ -425,6 +429,7 @@ export default async function HomePage() {
       <section className="section" aria-labelledby="lib-h">
         <div className="container lib-teaser">
           <div>
+            <div className="eyebrow">Ke stažení</div>
             <h2 id="lib-h">Knihovna médií</h2>
             <p style={{ fontSize: 17, color: 'var(--gray)', margin: '12px 0 16px', lineHeight: 1.6 }}>
               Katalogy, letáky, certifikáty, prohlášení o shodě, montážní návody a videa na jednom místě.
