@@ -3,8 +3,9 @@ import Link from 'next/link'
 import React from 'react'
 
 import { ProductTypes } from '@/components/site/DivisionGrid'
-import { HomeMotion } from '@/components/site/home/HomeMotion'
-import { ElementIcon, MaterialArt, NetworkArt, PinArt } from '@/components/site/home/illustrations'
+import { DivisionTiles } from '@/components/site/DivisionTiles'
+import { MotionLayer } from '@/components/site/MotionLayer'
+import { ElementIcon, NetworkArt, PinArt } from '@/components/site/home/illustrations'
 import { Icon } from '@/components/site/Icon'
 import { formatDate } from '@/lib/format'
 import { homeText, type HomeCopyKey } from '@/lib/home-copy'
@@ -79,12 +80,6 @@ export default async function HomePage() {
 
   return (
     <div className="home">
-      {/* animace zapnout ještě před vykreslením, ať obsah při načtení neproblikne */}
-      <script
-        dangerouslySetInnerHTML={{
-          __html: "if(!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('motion')",
-        }}
-      />
       {/* 1 – úvod: značka, ne katalog */}
       <section className="h-hero" aria-labelledby="h-title">
         <svg className="h-flow" viewBox="0 0 1440 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
@@ -332,32 +327,7 @@ export default async function HomePage() {
             </Link>
           </div>
         </div>
-        <div className="d-tiles">
-          {divisions.map((d, i) => {
-            const brands = brandsByDivision.get(d.id) ?? []
-            const inner = (
-              <>
-                <span className="img">
-                  <MaterialArt slug={d.slug ?? ''} />
-                </span>
-                <span className="n">{String(i + 1).padStart(2, '0')}</span>
-                <span className="t">{d.name}</span>
-                <span className="p">{d.perex}</span>
-                {brands.length > 0 && <span className="b">{brands.map((b) => b.name).join(' · ')}</span>}
-                {d.status === 'upcoming' ? <span className="chip">Připravujeme</span> : <Icon name="arrow" />}
-              </>
-            )
-            return d.status === 'upcoming' ? (
-              <div key={d.id} className="d-tile soon" data-reveal>
-                {inner}
-              </div>
-            ) : (
-              <Link key={d.id} className="d-tile" href={urls.division(d.slug!)} data-reveal>
-                {inner}
-              </Link>
-            )
-          })}
-        </div>
+        <DivisionTiles divisions={divisions} brandsByDivision={brandsByDivision} />
         <div className="container h-find" data-reveal>
           <form action="/katalog" role="search">
             <label className="h-find-l" htmlFor="home-q">
@@ -454,7 +424,7 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
-      <HomeMotion />
+      <MotionLayer />
     </div>
   )
 }
