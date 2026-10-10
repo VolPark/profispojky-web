@@ -55,6 +55,8 @@ Cíl: web běží bez podpory; když se něco rozbije, chodí e-mail s vysokou p
 | `pnpm payload migrate:create <název>` | **po každé změně schématu** – produkce běží jen na migracích (`src/migrations`) |
 | `pnpm payload migrate` | spustí migrace (na Vercelu automaticky v `buildCommand`, když je `DATABASE_URL`) |
 
+**CI** (`.github/workflows/ci.yml`): na každém PR a push do `main` běží lint, typecheck, unit testy a audit závislostí (blokuje high/critical v produkčních balíčcích, pokud existuje oprava). Build CI nespouští – potřebuje DB; ověřuje ho Vercel preview deploy PR. **Dependabot** (`.github/dependabot.yml`) otevírá každé pondělí souhrnné PR s minor/patch aktualizacemi (Payload balíčky a Next.js ve vlastních skupinách – musí mít shodné verze); major verze ručně.
+
 ## Kdo spravuje co
 
 | Kdo | Kde | Jak |

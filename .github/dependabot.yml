@@ -1,0 +1,25 @@
+version: 2
+updates:
+  # Týdně jeden souhrnný PR s minor/patch aktualizacemi; Payload balíčky drží pohromadě (musí mít stejnou verzi).
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: Europe/Prague
+    open-pull-requests-limit: 5
+    groups:
+      payload:
+        patterns: ["payload", "@payloadcms/*"]
+      next:
+        patterns: ["next", "eslint-config-next", "react", "react-dom", "@types/react*"]
+      minor-and-patch:
+        update-types: [minor, patch]
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
